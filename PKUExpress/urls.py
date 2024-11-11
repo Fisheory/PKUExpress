@@ -24,4 +24,4 @@ urlpatterns = [
     path('tasks/', include('tasks.urls')),
 ]
 
-from django.views.generic import RedirectView
+
