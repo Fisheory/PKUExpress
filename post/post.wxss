@@ -1,0 +1,99 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #FFA04A;
+    padding: 20px;
+    min-height: 100vh;
+  }
+  
+  .header {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  
+  .form {
+    width: 100%;
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 15px;
+  }
+  
+  .form-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .form-item text {
+    flex: 0 0 70px;
+    color: #333;
+  }
+  
+  .form-item input,
+  .form-item textarea {
+    flex: 1;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 8px;
+    margin-left: 5px;
+  }
+  
+  .location-button {
+    margin-left: 5px;
+  }
+  
+  .upload-image {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 15px;
+  }
+  
+  .upload-image button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: transparent;
+    border: 1px dashed #ddd;
+    width: 100%;
+    padding: 15px;
+    border-radius: 10px;
+  }
+  
+  .button-container {
+    display: flex;
+    flex-direction: column; 
+    width: 80%;
+    margin: 0 auto;
+  }
+  
+  .submit-button, .cancel-button {
+    padding: 10px;
+    margin-top: 10px; /* Add spacing between the buttons */
+    background-color: #FFC107;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    text-align: center;
+  }
+  
+  .bottom-navigation {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    background-color: #fff;
+    padding: 10px 0;
+    position: fixed;
+    bottom: 0;
+  }
+  
+  .nav-button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 12px;
+  }
+  
