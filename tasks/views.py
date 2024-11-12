@@ -9,19 +9,14 @@ import json
 
 # Create your views here.
 @csrf_exempt
-@api_view(['GET', 'POST'])
-def task_list(request):
+@api_view(['GET'])
+def task_list(request,st,en):
     if request.method == 'GET':
-        tasks = Task.objects.all()
+        tasks = Task.objects.all()[st:en]
         serializer = TaskSerializer(tasks, many=True)
         return Response(serializer.data)
-    elif request.method == 'POST':
-        data = json.loads(request.body)
-        serializer = TaskSerializer(data=data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=201)
-        return Response(serializer.errors, status=400)
+    else:
+        return Response(status=405)
     
 @csrf_exempt
 @api_view(['GET', 'PUT', 'DELETE'])
@@ -34,6 +29,5 @@ def task_detail(request, pk):
     if request.method == 'GET':
         serializer = TaskSerializer(task)
         return Response(serializer.data)
-    #
-
-
+    else:
+        return Response(status=405)
