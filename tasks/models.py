@@ -31,7 +31,17 @@ class Task(models.Model):
         return self.name
     
     def accept(self, worker):
-        if self.status == 'to_be_accepted':
+        # 如果任务已经过期，更新self.status='out_of_date'
+        self.out_of_date()
+        
+        if self.status == 'to_be_accepted' and self.worker is None:
+            if worker.accepted_tasks.count() > 0:
+                raise Exception('Worker has accepted task')
+            elif worker == self.publisher:
+                raise Exception('Publisher cannot accept task')
+          
+            worker.accepted_tasks.add(self)
+            worker.save()
             self.worker = worker
             self.status = 'accepted'
             self.save()
@@ -41,7 +51,12 @@ class Task(models.Model):
     def finish(self):
         if self.status == 'accepted':
             self.status = 'finished'
+            # money?
+            self.worker.gold += self.reward
+            self.publisher.gold -= self.reward
+
             self.save()
+            self.worker.save()
         else:
             raise Exception('Task status error')
         
