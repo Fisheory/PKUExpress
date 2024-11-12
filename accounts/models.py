@@ -1,8 +1,8 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractUser
 
 # Create your models here.
-class CustomUser(User):
+class CustomUser(AbstractUser):
     phone = models.CharField(max_length=11, blank=True)
     gold = models.IntegerField(default=0)
     
