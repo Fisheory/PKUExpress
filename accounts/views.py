@@ -17,6 +17,9 @@ import json
 @api_view(['POST'])
 def register_view(request):
     '''
+    Todo: 验证方式? (优先级不高)
+          密码的传输?
+    
     用户状态：未登录
     简介: 注册视图, 接受信息并注册新用户
     
