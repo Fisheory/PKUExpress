@@ -6,6 +6,8 @@ from django.utils import timezone
 class Task(models.Model):
     name = models.CharField(max_length=50)
     description = models.TextField()
+    start_location = models.CharField(max_length=50)
+    end_location = models.CharField(max_length=50)
     reward = models.IntegerField()
     publisher = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='published_tasks')
     worker = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='accepted_tasks', null=True, blank=True)
