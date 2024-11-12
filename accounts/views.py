@@ -5,7 +5,8 @@ from django.contrib.auth import authenticate, login, logout
 
 from rest_framework.views import APIView
 from rest_framework.authtoken.models import Token
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
 
 from .serializers import CustomUserSerializer
 
@@ -30,22 +31,21 @@ def register_view(request):
     Response: 
         Success: Code 200 JSON {'status': 'success', 'msg': 'register success'}
         Error: Code 400 JSON {'status': 'error', 'msg': 'error message'}
-               Code 405 JSON {'status': 'error', 'msg': 'invalid request method'}
+               Code 405: Method Not Allowed
     '''
-    if request.method == 'POST':
-        data = json.loads(request.body)
-        username = data['username']
-        password = data['password'] #
+    data = json.loads(request.body)
+    username = data['username']
+    password = data['password'] #
+    
+    if not username or not password:
+        return JsonResponse({'status': 'error', 'msg': 'empty username or password'}, status=400)
+    if CustomUser.objects.filter(username=username).exists():
+        return JsonResponse({'status': 'error', 'msg': 'username already exists'}, status=400)
         
-        if not username or not password:
-            return JsonResponse({'status': 'error', 'msg': 'empty username or password'}, status=400)
-        if CustomUser.objects.filter(username=username).exists():
-            return JsonResponse({'status': 'error', 'msg': 'username already exists'}, status=400)
-        
-        serializer = CustomUserSerializer(data=data)
-        if serializer.is_valid():
-            serializer.save()
-            return JsonResponse({'status': 'success', 'msg': 'register success'})
+    serializer = CustomUserSerializer(data=data)
+    if serializer.is_valid():
+        serializer.save()
+        return JsonResponse({'status': 'success', 'msg': 'register success'})
 
     
 @csrf_exempt
@@ -65,28 +65,28 @@ def login_view(request):
     Response:
         Success: Code 200 JSON {'status': 'success', 'msg': 'login success', 'token': 'token'}
         Error: Code 400 JSON {'status': 'error', 'msg': 'error message'}
-               Code 405 JSON {'status': 'error', 'msg': 'invalid request method'}
+               Code 405: Method Not Allowed
     '''
-    if request.method == 'POST':
-        data = json.loads(request.body)
-        username = data['username']
-        password = data['password']
+    data = json.loads(request.body)
+    username = data['username']
+    password = data['password']
         
-        if not username or not password:
-            return JsonResponse({'status': 'error', 'msg': 'empty username or password'}, status=400)
-        if not CustomUser.objects.filter(username=username).exists():
-            return JsonResponse({'status': 'error', 'msg': 'username does not exist'}, status=400)
+    if not username or not password:
+        return JsonResponse({'status': 'error', 'msg': 'empty username or password'}, status=400)
+    if not CustomUser.objects.filter(username=username).exists():
+        return JsonResponse({'status': 'error', 'msg': 'username does not exist'}, status=400)
         
-        user = authenticate(username=username, password=password)
-        if user is None:
-            return JsonResponse({'status': 'error', 'msg': 'invalid password'}, status=400)
-        else:
-            token, _ = Token.objects.get_or_create(user=user) 
-            # print(token.key)
-            return JsonResponse({'status': 'success', 'msg': 'login success', 'token': token.key})
+    user = authenticate(username=username, password=password)
+    if user is None:
+        return JsonResponse({'status': 'error', 'msg': 'invalid password'}, status=400)
+    else:
+        token, _ = Token.objects.get_or_create(user=user) 
+        # print(token.key)
+        return JsonResponse({'status': 'success', 'msg': 'login success', 'token': token.key})
     
 @csrf_exempt
 @api_view(['POST'])
+@permission_classes([IsAuthenticated])
 def logout_view(request):
     '''
     用户状态：已登录
@@ -101,17 +101,16 @@ def logout_view(request):
     Response:
         Success: Code 200 JSON {'status': 'success', 'msg': 'logout success'}
         Error: Code 400 JSON {'status': 'error', 'msg': 'error message'}
-               Code 405 JSON {'status': 'error', 'msg': 'invalid request method'}
+               Code 401: Unauthorized
+               Code 405: Method Not Allowed
     '''
-    if request.method == 'POST':
-        if request.user.is_authenticated:
-            Token.objects.filter(user=request.user).delete()
-            return JsonResponse({'status': 'success', 'msg': 'logout success'})
-        else:
-            return JsonResponse({'status': 'error', 'msg': 'user not logged in'}, status=400)
+    Token.objects.filter(user=request.user).delete()
+    return JsonResponse({'status': 'success', 'msg': 'logout success'})
+
     
 @csrf_exempt
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def CustomUserDetail(request):
     '''
     用户状态：已登录
@@ -131,12 +130,10 @@ def CustomUserDetail(request):
             "accepted_tasks": [(task)]
         }
         Error: Code 400 JSON {'status': 'error', 'msg': 'error message'}
-               Code 405 JSON {'status': 'error', 'msg': 'invalid request method'}
+               Code 401: Unauthorized
+               Code 405: Method Not Allowed
     '''
-    if request.user.is_authenticated:
-        username = request.user.username
-        user = CustomUser.objects.get(username=username)
-        serializer = CustomUserSerializer(user)
-        return JsonResponse(serializer.data)
-    else:
-        return JsonResponse({'status': 'error', 'msg': 'user not logged in'}, status=400)
+    username = request.user.username
+    user = CustomUser.objects.get(username=username)
+    serializer = CustomUserSerializer(user)
+    return JsonResponse(serializer.data)
