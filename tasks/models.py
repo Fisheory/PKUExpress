@@ -35,6 +35,8 @@ class Task(models.Model):
         self.out_of_date()
         
         if self.status == 'to_be_accepted' and self.worker is None:
+            
+            # Todo: 修改一下判断逻辑
             if worker.accepted_tasks.count() > 0:
                 raise Exception('Worker has accepted task')
             elif worker == self.publisher:
