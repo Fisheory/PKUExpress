@@ -39,8 +39,8 @@ class Task(models.Model):
         if self.status == 'to_be_accepted' and self.worker is None:
             
             # Todo: 修改一下判断逻辑
-            if worker.accepted_tasks.count() > 0:
-                raise Exception('Worker has accepted task')
+            if worker.accepted_tasks.count() > 3: # 一个人最多接受3个任务
+                raise Exception('Worker has accepted too many tasks')
             elif worker == self.publisher:
                 raise Exception('Publisher cannot accept task')
           
