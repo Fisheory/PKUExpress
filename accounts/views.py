@@ -22,6 +22,7 @@ def register_view(request):
     
     用户状态：未登录
     简介: 注册视图, 接受信息并注册新用户
+    注意: 不带Authorization的Header, 否则可能会因为token验证失败而返回401
     
     URL: /accounts/register/
     Method: POST
@@ -58,7 +59,8 @@ def login_view(request):
     '''
     用户状态：未登录
     简介: 登录视图, 接受信息并登录用户, 返回token
-    注意: 保存返回的token, 用于后续验证用户身份
+    注意: 登录时不带Authorization的Header, 否则可能会因为token验证失败而返回401
+          保存返回的token, 用于后续验证用户身份
     
     URL: /accounts/login/
     Method: POST
