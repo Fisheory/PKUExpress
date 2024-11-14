@@ -40,6 +40,7 @@ class TaskList(APIView):
         serializer = TaskSerializer(paginated_tasks, many=True)
         return Response(serializer.data)
     
+    @permission_classes([IsAuthenticated])
     def post(self, request):
         user = request.user
         data = json.loads(request.body)
@@ -82,6 +83,7 @@ class TaskDetail(APIView):
         serializer = TaskSerializer(task)
         return Response(serializer.data)
     
+    @permission_classes([IsAuthenticated])
     def patch(self,request,pk):
         status=request.data.get('status')
         if status is None:
