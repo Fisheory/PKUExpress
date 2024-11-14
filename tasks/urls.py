@@ -2,10 +2,11 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('', views.task_list),
-    path('task-list/', views.task_list), # default st=0, en=10
-    path('task-detail/', views.task_detail),
-    path('task-create/', views.task_create),
-    path('task-accept/', views.task_accept),
-    path('task-finish/', views.task_finish),
+    # GET tasks: 列出所有任务
+    # POST tasks: 创建一个新任务
+    path('', views.TaskList), 
+
+    # GET tasks/<int:pk>: 获取一个任务的详细信息
+    # PUT tasks/<int:pk>: 更新一个任务
+    path('<int:pk>', views.TaskDetail),
 ]
