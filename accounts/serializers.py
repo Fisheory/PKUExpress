@@ -8,11 +8,8 @@ class CustomUserSerializer(serializers.ModelSerializer):
     
     published_tasks = serializers.SerializerMethodField() # 用于返回用户发布的任务
     accepted_tasks = serializers.SerializerMethodField()  # 用于返回用户接受的任务
-    accepted_accepted_tasks = serializers.SerializerMethodField() # 用于返回用户接受的任务中已经被接取的任务
+    accepted_accepted_tasks = serializers.SerializerMethodField() # 用于返回用户接受的任务中待完成的任务
     accepted_finished_tasks = serializers.SerializerMethodField() # 用于返回用户接受的任务中已经被完成的任务
-    
-    # Todo: finished_tasks?
-    # 如果添加, 应该可以仿造accepted_tasks, 记得在fields添加
     
     class Meta:   
         model = CustomUser
