@@ -6,6 +6,8 @@ from django.utils import timezone
 class Task(models.Model):
     name = models.CharField(max_length=50)
     description = models.TextField()
+    start_location = models.CharField(max_length=50)
+    end_location = models.CharField(max_length=50)
     reward = models.IntegerField()
     start_location = models.CharField(max_length=100, blank=True, null=True)
     end_location = models.CharField(max_length=100)
@@ -37,8 +39,8 @@ class Task(models.Model):
         if self.status == 'to_be_accepted' and self.worker is None:
             
             # Todo: 修改一下判断逻辑
-            if worker.accepted_tasks.count() > 0:
-                raise Exception('Worker has accepted task')
+            if worker.accepted_tasks.count() > 3: # 一个人最多接受3个任务
+                raise Exception('Worker has accepted too many tasks')
             elif worker == self.publisher:
                 raise Exception('Publisher cannot accept task')
           
