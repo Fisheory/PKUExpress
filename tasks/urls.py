@@ -3,7 +3,11 @@ from . import views
 
 urlpatterns = [
     # GET tasks: 列出所有任务
+    #    参数: page = 页数 
+    #         size = 每页个数
+    #         search = 搜索关键字 (可选)    
     # POST tasks: 创建一个新任务
+    
     path('', views.TaskList.as_view()), 
 
     # GET tasks/<int:pk>: 获取一个任务的详细信息
