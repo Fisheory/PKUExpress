@@ -13,11 +13,19 @@ import json
 
 # Create your views here.
 
+from rest_framework.permissions import IsAuthenticated, AllowAny
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status as http_status
+from .models import Task
+from .serializers import TaskSerializer
+from .pagination import TaskPaginator  # 假设 TaskPaginator 是自定义的分页类
+
 class TaskList(APIView):
     '''
     URL: /tasks/
     GET方法: 列出所有任务
-        参数:page = 页数 
+        参数: page = 页数 
              size = 每页个数
         
     POST方法: 创建一个新任务
@@ -29,25 +37,35 @@ class TaskList(APIView):
             "deadline": "deadline"                  (时间格式为"YYYY-MM-DDTHH:MM:SS",
                                                     例如"2024-11-12T23:05:41.480925"
                                                     填写北京时间即可)
-                                                    
             "start_location": "start_location"      (optional)
             }
     '''
+
+    # 根据不同请求方法设置不同的权限
+    def get_permissions(self):
+        if self.request.method == 'GET':
+            return [AllowAny()]
+        elif self.request.method == 'POST':
+            return [IsAuthenticated()]
+        return super().get_permissions()
+
     def get(self, request):
-        paginator = TaskPaginator()
+        # 获取所有任务，并使用分页器处理
         tasks = Task.objects.all()
+        paginator = TaskPaginator()
         paginated_tasks = paginator.paginate_queryset(tasks, request)
         serializer = TaskSerializer(paginated_tasks, many=True)
-        return Response(serializer.data)
-    
-    @permission_classes([IsAuthenticated])
+        return paginator.get_paginated_response(serializer.data)
+
     def post(self, request):
+        # 获取当前用户并传递给序列化器
         user = request.user
-        data = json.loads(request.body)
+        data = request.data.copy()
         data['publisher'] = user.id
         
-        # context={'request': request} 传入request, 以便在serializer中获取user
+        # 传入 request 上下文以便在序列化器中访问 user
         serializer = TaskSerializer(data=data, context={'request': request})
+        
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=http_status.HTTP_201_CREATED)
@@ -62,59 +80,56 @@ class TaskDetail(APIView):
     PATCH方法：更新一个任务的状态
             BODY:
             JSON {
-                status:{accepted,finished}
+                status: {accepted, finished}
             }
     '''
 
-    def get(self,request,pk):
-        if pk is not None:
-            try:
-                pk = int(pk)
-            except ValueError as e:
-                return Response({'status': 'error', 'msg': str(e)}, status=http_status.HTTP_400_BAD_REQUEST)
-        else:
-            return Response({'status': 'error', 'msg': 'need pk'}, status=http_status.HTTP_400_BAD_REQUEST)
-        
+    def get_permissions(self):
+        # GET 请求允许所有用户访问，PATCH 请求需要认证
+        if self.request.method == 'GET':
+            return [AllowAny()]
+        elif self.request.method == 'PATCH':
+            return [IsAuthenticated()]
+        return super().get_permissions()
+
+    def get(self, request, pk):
         try:
             task = Task.objects.get(pk=pk)
-        except Task.DoesNotExist as e:
-            return Response({'status': 'error', 'msg': str(e)}, status=http_status.HTTP_400_BAD_REQUEST)
+        except Task.DoesNotExist:
+            return Response({'status': 'error', 'msg': 'Task not found'}, status=http_status.HTTP_404_NOT_FOUND)
         
         serializer = TaskSerializer(task)
         return Response(serializer.data)
-    
-    @permission_classes([IsAuthenticated])
-    def patch(self,request,pk):
-        status=request.data.get('status')
-        if status is None:
-            return Response({'status':'error','msg':'need status'},status=http_status.HTTP_400_BAD_REQUEST)
-        if status not in ('accepted','finished'):
-            return Response({'status':'error','msg':'status not correct'},status=http_status.HTTP_400_BAD_REQUEST)
-        if status == 'accepted':
-            user = request.user
-            try:
-                task = Task.objects.get(pk=pk)
-            except Task.DoesNotExist:
-                return Response({'status': 'error', 'msg': 'task is not exist'}, status=400)
-            
-            try:
-                # 调用task.accept()方法, 合法性检查在方法内部
+
+    def patch(self, request, pk):
+        status = request.data.get('status')
+        if not status:
+            return Response({'status': 'error', 'msg': 'Status is required'}, status=http_status.HTTP_400_BAD_REQUEST)
+
+        if status not in ('accepted', 'finished'):
+            return Response({'status': 'error', 'msg': 'Invalid status value'}, status=http_status.HTTP_400_BAD_REQUEST)
+
+        user = request.user
+        try:
+            task = Task.objects.get(pk=pk)
+        except Task.DoesNotExist:
+            return Response({'status': 'error', 'msg': 'Task not found'}, status=http_status.HTTP_404_NOT_FOUND)
+
+        # 根据状态进行不同操作
+        try:
+            if status == 'accepted':
+                # 调用任务的 accept 方法，内部执行合法性检查
                 task.accept(user)
-                return Response({'status': 'success', 'msg': 'accept success'})
-            except Exception as e:
-                return Response({'status': 'error', 'msg': str(e)}, status=400)
-        elif status=='finished':
-            user = request.user
-            try:
-                task = user.accepted_tasks.get(pk=pk)
-            except Task.DoesNotExist:
-                return Response({'status': 'error', 'msg': 'have not accepted this task'}, status=400)
-            
-            try:
+                return Response({'status': 'success', 'msg': 'Task accepted successfully'})
+            elif status == 'finished':
+                # 检查用户是否已接受任务并完成
+                if task not in user.accepted_tasks.all():
+                    return Response({'status': 'error', 'msg': 'Task not accepted by this user'}, status=http_status.HTTP_403_FORBIDDEN)
+                
                 task.finish()
-                return Response({'status': 'success', 'msg': 'finish success'})
-            except Exception as e:
-                return Response({'status': 'error', 'msg': str(e)}, status=400)
+                return Response({'status': 'success', 'msg': 'Task finished successfully'})
+        except Exception as e:
+            return Response({'status': 'error', 'msg': str(e)}, status=http_status.HTTP_400_BAD_REQUEST)
 
 @csrf_exempt
 @api_view(['GET'])
