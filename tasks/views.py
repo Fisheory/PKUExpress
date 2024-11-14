@@ -1,14 +1,119 @@
 from .models import Task
 from django.views.decorators.csrf import csrf_exempt
+from rest_framework import status as http_status
 from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
 from rest_framework.decorators import api_view, permission_classes
+from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from .serializers import TaskSerializer
+from .paginators import TaskPaginator
 
 import json
 
 # Create your views here.
+
+class TaskList(APIView):
+    '''
+    URL: /tasks/
+    GET方法: 列出所有任务
+        参数:page = 页数 
+             size = 每页个数
+        
+    POST方法: 创建一个新任务
+            Body: JSON {
+            "name": "name",
+            "description": "description",
+            "reward": "reward",                     (值为正整数)
+            "end_location": "end_location",
+            "deadline": "deadline"                  (时间格式为"YYYY-MM-DDTHH:MM:SS",
+                                                    例如"2024-11-12T23:05:41.480925"
+                                                    填写北京时间即可)
+                                                    
+            "start_location": "start_location"      (optional)
+            }
+    '''
+    def get(self, request):
+        paginator = TaskPaginator()
+        tasks = Task.objects.all()
+        paginated_tasks = paginator.paginate_queryset(tasks, request)
+        serializer = TaskSerializer(paginated_tasks, many=True)
+        return Response(serializer.data)
+    
+    def post(self, request):
+        user = request.user
+        data = json.loads(request.body)
+        data['publisher'] = user.id
+        
+        # context={'request': request} 传入request, 以便在serializer中获取user
+        serializer = TaskSerializer(data=data, context={'request': request})
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=http_status.HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=http_status.HTTP_400_BAD_REQUEST)
+
+class TaskDetail(APIView):
+    '''
+    URL: tasks/<int:pk>
+    GET方法：获取一个任务的详细信息
+
+    PATCH方法：更新一个任务的状态
+            BODY:
+            JSON {
+                status:{accepted,finished}
+            }
+    '''
+
+    def get(self,request,pk):
+        if pk is not None:
+            try:
+                pk = int(pk)
+            except ValueError as e:
+                return Response({'status': 'error', 'msg': str(e)}, status=http_status.HTTP_400_BAD_REQUEST)
+        else:
+            return Response({'status': 'error', 'msg': 'need pk'}, status=http_status.HTTP_400_BAD_REQUEST)
+        
+        try:
+            task = Task.objects.get(pk=pk)
+        except Task.DoesNotExist as e:
+            return Response({'status': 'error', 'msg': str(e)}, status=http_status.HTTP_400_BAD_REQUEST)
+        
+        serializer = TaskSerializer(task)
+        return Response(serializer.data)
+    
+    def patch(self,request,pk):
+        status=request.data.get('status')
+        if status is None:
+            return Response({'status':'error','msg':'need status'},status=http_status.HTTP_400_BAD_REQUEST)
+        if status not in ('accepted','finished'):
+            return Response({'status':'error','msg':'status not correct'},status=http_status.HTTP_400_BAD_REQUEST)
+        if status == 'accepted':
+            user = request.user
+            try:
+                task = Task.objects.get(pk=pk)
+            except Task.DoesNotExist:
+                return Response({'status': 'error', 'msg': 'task is not exist'}, status=400)
+            
+            try:
+                # 调用task.accept()方法, 合法性检查在方法内部
+                task.accept(user)
+                return Response({'status': 'success', 'msg': 'accept success'})
+            except Exception as e:
+                return Response({'status': 'error', 'msg': str(e)}, status=400)
+        elif status=='finished':
+            user = request.user
+            try:
+                task = user.accepted_tasks.get(pk=pk)
+            except Task.DoesNotExist:
+                return Response({'status': 'error', 'msg': 'have not accepted this task'}, status=400)
+            
+            try:
+                task.finish()
+                return Response({'status': 'success', 'msg': 'finish success'})
+            except Exception as e:
+                return Response({'status': 'error', 'msg': str(e)}, status=400)
+
 @csrf_exempt
 @api_view(['GET'])
 def task_list(request):
