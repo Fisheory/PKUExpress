@@ -18,6 +18,7 @@ class TaskList(APIView):
     GET方法: 列出所有任务
         参数: page = 页数 
              size = 每页个数
+             search = 搜索关键字 (可选)
         
     POST方法: 创建一个新任务
             Body: JSON {
@@ -41,12 +42,17 @@ class TaskList(APIView):
         return super().get_permissions()
 
     def get(self, request):
-        # 获取所有任务，并使用分页器处理
-        tasks = Task.objects.all()
         paginator = TaskPaginator()
+        tasks = Task.objects.all()
+
+        # 获取搜索参数
+        search_query = request.GET.get('search')
+        if search_query:
+            tasks = tasks.filter(name__icontains=search_query)
+
         paginated_tasks = paginator.paginate_queryset(tasks, request)
         serializer = TaskSerializer(paginated_tasks, many=True)
-        return paginator.get_paginated_response(serializer.data)
+        return Response(serializer.data)
 
     def post(self, request):
         # 获取当前用户并传递给序列化器
