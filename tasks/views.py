@@ -131,7 +131,6 @@ def task_accept(request, pk):
     '''
     用户状态: 已登录
     简介: 接受任务视图, 接受特定任务
-    注意: 一个用户只能接受一个任务 (暂定)
     
     params: pk=task id
     URL: /tasks/<int:pk>/task-accept/
