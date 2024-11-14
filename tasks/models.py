@@ -12,11 +12,14 @@ class Task(models.Model):
     start_location = models.CharField(max_length=100, blank=True, null=True)
     end_location = models.CharField(max_length=100)
     
-    publisher = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='published_tasks')
-    worker = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='accepted_tasks', null=True, blank=True)
+    publisher = models.ForeignKey(CustomUser, on_delete=models.CASCADE, 
+                                  related_name='published_tasks')
+    worker = models.ForeignKey(CustomUser, on_delete=models.CASCADE, 
+                               related_name='accepted_tasks', null=True, blank=True)
     
     create_time = models.DateTimeField(auto_now_add=True)
     update_time = models.DateTimeField(auto_now=True)
+    finish_time = models.DateTimeField(null=True, blank=True)
     deadline = models.DateTimeField()
     
     status_choices = [
@@ -39,7 +42,7 @@ class Task(models.Model):
         if self.status == 'to_be_accepted' and self.worker is None:
             
             # Todo: 修改一下判断逻辑
-            if worker.accepted_tasks.count() > 3: # 一个人最多接受3个任务
+            if worker.accepted_tasks.filter(status='accepted').count() >= 3: # 一个人最多接受3个任务
                 raise Exception('Worker has accepted too many tasks')
             elif worker == self.publisher:
                 raise Exception('Publisher cannot accept task')
@@ -58,6 +61,8 @@ class Task(models.Model):
             # money?
             self.worker.gold += self.reward
             self.publisher.gold -= self.reward
+            
+            self.finish_time = timezone.now()
 
             self.save()
             self.worker.save()
