@@ -103,14 +103,13 @@ class TaskDetail(APIView):
         return Response(serializer.data)
 
     def patch(self, request, pk):
-        # 以下我改为action, 感觉更清晰
-        # 我认为这没有违背RESTful设计原则
-        action = request.data.get('action')
-        if not action:
-            return Response({'status': 'error', 'msg': 'action is required'}, status=http_status.HTTP_400_BAD_REQUEST)
+        # 想了想还是改回纯粹的PATCH吧
+        status = request.data.get('status')
+        if not status:
+            return Response({'status': 'error', 'msg': 'Status is required'}, status=http_status.HTTP_400_BAD_REQUEST)
 
-        if action not in ('accept', 'finish'):
-            return Response({'status': 'error', 'msg': 'Invalid action value'}, status=http_status.HTTP_400_BAD_REQUEST)
+        if status not in ('accepted', 'finished'):
+            return Response({'status': 'error', 'msg': 'Invalid status value'}, status=http_status.HTTP_400_BAD_REQUEST)
 
         user = request.user
         try:
@@ -120,11 +119,11 @@ class TaskDetail(APIView):
 
         # 根据状态进行不同操作
         try:
-            if action == 'accept':
+            if status == 'accepted':
                 # 调用任务的 accept 方法，内部执行合法性检查
                 task.accept(user)
                 return Response({'status': 'success', 'msg': 'Task accepted successfully'})
-            elif action == 'finish':
+            elif status == 'finished':
                 # 检查用户是否已接受任务并完成
                 if task not in user.accepted_tasks.all():
                     return Response({'status': 'error', 'msg': 'Task not accepted by this user'}, status=http_status.HTTP_403_FORBIDDEN)
