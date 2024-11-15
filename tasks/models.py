@@ -66,6 +66,7 @@ class Task(models.Model):
 
             self.save()
             self.worker.save()
+            self.publisher.save()
         else:
             raise Exception('Task status error')
         
@@ -73,3 +74,9 @@ class Task(models.Model):
         if self.status == 'to_be_accepted' and self.deadline < timezone.now():
             self.status = 'out_of_date'
             self.save()
+            
+    def cancel(self):
+        if self.status == 'to_be_accepted':
+            self.delete()
+        else:
+            raise Exception('Task status error')

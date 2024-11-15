@@ -11,6 +11,7 @@ urlpatterns = [
     path('', views.TaskList.as_view()), 
 
     # GET tasks/<int:pk>: 获取一个任务的详细信息
-    # PUT tasks/<int:pk>: 更新一个任务
+    # PATCH tasks/<int:pk>: 更新一个任务
+    # DELETE tasks/<int:pk>: 删除一个任务
     path('<int:pk>', views.TaskDetail.as_view()),
 ]
