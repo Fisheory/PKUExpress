@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from .models import Task
 from accounts.models import CustomUser
+from django.utils import timezone
 
 class TaskSerializer(serializers.ModelSerializer):
     # source指定了展示的字段, 若不设置, 返回JSON的时候关联的用户显示的是id不方便查看
@@ -26,10 +27,24 @@ class TaskSerializer(serializers.ModelSerializer):
         ]
         read_only_fields = ['id', 'create_time', 'update_time', 'finish_time', 'status', 'publisher']
     
-    # 由于publisher设置为只读的，这里在创建任务时自动将其设为当前用户, 不允许手动修改
-    def create(self, validated_data):
+    def validate(self, attrs):
+        # 在这里自动设置只读的publisher为当前用户
         user = self.context['request'].user
-        validated_data['publisher'] = user
-        return super().create(validated_data)
-    
+        attrs['publisher'] = user
+        
+        # 检查reward, 正数且小于用户gold
+        reward = attrs.get('reward')
+        if reward <= 0:
+            raise serializers.ValidationError('Reward must be a positive integer')
+        elif reward > user.gold:
+            raise serializers.ValidationError('Insufficient gold')
+        
+        # 检查deadline, 必须大于当前时间
+        deadline = attrs.get('deadline')
+        if deadline <= timezone.now():
+            raise serializers.ValidationError('Deadline must be later than current time')
+        
+        return attrs
+        
+    # create方法调用默认的即可
         
