@@ -14,9 +14,9 @@ class AcceptedTaskInline(admin.TabularInline):
 
 
 class TaskAdmin(admin.ModelAdmin):
-    list_display = ('name', 'description', 'reward', 'start_location', 'end_location', 
-                    'publisher', 'worker', 'create_time', 'update_time', 'deadline', 'status')
-    list_filter = ('status', 'create_time', 'update_time', 'deadline')
+    list_display = ('name', 'description', 'reward', 'start_location', 'end_location', 'publisher',
+                    'worker', 'create_time', 'update_time', 'finish_time', 'deadline', 'status')
+    list_filter = ('status', 'create_time', 'update_time', 'finish_time', 'deadline')
     search_fields = ('name', 'description', 'reward', 'publisher', 'worker', 'status')
     
 admin.site.register(Task, TaskAdmin)
