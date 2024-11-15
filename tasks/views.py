@@ -43,7 +43,7 @@ class TaskList(APIView):
 
     def get(self, request):
         paginator = TaskPaginator()
-        tasks = Task.objects.all()
+        tasks = Task.objects.all().order_by('-create_time')
 
         # 获取搜索参数
         search_query = request.GET.get('search')
@@ -72,20 +72,24 @@ class TaskList(APIView):
 class TaskDetail(APIView):
     '''
     URL: tasks/<int:pk>
-    GET方法：获取一个任务的详细信息
+    GET方法: 获取一个任务的详细信息
 
-    PATCH方法：更新一个任务的状态
+    PATCH方法: 更新一个任务的状态
             BODY:
             JSON {
                 status: {accepted, finished}
             }
+    
+    DELETE方法: 删除一个任务, 仅发布者可删除
     '''
 
     def get_permissions(self):
-        # GET 请求允许所有用户访问，PATCH 请求需要认证
+        # GET 请求允许所有用户访问，PATCH, DELETE请求需要认证
         if self.request.method == 'GET':
             return [AllowAny()]
         elif self.request.method == 'PATCH':
+            return [IsAuthenticated()]
+        elif self.request.method == 'DELETE':
             return [IsAuthenticated()]
         return super().get_permissions()
 
@@ -99,12 +103,14 @@ class TaskDetail(APIView):
         return Response(serializer.data)
 
     def patch(self, request, pk):
-        status = request.data.get('status')
-        if not status:
-            return Response({'status': 'error', 'msg': 'Status is required'}, status=http_status.HTTP_400_BAD_REQUEST)
+        # 以下我改为action, 感觉更清晰
+        # 我认为这没有违背RESTful设计原则
+        action = request.data.get('action')
+        if not action:
+            return Response({'status': 'error', 'msg': 'action is required'}, status=http_status.HTTP_400_BAD_REQUEST)
 
-        if status not in ('accepted', 'finished'):
-            return Response({'status': 'error', 'msg': 'Invalid status value'}, status=http_status.HTTP_400_BAD_REQUEST)
+        if action not in ('accept', 'finish'):
+            return Response({'status': 'error', 'msg': 'Invalid action value'}, status=http_status.HTTP_400_BAD_REQUEST)
 
         user = request.user
         try:
@@ -114,11 +120,11 @@ class TaskDetail(APIView):
 
         # 根据状态进行不同操作
         try:
-            if status == 'accepted':
+            if action == 'accept':
                 # 调用任务的 accept 方法，内部执行合法性检查
                 task.accept(user)
                 return Response({'status': 'success', 'msg': 'Task accepted successfully'})
-            elif status == 'finished':
+            elif action == 'finish':
                 # 检查用户是否已接受任务并完成
                 if task not in user.accepted_tasks.all():
                     return Response({'status': 'error', 'msg': 'Task not accepted by this user'}, status=http_status.HTTP_403_FORBIDDEN)
@@ -127,6 +133,25 @@ class TaskDetail(APIView):
                 return Response({'status': 'success', 'msg': 'Task finished successfully'})
         except Exception as e:
             return Response({'status': 'error', 'msg': str(e)}, status=http_status.HTTP_400_BAD_REQUEST)
+        
+    def delete(self, request, pk):
+        user = request.user
+        try:
+            task = Task.objects.get(pk=pk)
+        except Task.DoesNotExist:
+            return Response({'status': 'error', 'msg': 'Task not found'}, status=http_status.HTTP_404_NOT_FOUND)
+        
+        if task.publisher != user:
+            return Response({'status': 'error', 'msg': 'Permission denied'}, status=http_status.HTTP_403_FORBIDDEN)
+        
+        try:
+            # 现在仅状态为 to_be_accepted 的任务可以删除
+            task.cancel()
+            return Response({'status': 'success', 'msg': 'Task deleted successfully'})
+        except Exception as e:
+            return Response({'status': 'error', 'msg': str(e)}, status=http_status.HTTP_400_BAD_REQUEST)
+
+
 
 @csrf_exempt
 @api_view(['GET'])
