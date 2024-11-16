@@ -1,0 +1,8 @@
+<!--index.wxml-->
+<navi-bar title="PKUExpress"></navi-bar>
+
+<view class="container">
+  <button bindtap="login" style="left: 0rpx; top:500rpx">登录</button>
+</view>
+
+<bott-bar></bott-bar>

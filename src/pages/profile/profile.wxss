@@ -1,0 +1,7 @@
+/* pages/profile/profile.wxss */
+.container {
+  height: calc(100vh - 140rpx);
+  display: flex;
+  flex-direction: column;
+  background-color: #f5f5f5;
+}

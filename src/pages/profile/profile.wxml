@@ -1,0 +1,5 @@
+<!--pages/profile/profile.wxml-->
+<navi-bar title="PKUExpress"></navi-bar>
+<view class="container">
+</view>
+<bott-bar></bott-bar>
