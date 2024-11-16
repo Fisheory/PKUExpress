@@ -8,7 +8,7 @@ Page({
     message_button: '@pku.edu.cn',
     full_username: '',
     button_text: '发送',
-    button_color: '#f87e0b',
+    button_color: 'rgba(255, 142, 79, 1)',
     isButtonDisabled: false,
     countdown: 60  
   },
