@@ -1,0 +1,8 @@
+<!--components/navi-bar.wxml-->
+<view class="nav-bar" style="padding-top: {{paddingTop}}px; height: {{naviHeight}}px; line-height: {{naviHeight}}px;">
+    <view class="nav-back" wx:if="{{showBack}}" bindtap="onBack">
+        <!-- 返回箭头图标（可自定义图标） -->
+        <text class="back-icon">←</text>
+    </view>
+    <view class="nav-title">{{title}}</view>
+</view>

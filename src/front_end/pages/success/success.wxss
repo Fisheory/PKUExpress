@@ -1,0 +1,15 @@
+/* pages/success/success.wxss */
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f5f5f5;
+  }
+  
+  .success-message {
+    font-size: 24px;
+    color: #000;
+    font-weight: bold;
+  }
+  

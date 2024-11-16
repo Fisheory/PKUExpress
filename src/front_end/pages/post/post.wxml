@@ -1,0 +1,44 @@
+<!--pages/post/post.wxml-->
+<navi-bar title="PKUExpress"></navi-bar>
+<view class="container">
+  <view class="form">
+    <view class="form-item">
+      <text>任务名称:</text>
+      <input placeholder="Enter task name" bindinput="onTaskNameInput"/>
+    </view>
+
+    <view class="form-item">
+      <text>校区:</text>
+      <input placeholder="Enter campus" bindinput="onCampusInput"/>
+    </view>
+
+    <view class="form-item">
+      <text>收货地址:</text>
+      <input placeholder="Enter receiving address" bindinput="onReceivingAddressInput"/>
+    </view>
+
+    <view class="form-item">
+      <text>任务地址:</text>
+      <input placeholder="Enter task address" bindinput="onTaskAddressInput"/>
+    </view>
+
+    <view class="form-item">
+      <text>详情:</text>
+      <input placeholder="Enter details" bindinput="onDetailsInput" style="height: 80px; width: 100%;"/>
+    </view>
+  </view>
+
+  <view class="message" style="color: {{message_color}}">{{message}}</view>
+
+  <view class="upload-image" style="color: #777;">
+    <button bindtap="uploadImage">
+      <image src="/assets/upload_icon.png" style="width: 50px; height: 50px;"/>
+      <text>上传图片</text>
+    </button>
+  </view>
+
+  <view class="button-container">
+  <button class="submit-button" bindtap="submitTask">提交</button>
+  <button class="cancel-button" bindtap="cancelTask">取消</button>
+</view>
+</view>

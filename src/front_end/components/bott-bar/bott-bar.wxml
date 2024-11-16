@@ -1,0 +1,16 @@
+<!-- components/bott-bar/bott-bar.wxml -->
+<view class="bottom-bar">
+  <view class="tab-item" bindtap="navigateToPage" data-page="home">
+    <image class="tab-icon" src="/assets/bx_bx-home-alt-2.png" mode="aspectFit" />
+    <text>主页</text>
+  </view>
+  
+  <view class="center-btn" bindtap="navigateToAdd">
+    <image src="/assets/Frame 46-2.png" mode="aspectFit"></image>
+  </view>
+
+  <view class="tab-item" bindtap="navigateToPage" data-page="profile">
+    <image class="tab-icon" src="/assets/antOutline-user 1.svg" mode="aspectFit" />
+    <text>我的</text>
+  </view>
+</view>
