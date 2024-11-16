@@ -1,0 +1,48 @@
+/* components/bott-bar/bott-bar.wxss */
+.bottom-bar {
+  position: relative;
+  display: flex;
+  justify-content: space-between; /* 修改为 space-between */
+  align-items: center;
+  background-color: #ffffff;
+  height: 140rpx; /* 确保底部栏高度一致 */
+}
+
+.center-btn {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 160rpx;
+  height: 160rpx;
+  background-color: transparent;
+  border-radius: 20%;
+  margin-top: -40rpx;
+}
+
+.tab-item image {
+  width: 48rpx;
+  height: 48rpx;
+}
+
+.center-btn image {
+  width: 160rpx;
+  height: 160rpx;
+}
+
+.tab-item {
+  flex: 1; /* 占据等宽空间 */
+  display: flex; /* 启用 Flex 布局 */
+  flex-direction: column; /* 子元素从上到下排列 */
+  justify-content: center; /* 垂直方向居中 */
+  align-items: center; /* 水平方向居中 */
+  text-align: center; /* 文字水平对齐 */
+  font-size: 12px;
+  /* border-top: 1px solid #e0e0e0; */
+}
+
+.tab-icon {
+  width: 48rpx;  /* 图标宽度 */
+  height: 48rpx; /* 图标高度 */
+  margin-bottom: 6rpx; /* 图标与文字的间距 */
+}
