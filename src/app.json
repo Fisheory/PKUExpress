@@ -1,8 +1,10 @@
 {
   "pages": [
-    "pages/home/home",
     "pages/index/index",
-    "pages/profile/profile"
+    "pages/home/home",
+    "pages/profile/profile",
+    "pages/findpassword/findpassword",
+    "pages/register/register"
   ],
   "window": {
     "navigationBarTextStyle": "black",
