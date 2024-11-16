@@ -1,0 +1,18 @@
+******************************
+未完成/需修改的内容说明：
+
+index为登录页面，以后需要改名
+index.js中的const defaultAvatarUrl为微信自带的默认头像，可改为自定义的默认头像链接
+index.js中的'/pages/main'为主页链接，可根据需求改名
+后端人员需要实现能在https://your-server-domain.com/login接收登录请求 并返回是否登录成功、返回用户数据
+
+register为注册页面
+后端人员需要实现能在https://your-server-domain.com/register接收注册请求 并返回是否注册成功
+
+findpassword为找回密码页面
+后端人员需要实现能在https://your-server-domain.com/findpassword接收找回密码请求 并返回是否发送了找回邮件，同时需要给相应的邮箱发送找回密码邮件
+
+******************************
+其他功能说明：
+显示邮箱后缀的长条 可以通过点击来切换后缀
+找回密码页面中，只有成功发送邮件后，“发送”按钮才会进入60秒冷却
