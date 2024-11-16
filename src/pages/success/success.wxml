@@ -1,0 +1,5 @@
+<!--pages/success/success.wxml-->
+<navi-bar title="PKUExpress"></navi-bar>
+<view class="container">
+  <text class="success-message">提交成功</text>
+</view>
