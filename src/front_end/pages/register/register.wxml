@@ -1,0 +1,32 @@
+<navi-bar title="新用户注册"></navi-bar>
+<view class="container">
+  <!-- 空行用于显示消息 -->
+  <view class="message" style="color: {{message_color}}">{{message}}</view>
+
+  <!-- 用户名输入区域 -->
+  <view class="input_container">
+    <text class="input_label">用户名：</text>
+    <input class="input" placeholder="邮箱" placeholder-class="placeholder" bindinput="onUsernameInput" />
+  </view>
+
+  <!-- 邮箱切换按钮 -->
+  <button button style="width:80vw" class="r40px_switch_button" bindtap="onSwitch">{{message_button}}</button>
+
+  <!-- 密码输入区域 -->
+  <view class="input_container">
+    <text class="input_label">密码：</text>
+    <input class="input" placeholder="   **********" password="true" placeholder-class="placeholder" bindinput="onPasswordInput" />
+  </view>
+
+  <!-- 确认密码输入区域 -->
+  <view class="input_container">
+    <text class="input_label">确认密码：</text>
+    <input class="input" placeholder="**********    " password="true" placeholder-class="placeholder" bindinput="onPasswordConfirmInput" />
+  </view>
+  <text>\n</text>
+
+  <!-- 登录和返回按钮 -->
+  <button class="r40px_button" bindtap="onRegister">注册</button>
+  <button class="r40px_button" bindtap="onReturn">返回登录</button>
+
+</view>

@@ -1,0 +1,85 @@
+/* 整体容器样式 */
+.container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* 居中对齐所有子元素 */
+  padding-top: 150px;
+  justify-content: flex-start; /* 将条目从顶部开始排列，避免多余的空白 */
+}
+
+/* 标题样式 */
+.font_text_600 {
+  font-weight: 600;
+  font-size: 20px;
+  text-align: center;
+  margin-bottom: 10px; /* 缩小标题下方的空隙，使布局紧凑 */
+}
+
+/* 输入框容器 */
+.input_container {
+  display: flex;
+  align-items: center;
+  width: 80%;
+  border-bottom: 1px solid #777;
+  margin-bottom: 10px; /* 调整每个输入框的间距 */
+}
+
+/* 输入框标签样式 */
+.input_label {
+  color: #777;
+  margin-right: 10px; /* 为输入框标签增加右间距 */
+}
+
+/* 输入框样式 */
+.input {
+  flex: 1;
+  height: 40px;
+  padding: 0 10px;
+  border: none;
+  outline: none;
+  background-color: transparent;
+}
+
+/* 占位符样式 */
+.placeholder {
+  color: #ccc;
+  text-align: center;
+}
+
+/* 按钮样式 */
+.r40px_button {
+  width: 80%;
+  height: 40px;
+  margin: 10px 0;
+  background-color: rgba(255, 142, 79, 1);
+  color: #000;
+  border: none;
+  border-radius: 20px;
+  text-align: center;
+  line-height: 25px;
+}
+
+/* 切换按钮样式 */
+.r40px_switch_button {
+  width: 100%;
+  max-width: 2000px;
+  height: 40px;
+  margin: 10px 0;
+  background-color: #eee;
+  color: #777;
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  white-space: nowrap;
+}
+
+/* 消息提示样式 */
+.message {
+  height: 20px;
+  margin: 5px 0; /* 缩小消息区域的间距 */
+  font-size: 14px;
+  color: #777;
+}

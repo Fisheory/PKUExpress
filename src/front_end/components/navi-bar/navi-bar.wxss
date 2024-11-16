@@ -1,0 +1,26 @@
+/* components/navi-bar.wxss */
+.nav-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  width: 100%;
+  background-color: rgba(255, 142, 79, 1); /* 明确设置为不透明的橙色 */
+  overflow: visible;
+  color: black;
+  font-size: 18px;
+}
+
+.nav-back {
+  position: absolute;
+  left: 18px;
+  display: flex;
+  align-items: center;
+  color: black;
+  font-size: 18px;
+}
+
+.nav-title {
+  font-weight: bold;
+  text-align: center;
+}
