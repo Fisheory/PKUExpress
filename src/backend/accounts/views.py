@@ -1,7 +1,7 @@
 from django.http import JsonResponse
 from .models import CustomUser
 from django.views.decorators.csrf import csrf_exempt
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate
 
 from rest_framework.views import APIView
 from rest_framework.authtoken.models import Token
@@ -23,14 +23,15 @@ def register_view(request):
     用户状态：未登录
     简介: 注册视图, 接受信息并注册新用户
     注意: 不带Authorization的Header, 否则可能会因为token验证失败而返回401
+          以email作为唯一标识, 不允许重复注册
     
     URL: /accounts/register/
     Method: POST
     Header: Content-Type: application/json
     Body: JSON {
+        "email": "email",
         "username": "username",
         "password": "password",
-        "email": "email", (optional)
         "phone": "phone" (optional)
     }
     Response: 
@@ -39,18 +40,15 @@ def register_view(request):
                Code 405: Method Not Allowed
     '''
     data = json.loads(request.body)
-    username = data['username']
-    password = data['password'] #
-    
-    if not username or not password:
-        return JsonResponse({'status': 'error', 'msg': 'empty username or password'}, status=400)
-    if CustomUser.objects.filter(username=username).exists():
-        return JsonResponse({'status': 'error', 'msg': 'username already exists'}, status=400)
-        
+
     serializer = CustomUserSerializer(data=data)
-    if serializer.is_valid():
-        serializer.save()
-        return JsonResponse({'status': 'success', 'msg': 'register success'})
+    # 判断是否合法放在serializer中进行
+    try:
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            return JsonResponse({'status': 'success', 'msg': 'register success'})
+    except Exception as e:
+        return JsonResponse({'status': 'error', 'msg': str(e)}, status=400)
 
     
 @csrf_exempt
@@ -66,7 +64,7 @@ def login_view(request):
     Method: POST
     Header: Content-Type: application/json
     Body: JSON {
-        "username": "username",
+        "email": "email",
         "password": "password"
     }
     Response:
@@ -75,15 +73,15 @@ def login_view(request):
                Code 405: Method Not Allowed
     '''
     data = json.loads(request.body)
-    username = data['username']
-    password = data['password']
+    email = data.get('email')
+    password = data.get('password')
         
-    if not username or not password:
-        return JsonResponse({'status': 'error', 'msg': 'empty username or password'}, status=400)
-    if not CustomUser.objects.filter(username=username).exists():
-        return JsonResponse({'status': 'error', 'msg': 'username does not exist'}, status=400)
+    if not email or not password:
+        return JsonResponse({'status': 'error', 'msg': 'empty email or password'}, status=400)
+    if not CustomUser.objects.filter(email=email).exists():
+        return JsonResponse({'status': 'error', 'msg': 'email does not exist'}, status=400)
         
-    user = authenticate(username=username, password=password)
+    user = authenticate(email=email, password=password)
     if user is None:
         return JsonResponse({'status': 'error', 'msg': 'invalid password'}, status=400)
     else:
@@ -134,13 +132,14 @@ def CustomUserDetail(request):
             "phone": "phone",
             "gold": "gold",
             "published_tasks": [(task1), (task2), ...],
-            "accepted_tasks": [(task)]
+            "accepted_tasks": [(task1), (task2), ...],
+            ...
         }
         Error: Code 400 JSON {'status': 'error', 'msg': 'error message'}
                Code 401: Unauthorized
                Code 405: Method Not Allowed
     '''
-    username = request.user.username
-    user = CustomUser.objects.get(username=username)
+    email = request.user.email
+    user = CustomUser.objects.get(email=email)
     serializer = CustomUserSerializer(user)
     return JsonResponse(serializer.data)

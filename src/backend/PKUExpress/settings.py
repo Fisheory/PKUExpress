@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-6^z91-wp=9psiqv!j+@@k@e@duc%hnri8(cqwum9b&kg3oyezw
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["123.56.18.162", "localhost"]
 
 
 # Application definition
@@ -134,4 +134,9 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.TokenAuthentication',
     )
+}
+
+AUTHENTICATION_BACKENDS = {
+    'accounts.authenticate_email.EmailBackend',
+    'django.contrib.auth.backends.ModelBackend',
 }
