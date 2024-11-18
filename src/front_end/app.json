@@ -1,11 +1,11 @@
 {
   "pages": [
     "pages/index/index",
+    "pages/post/post",
     "pages/home/home",
     "pages/profile/profile",
     "pages/findpassword/findpassword",
     "pages/register/register",
-    "pages/post/post",
     "pages/success/success"
   ],
   "window": {

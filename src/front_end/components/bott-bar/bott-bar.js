@@ -20,7 +20,7 @@ Component({
     },
     navigateToAdd() {
       wx.navigateTo({
-        url: '/pages/add/add'
+        url: '/pages/post/post'
       });
     }
   }

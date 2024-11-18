@@ -3,13 +3,14 @@ Page({
     data: {
       taskName: '',
       campus: '',
-      receivingAddress: '',
-      taskAddress: '',
+      address: '',
+      payment: '',
       details: '',
       message: '',
+      uploadedImages: [],
       message_color: '#000'
     },
-  
+
     // Get task name input
     onTaskNameInput: function (e) {
       this.setData({
@@ -17,34 +18,51 @@ Page({
       });
     },
   
-    // Get campus input
-    onCampusInput: function (e) {
+    // Get address input
+    onAddressInput: function (e) {
       this.setData({
-        campus: e.detail.value
+        address: e.detail.value
       });
     },
   
-    // Get receiving address input
-    onReceivingAddressInput: function (e) {
+    // Get payment input
+    onPaymentInput: function (e) {
       this.setData({
-        receivingAddress: e.detail.value
+        payment: e.detail.value
       });
     },
-  
-    // Get task address input
-    onTaskAddressInput: function (e) {
-      this.setData({
-        taskAddress: e.detail.value
-      });
-    },
-  
+
     // Get details input
     onDetailsInput: function (e) {
       this.setData({
         details: e.detail.value
+      })
+    },
+
+    // Get details input
+    uploadImage: function () {
+      wx.chooseMedia({
+        count: 1, // 限制选择1张图片
+        mediaType: ['image'],
+        sourceType: ['album', 'camera'],
+        success: (res) => {
+          if (Array.isArray(res.tempFiles) && res.tempFiles.length > 0) {
+            const newImage = res.tempFiles[0].tempFilePath;
+            this.setData({
+              uploadedImages: [newImage] // 覆盖之前的图片
+            });
+          }
+        },
+        fail: (err) => {
+          console.error('选择图片失败:', err);
+          wx.showToast({
+            title: '选择图片失败',
+            icon: 'none'
+          });
+        }
       });
     },
-  
+    
     // Submit button click event
     submitTask: function () {
         // console.log('Submit button clicked');
@@ -58,28 +76,19 @@ Page({
           });
           return;
       }
-      if (!this.data.campus) {
+      if (!this.data.address) {
         wx.showModal({
             title: '提示',
-            content: '请填写校区',
+            content: '请填写途径点',
             showCancel: false,
             confirmText: '确认'
           });
           return;
       }
-      if (!this.data.receivingAddress) {
+      if (!this.data.payment) {
         wx.showModal({
             title: '提示',
-            content: '请填写收货地址',
-            showCancel: false,
-            confirmText: '确认'
-          });
-        return;
-      }
-      if (!this.data.taskAddress) {
-        wx.showModal({
-            title: '提示',
-            content: '请填写任务地址',
+            content: '请填写金额',
             showCancel: false,
             confirmText: '确认'
           });
@@ -88,7 +97,7 @@ Page({
       if (!this.data.details) {
         wx.showModal({
             title: '提示',
-            content: '请填写详情',
+            content: '请填写任务详情',
             showCancel: false,
             confirmText: '确认'
           });
