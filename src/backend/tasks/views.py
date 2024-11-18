@@ -63,11 +63,12 @@ class TaskList(APIView):
         # 传入 request 上下文以便在序列化器中访问 user
         serializer = TaskSerializer(data=data, context={'request': request})
         
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=http_status.HTTP_201_CREATED)
-        else:
-            return Response(serializer.errors, status=http_status.HTTP_400_BAD_REQUEST)
+        try:
+            if serializer.is_valid(raise_exception=True):
+                serializer.save()
+                return Response(serializer.data, status=http_status.HTTP_201_CREATED)
+        except Exception as e:
+            return Response({'status': 'error', 'msg': str(e)}, status=http_status.HTTP_400_BAD_REQUEST)
 
 class TaskDetail(APIView):
     '''

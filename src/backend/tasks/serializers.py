@@ -39,8 +39,11 @@ class TaskSerializer(serializers.ModelSerializer):
         elif reward > user.gold:
             raise serializers.ValidationError('Insufficient gold')
         
+        # temp: deadline 自动设置
+        deadline = timezone.now() + timezone.timedelta(days=1)
+        
         # 检查deadline, 必须大于当前时间
-        deadline = attrs.get('deadline')
+        # deadline = attrs.get('deadline')
         if deadline <= timezone.now():
             raise serializers.ValidationError('Deadline must be later than current time')
         
