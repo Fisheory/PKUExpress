@@ -87,7 +87,8 @@ def login_view(request):
     else:
         token, _ = Token.objects.get_or_create(user=user) 
         # print(token.key)
-        return JsonResponse({'status': 'success', 'msg': 'login success', 'token': token.key})
+        return JsonResponse({'status': 'success', 'msg': 'login success',
+                             'token': token.key, 'username': user.username})
     
 @csrf_exempt
 @api_view(['POST'])
