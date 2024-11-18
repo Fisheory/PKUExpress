@@ -6,7 +6,13 @@
   <!-- 用户名输入区域 -->
   <view class="input_container">
     <text class="input_label">用户名：</text>
-    <input class="input" placeholder="邮箱" placeholder-class="placeholder" bindinput="onUsernameInput" />
+    <input class="input" placeholder="用户名" placeholder-class="placeholder" bindinput="onUsernameInput" />
+  </view>
+
+  <!-- 邮箱输入区域 -->
+  <view class="input_container">
+    <text class="input_label">邮箱：</text>
+    <input class="input" placeholder="邮箱" placeholder-class="placeholder" bindinput="onEmailInput" />
   </view>
 
   <!-- 邮箱切换按钮 -->

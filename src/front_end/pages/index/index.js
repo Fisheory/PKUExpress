@@ -1,4 +1,7 @@
-const defaultAvatarUrl = 'https://mmbiz.qpic.cn/mmbiz/icTdbqWNOwNRna42FI242Lcia07jQodd2FJGIYQfG0LAJGFxM4FbnQP6yfMxBgJ0F3YRqJCJ1aPAK2dQagdusBZg/0'
+// 引入加密库
+const Crypto = require("crypto-js");
+
+const defaultAvatarUrl = 'https://mmbiz.qpic.cn/mmbiz/icTdbqWNOwNRna42FI242Lcia07jQodd2FJGIYQfG0LAJGFxM4FbnQP6yfMxBgJ0F3YRqJCJ1aPAK2dQagdusBZg/0';
 
 Page({
   data: {
@@ -12,7 +15,7 @@ Page({
     userInfo: null
   },
 
-  // 获取用户名输入
+  // 获取邮箱输入
   onUsernameInput: function (e) {
     this.setData({
       username: e.detail.value
@@ -27,17 +30,15 @@ Page({
   },
 
   onSwitch: function () {
-    if (this.data.message_button ===  '@pku.edu.cn') {
+    if (this.data.message_button === '@pku.edu.cn') {
       this.setData({
         message_button: '@stu.pku.edu.cn'
       });
-    }
-    else if (this.data.message_button ===  '@stu.pku.edu.cn') {
+    } else if (this.data.message_button === '@stu.pku.edu.cn') {
       this.setData({
         message_button: '@alumni.pku.edu.cn'
       });
-    }
-    else {
+    } else {
       this.setData({
         message_button: '@pku.edu.cn'
       });
@@ -46,10 +47,9 @@ Page({
 
   // 登录按钮点击事件
   onLogin: function () {
-    
     // 检查输入框内容
     if (!this.data.username) {
-      this.showMessage('请填写用户名', 'red');
+      this.showMessage('请填写邮箱', 'red');
       return;
     }
     if (!this.data.password) {
@@ -60,14 +60,19 @@ Page({
       full_username: this.data.username + this.data.message_button
     });
 
+    // 加密密码
+    const encryptedPassword = this.encryptPassword(this.data.password);
+    console.log("encrypted");
+    console.log(encryptedPassword)
+
     // 发送登录请求
-    const { full_username, password } = this.data;
+    const { full_username } = this.data;
     wx.request({
-      url: 'https://your-server-domain.com/login',
+      url: 'https://123.56.18.162:8080', // 修改为正确的接口地址
       method: 'POST',
       data: {
         full_username,
-        password
+        password: encryptedPassword
       },
       success: res => {
         if (res.data.code === 200) {
@@ -94,13 +99,6 @@ Page({
     });
   },
 
-  // 返回主页
-  onReturn: function () {
-    wx.navigateTo({
-      url: '/pages/main'
-    });
-  },
-
   // 注册跳转
   goToRegister: function () {
     wx.navigateTo({
@@ -121,5 +119,10 @@ Page({
       message: text,
       message_color: color
     });
+  },
+
+  // 加密密码函数
+  encryptPassword: function (password) {
+    return Crypto.SHA256(password).toString(Crypto.enc.Hex); // 使用 SHA256 加密并转换为十六进制
   }
 });

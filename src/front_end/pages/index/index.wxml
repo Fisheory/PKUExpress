@@ -6,9 +6,9 @@
   <!-- 空行用于显示消息 -->
   <view class="message" style="color: {{message_color}}">{{message}}</view>
 
-  <!-- 用户名输入区域 -->
+  <!-- 邮箱输入区域 -->
   <view class="input_container">
-    <text class="input_label">用户名：</text>
+    <text class="input_label">邮箱：</text>
     <input class="input" placeholder="邮箱" placeholder-class="placeholder" bindinput="onUsernameInput" />
   </view>
 

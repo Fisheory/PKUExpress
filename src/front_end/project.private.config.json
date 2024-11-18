@@ -3,7 +3,8 @@
   "projectname": "PKUExpress",
   "setting": {
     "compileHotReLoad": true,
-    "skylineRenderEnable": false
+    "skylineRenderEnable": false,
+    "urlCheck": false
   },
   "libVersion": "3.6.4"
 }
