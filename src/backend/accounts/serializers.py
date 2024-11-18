@@ -4,7 +4,10 @@ from tasks.serializers import TaskSerializer
 
 class CustomUserSerializer(serializers.ModelSerializer):
     
-    password = serializers.CharField(write_only=True)
+    # 必填项
+    username = serializers.CharField(required=True)
+    password = serializers.CharField(write_only=True, required=True)
+    email = serializers.EmailField(required=True)
     
     published_tasks = serializers.SerializerMethodField() # 用于返回用户发布的任务
     accepted_tasks = serializers.SerializerMethodField()  # 用于返回用户接受的任务
@@ -15,6 +18,14 @@ class CustomUserSerializer(serializers.ModelSerializer):
         model = CustomUser
         fields = ['username', 'password', 'email', 'phone', 'gold', 'published_tasks',
                   'accepted_tasks', 'accepted_accepted_tasks', 'accepted_finished_tasks']
+        
+    # 检查email
+    def validate_email(self, value):
+        if CustomUser.objects.filter(email=value).exists():
+            raise serializers.ValidationError('Email already exists')
+        if not value.endswith(('@pku.edu.cn', '@stu.pku.edu.cn', '@alumni.pku.edu.cn')):
+            raise serializers.ValidationError('Email must be a pku email')
+        return value
         
     def create(self, validated_data):
         password = validated_data.pop('password', None)

@@ -5,9 +5,9 @@ from django.utils import timezone
 
 class TaskSerializer(serializers.ModelSerializer):
     # source指定了展示的字段, 若不设置, 返回JSON的时候关联的用户显示的是id不方便查看
-    publisher = serializers.PrimaryKeyRelatedField(read_only=True, source='publisher.username')
+    publisher = serializers.PrimaryKeyRelatedField(read_only=True, source='publisher.email')
     worker = serializers.PrimaryKeyRelatedField(queryset=CustomUser.objects.all(),
-                                                source='worker.username', required=False)    
+                                                source='worker.email', required=False)    
     class Meta:
         model = Task
         fields = [
