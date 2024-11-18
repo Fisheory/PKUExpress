@@ -95,16 +95,18 @@ Page({
     console.log(encryptedPassword)
 
     // 发送注册请求
-    const { full_email, password } = this.data;
+    const full_email = this.data.full_email;
+    const username = this.data.username;
     wx.request({
-      url: 'https://your-server-domain.com/register',
+      url: 'http://123.56.18.162:8000/accounts/register/',
       method: 'POST',
       data: {
-        full_email,
-        password: encryptedPassword
+        "username": username,
+        "email": full_email,
+        "password": encryptedPassword
       },
       success: res => {
-        if (res.data.code === 200) {
+        if (res.statusCode === 200) {
           this.showMessage('注册成功，即将返回登录页面...', 'green');
           // 注册成功后延时1秒跳转
           setTimeout(() => {
@@ -112,8 +114,9 @@ Page({
               url: '/pages/index/index'
             });
           }, 1000);
-        } else {
-          this.showMessage('该用户已注册过，请直接登录', 'red');
+        } 
+        else {
+          this.showMessage(res.data.msg, 'red');
         }
       },
       fail: () => {

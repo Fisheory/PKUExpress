@@ -6,11 +6,13 @@
     <block wx:for="{{list}}" wx:key="id">
       <view class="list-item">
         <!-- 标题 -->
-        <view class="item-title">{{item.title}}</view>
+        <view class="item-title">{{item.name}}</view>
         <!-- 内容 -->
-        <view class="item-content">{{item.content}}</view>
+        <view class="item-content">{{item.description}}</view>
+        <!-- 金额 -->
+        <view class="item-content">金额: {{item.reward}}</view>
         <!-- 途径点 -->
-        <view class="item-route">途径点: {{item.route}}</view>
+        <view class="item-route">途径点: {{item.end_location}}</view>
         <!-- 查看详情按钮 -->
         <button class="detail-btn" bindtap="viewDetail" data-id="{{item.id}}">查看详情</button>
       </view>

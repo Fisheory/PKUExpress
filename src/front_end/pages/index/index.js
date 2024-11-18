@@ -66,20 +66,30 @@ Page({
     console.log(encryptedPassword)
 
     // 发送登录请求
-    const { full_username } = this.data;
+    const full_username = this.data.full_username;
     wx.request({
-      url: 'https://123.56.18.162:8080', // 修改为正确的接口地址
+      url: 'http://123.56.18.162:8000/accounts/login/', // 修改为正确的接口地址
       method: 'POST',
       data: {
-        full_username,
-        password: encryptedPassword
+        "email": full_username,
+        "password": encryptedPassword
       },
       success: res => {
-        if (res.data.code === 200) {
-          this.setData({
-            userInfo: res.data.userInfo
-          });
-          wx.setStorageSync('userInfo', res.data.userInfo);
+        if (res.statusCode === 200) {
+          // 提取 token 并保存到本地存储
+          const token = res.data.token; // 假设服务端返回的 JSON 中有一个 "token" 字段
+          if (token) {
+            wx.setStorageSync('token', token); // 保存 token 到本地
+          }
+          wx.setStorageSync(
+            'profile', {
+              "email": full_username,
+              "username": res.data.username,
+            }
+          );
+          console.log(wx.getStorageSync('profile'));
+          console.log(token);
+          // 显示登录成功消息
           this.showMessage('登录成功', 'green');
           // 登录成功后延时1秒跳转
           setTimeout(() => {
@@ -87,18 +97,18 @@ Page({
               url: '/pages/home/home'
             });
           }, 1000);
-        } else if (res.data.code === 401) {
-          this.showMessage('用户不存在或未注册', 'red');
-        } else if (res.data.code === 403) {
-          this.showMessage('密码错误', 'red');
+        } else {
+          // 显示错误消息
+          this.showMessage(res.data.msg, 'red');
         }
       },
       fail: () => {
+        // 显示连接失败消息
         this.showMessage('连接服务器失败', 'red');
       }
     });
   },
-
+  
   // 注册跳转
   goToRegister: function () {
     wx.navigateTo({
