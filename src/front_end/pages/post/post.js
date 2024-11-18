@@ -103,20 +103,55 @@ Page({
           });
         return;
       }
-  
-      // Simulate submission success
-      wx.showModal({
-        title: '提交成功',
-        content: '您的任务已成功提交！',
-        showCancel: false,
-        confirmText: '确认',
-        confirmColor: '#3CC51F',
-        success: (res) => {
-          if (res.confirm) {
-            wx.navigateTo({
-              url: '/pages/success/success'
+
+      wx.request({
+        url: 'http://123.56.18.162:8000/tasks/',
+        method: 'POST',
+        header: {
+          "Authorization": "Token " + wx.getStorageSync('token')
+        },
+        data: {
+          "name": this.data.taskName,
+          "description": this.data.details,
+          "reward": this.data.payment,
+          "end_location": this.data.address
+        },
+        success: res => {
+          // Simulate submission success
+          if (res.statusCode === 201) {
+            wx.showModal({
+              title: '提交成功',
+              content: '您的任务已成功提交！',
+              showCancel: false,
+              confirmText: '确认',
+              confirmColor: '#3CC51F',
+              success: (res) => {
+                if (res.confirm) {
+                  wx.navigateTo({
+                    url: '/pages/success/success'
+                  });
+                }
+              }
             });
           }
+          else {
+            wx.showModal({
+              title: '提交失败',
+              content: res.data.msg,
+              showCancel: false,
+              confirmText: '确认',
+              confirmColor: '#3CC51F',
+            });
+          }
+        },
+        fail: () => {
+          wx.showModal({
+            title: '连接服务器失败',
+            content: res.data.msg,
+            showCancel: false,
+            confirmText: '确认',
+            confirmColor: '#3CC51F',
+          });
         }
       });
     },
