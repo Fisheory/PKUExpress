@@ -1,18 +1,28 @@
+const Crypto = require("crypto-js")
+
 Page({
   data: {
     username: '',
+    email: '',
     password: '',
     password_confirm: '',
     message: '',
     message_color: '#000',
     message_button: '@pku.edu.cn',
-    full_username: ''
+    full_email: ''
   },
 
   // 获取用户名输入
   onUsernameInput: function (e) {
     this.setData({
       username: e.detail.value
+    });
+  },
+
+  // 获取邮箱输入
+  onEmailInput: function (e) {
+    this.setData({
+      email: e.detail.value
     });
   },
 
@@ -55,6 +65,10 @@ Page({
       this.showMessage('请填写用户名', 'red');
       return;
     }
+    if (!this.data.email) {
+      this.showMessage('请填写邮箱', 'red');
+      return;
+    }
     if (!this.data.password) {
       this.showMessage('请填写密码', 'red');
       return;
@@ -72,17 +86,22 @@ Page({
     }
 
     this.setData({
-      full_username: this.data.username + this.data.message_button
+      full_email: this.data.email + this.data.message_button
     });
 
+    // 加密密码
+    const encryptedPassword = this.encryptPassword(this.data.password);
+    console.log("encrypted");
+    console.log(encryptedPassword)
+
     // 发送注册请求
-    const { full_username, password } = this.data;
+    const { full_email, password } = this.data;
     wx.request({
       url: 'https://your-server-domain.com/register',
       method: 'POST',
       data: {
-        full_username,
-        password
+        full_email,
+        password: encryptedPassword
       },
       success: res => {
         if (res.data.code === 200) {
@@ -116,5 +135,10 @@ Page({
       message: text,
       message_color: color
     });
+  },
+
+  // 加密密码函数
+  encryptPassword: function (password) {
+    return Crypto.SHA256(password).toString(Crypto.enc.Hex); // 使用 SHA256 加密并转换为十六进制
   }
 });
