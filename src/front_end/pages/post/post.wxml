@@ -8,37 +8,40 @@
     </view>
 
     <view class="form-item">
-      <text>校区:</text>
-      <input placeholder="Enter campus" bindinput="onCampusInput"/>
+      <text style="margin-top: -60px;">途径点:</text>
+      <textarea placeholder="Enter addresses" bindinput="onAddressInput" style="height: 80px; width: 100%;"></textarea>
     </view>
 
     <view class="form-item">
-      <text>收货地址:</text>
-      <input placeholder="Enter receiving address" bindinput="onReceivingAddressInput"/>
+      <text>金额:</text>
+      <input placeholder="Enter payment" bindinput="onPaymentInput"/>
     </view>
 
     <view class="form-item">
-      <text>任务地址:</text>
-      <input placeholder="Enter task address" bindinput="onTaskAddressInput"/>
-    </view>
-
-    <view class="form-item">
-      <text>详情:</text>
-      <input placeholder="Enter details" bindinput="onDetailsInput" style="height: 80px; width: 100%;"/>
+      <text style="margin-top: -60px;">详情:</text>
+      <textarea placeholder="Enter details" bindinput="onDetailsInput" style="height: 80px; width: 100%;"></textarea>
     </view>
   </view>
 
   <view class="message" style="color: {{message_color}}">{{message}}</view>
 
-  <view class="upload-image" style="color: #777;">
-    <button bindtap="uploadImage">
-      <image src="/assets/upload_icon.png" style="width: 50px; height: 50px;"/>
-      <text>上传图片</text>
-    </button>
+  <view class="upload-image">
+    <!-- 如果没有图片，显示上传图片按钮 -->
+    <block wx:if="{{uploadedImages.length === 0}}">
+      <button bindtap="uploadImage" class="upload-button">
+        <image src="/assets/upload_icon.png" mode="aspectFit" class="upload-icon" />
+        <text>上传图片</text>
+      </button>
+    </block>
+
+    <!-- 如果有图片，显示上传的图片 -->
+    <block wx:else>
+      <image src="{{uploadedImages[0]}}" class="uploaded-image" bindtap="uploadImage" />
+    </block>
   </view>
 
   <view class="button-container">
-  <button class="submit-button" bindtap="submitTask">提交</button>
-  <button class="cancel-button" bindtap="cancelTask">取消</button>
-</view>
+    <button class="submit-button" bindtap="submitTask">提交</button>
+    <button class="cancel-button" bindtap="cancelTask">取消</button>
+  </view>
 </view>

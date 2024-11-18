@@ -15,6 +15,7 @@
 
 .form {
   width: 90%;
+  height: 300px;
   background-color: #fff;
   border-radius: 10px;
   padding: 15px;
@@ -50,6 +51,7 @@
   display: flex;
   justify-content: center;
   margin-bottom: 15px;
+  margin-top: 30px;
   background-color: #fff;
 }
 
@@ -58,10 +60,33 @@
   flex-direction: column;
   align-items: center;
   background-color: transparent;
-  border: 1px dashed #ddd;
-  width: 100%;
-  padding: 15px;
-  border-radius: 10px;
+  border: none; 
+  padding: 0; 
+}
+
+.upload-image .upload-icon {
+  width: 50px; 
+  height: 50px;
+  margin-bottom: 5px;
+}
+
+.upload-image .uploaded-image {
+  width: 160px; /* 调整为适当大小 */
+  height: 160px; 
+  border-radius: 5px; 
+  margin-bottom: 5px; 
+  border: 1px solid #ddd; /* 可选，增加边框以强调图片区域 */
+  transform: scale(0.9); /* 轻微缩放图片 */
+  transition: transform 0.3s ease; /* 增加过渡效果，提升体验 */
+}
+
+.upload-image .uploaded-image:hover {
+  transform: scale(1); /* 鼠标悬停时还原缩放 */
+}
+
+.upload-image text {
+  font-size: 14px;
+  color: #777; 
 }
 
 .button-container {
@@ -97,4 +122,12 @@
   align-items: center;
   font-size: 12px;
   padding: 0 10px;
+}
+
+.form-item textarea {
+  width: 100%;
+  height: 80px;
+  max-height: 150px; /* 设置最大高度 */
+  overflow: auto;    /* 超出部分显示滚动条 */
+  box-sizing: border-box; /* 确保边框和内边距计算在宽高内 */
 }

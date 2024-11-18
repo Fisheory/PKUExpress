@@ -79,7 +79,7 @@ Page({
           // 登录成功后延时1秒跳转
           setTimeout(() => {
             wx.navigateTo({
-              url: '/pages/userinfo/userinfo'
+              url: '/pages/home/home'
             });
           }, 1000);
         } else if (res.data.code === 401) {
