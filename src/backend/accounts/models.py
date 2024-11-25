@@ -16,7 +16,7 @@ class CustomUser(AbstractUser):
     def __str__(self):
         return self.username
     
-class PasswordToken(models.Model):
+class VerificationCode(models.Model):
     email = models.EmailField(max_length=150)
     token = models.CharField(max_length=6)
     create_time = models.DateTimeField(auto_now_add=True)
