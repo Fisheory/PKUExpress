@@ -34,17 +34,18 @@ class CustomUserSerializer(serializers.ModelSerializer):
         return value
         
     def create(self, validated_data):
-        #try:
-        #    token = self.context['request'].token
-        #except KeyError:
-        #    raise serializers.ValidationError('Token not found')
+        try:
+            request = self.context.get('request')
+            token = request.data.get('verification_code')
+        except KeyError:
+            raise serializers.ValidationError('Token not found')
         
-        #verification_code = VerificationCode.objects.filter(
-        #    email=validated_data['email'],
-        #    token=token
-        #).order_by('-create_time').first()
-        #if verification_code is None or not verification_code.is_valid():
-        #    raise serializers.ValidationError('Invalid token')
+        verification_code = VerificationCode.objects.filter(
+            email=validated_data['email'],
+            token=token
+        ).order_by('-create_time').first()
+        if verification_code is None or not verification_code.is_valid():
+            raise serializers.ValidationError('Invalid token')
         
         password = validated_data.pop('password', None)
         user = super().create(validated_data)
@@ -86,9 +87,8 @@ class VerificationCodeSerializer(serializers.Serializer):
         # 注册时需要email不存在, 重置密码时需要email存在
         if attrs.get('usage') == 'register' and CustomUser.objects.filter(email=email).exists():
             raise serializers.ValidationError('Email already exists')
-        else:
-            if not CustomUser.objects.filter(email=email).exists():
-                raise serializers.ValidationError('Email does not exist')
+        elif attrs.get('usage') == 'reset' and not CustomUser.objects.filter(email=email).exists():
+            raise serializers.ValidationError('Email does not exist')
             
         return attrs
 
