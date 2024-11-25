@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.utils import timezone
 
 # Create your models here.
 class CustomUser(AbstractUser):
@@ -14,3 +15,16 @@ class CustomUser(AbstractUser):
     
     def __str__(self):
         return self.username
+    
+class PasswordToken(models.Model):
+    email = models.EmailField(max_length=150)
+    token = models.CharField(max_length=6)
+    create_time = models.DateTimeField(auto_now_add=True)
+    usage_choices = [
+        ('register', 'register'),
+        ('reset', 'reset'),
+    ]
+    usage = models.CharField(max_length=10, choices=usage_choices)
+    
+    def is_valid(self):
+        return (timezone.now() - self.create_time).seconds < 60*5

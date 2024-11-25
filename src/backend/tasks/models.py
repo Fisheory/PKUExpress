@@ -20,8 +20,8 @@ class Task(models.Model):
     create_time = models.DateTimeField(auto_now_add=True)
     update_time = models.DateTimeField(auto_now=True)
     finish_time = models.DateTimeField(null=True, blank=True)
-    # deadline = models.DateTimeField()
-    deadline = models.DateTimeField(null=True, blank=True) # only for test
+    deadline = models.DateTimeField()
+    # deadline = models.DateTimeField(null=True, blank=True) # only for test
     
     status_choices = [
         ('to_be_accepted', 'to_be_accepted'),
