@@ -1,6 +1,12 @@
+import random
+from datetime import timedelta
+
 from rest_framework import serializers
-from .models import CustomUser
+from django.utils import timezone
+
 from tasks.serializers import TaskSerializer
+from .models import CustomUser, PasswordToken
+from .utils import send_email
 
 class CustomUserSerializer(serializers.ModelSerializer):
     
@@ -51,4 +57,46 @@ class CustomUserSerializer(serializers.ModelSerializer):
         tasks = obj.accepted_tasks.filter(status='finished')
         return TaskSerializer(tasks, many=True).data
         
+class PasswordTokenSerializer(serializers.Serializer):
     
+    email = serializers.EmailField(required=True)
+    usage = serializers.ChoiceField(choices=['register', 'reset'], required=True)
+    
+    class Meta:
+        model = PasswordToken
+        fields = ['email', 'token', 'usage']
+    
+    def validate(self, attrs):
+        email = attrs.get('email')
+        if not email.endswith(('@pku.edu.cn', '@stu.pku.edu.cn', '@alumni.pku.edu.cn')):
+            raise serializers.ValidationError('Email must be a pku email')
+        
+        # 注册时需要email不存在, 重置密码时需要email存在
+        if attrs.get('usage') == 'register' and CustomUser.objects.filter(email=email).exists():
+            raise serializers.ValidationError('Email already exists')
+        else:
+            if not CustomUser.objects.filter(email=email).exists():
+                raise serializers.ValidationError('Email does not exist')
+            
+        return attrs
+
+    def create(self, validated_data):
+        email = validated_data.get('email')
+        usage = validated_data.get('usage')
+        
+        # 1分钟内同一邮箱只能发送一次验证码
+        one_minute_ago = timezone.now() - timedelta(minutes=1)
+        if PasswordToken.objects.filter(email=email, create_time__gt=one_minute_ago).exists():
+            raise serializers.ValidationError('Please wait for 1 minute before sending another token')
+        
+        token = f'{random.randint(100000, 999999)}'
+        
+        password_token = PasswordToken.objects.create(
+            email=email, token=token, usage=usage)
+        
+        send_email(email, token)
+        
+        return password_token
+        
+        
+        
