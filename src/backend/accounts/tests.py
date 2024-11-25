@@ -21,11 +21,10 @@ user_login_data = {
     'username': 'test',
     'password': 'abc87654321',
 }
-regiter_url = '/accounts/register/'
-login_url = '/accounts/login/'
-detail_url = '/accounts/user/'
-logout_url = '/accounts/logout/'
-
+regiter_url = '/accounts/auth/register/'
+login_url = '/accounts/auth/login/'
+detail_url = '/accounts/profile/'
+logout_url = '/accounts/auth/logout/'
 
 class UserRegisterTestCase(TestCase):
     
