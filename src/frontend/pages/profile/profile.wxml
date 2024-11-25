@@ -1,8 +1,10 @@
 <!--pages/profile/profile.wxml-->
+<navi-bar title="PKUExpress"></navi-bar>
+
 <view class="container">
   <view class="header">
     <!-- Profile Picture -->
-    <image class="profile-pic" src="/asset/profile_icon.png" />
+    <image class="profile-pic" src="/assets/profile_icon.png" />
 
     <!-- User Info -->
     <view class="user-info">
@@ -61,3 +63,5 @@
   </view>
   </view>
 </view>
+
+<bott-bar></bott-bar>
