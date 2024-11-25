@@ -1,0 +1,139 @@
+@startuml
+class CustomUserAdmin {
+    model: CustomUser
+    fieldsets: Unknown
+    list_display: Unknown
+    list_filter: Unknown
+    search_fields: Unknown
+    inlines: Unknown
+}
+class AccountsConfig {
+    default_auto_field: Unknown
+    name: Unknown
+}
+class EmailBackend {
+    authenticate(request, email, password)
+}
+class CustomUser {
+    username: CharField
+    email: EmailField
+    phone: CharField
+    gold: IntegerField
+    USERNAME_FIELD: Unknown
+    REQUIRED_FIELDS: Unknown
+    __str__()
+}
+class CustomUserSerializer {
+    username: CharField
+    password: CharField
+    email: EmailField
+    published_tasks: SerializerMethodField
+    accepted_tasks: SerializerMethodField
+    accepted_accepted_tasks: SerializerMethodField
+    accepted_finished_tasks: SerializerMethodField
+    validate_email(value)
+    create(validated_data)
+    get_published_tasks(obj)
+    get_accepted_tasks(obj)
+    get_accepted_accepted_tasks(obj)
+    get_accepted_finished_tasks(obj)
+}
+class UserRegisterTestCase {
+    test_register_valid()
+    test_register_empty_username()
+    test_register_empty_password()
+    test_register_username_exists()
+    test_register_method_not_allowed()
+}
+class UserLoginTestCase {
+    setUp()
+    test_login_valid()
+    test_login_empty_username()
+    test_login_empty_password()
+    test_login_username_not_exists()
+    test_login_password_invalid()
+    test_login_method_not_allowed()
+}
+class UserDetailTestCase {
+    setUp()
+    test_detail_valid()
+    test_detail_unauthorized()
+    test_detail_method_not_allowed()
+}
+class UserLogoutTestCase {
+    setUp()
+    test_logout_valid()
+    test_logout_unauthorized()
+    test_logout_method_not_allowed()
+}
+class Migration {
+    dependencies: Unknown
+    operations: Unknown
+}
+class PublishedTaskInline {
+    model: Task
+    fk_name: Unknown
+    extra: Unknown
+}
+class AcceptedTaskInline {
+    model: Task
+    fk_name: Unknown
+    extra: Unknown
+}
+class TaskAdmin {
+    list_display: Unknown
+    list_filter: Unknown
+    search_fields: Unknown
+}
+class TasksConfig {
+    default_auto_field: Unknown
+    name: Unknown
+}
+class Task {
+    name: CharField
+    description: TextField
+    start_location: CharField
+    end_location: CharField
+    reward: IntegerField
+    start_location: CharField
+    end_location: CharField
+    publisher: ForeignKey
+    worker: ForeignKey
+    create_time: DateTimeField
+    update_time: DateTimeField
+    finish_time: DateTimeField
+    deadline: DateTimeField
+    status_choices: Unknown
+    status: CharField
+    __str__()
+    accept(worker)
+    finish()
+    out_of_date()
+    cancel()
+}
+class TaskPaginator {
+    page_size: Unknown
+    page_size_query_param: Unknown
+    page_query_param: Unknown
+    max_page_size: Unknown
+}
+class TaskSerializer {
+    publisher: PrimaryKeyRelatedField
+    worker: PrimaryKeyRelatedField
+    validate(attrs)
+}
+class TaskList {
+    get_permissions()
+    get(request)
+    post(request)
+}
+class TaskDetail {
+    get_permissions()
+    get(request, pk)
+    patch(request, pk)
+    delete(request, pk)
+}
+CustomUserAdmin --> CustomUser
+AcceptedTaskInline --> Task
+PublishedTaskInline --> Task
+@enduml
