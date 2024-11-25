@@ -63,14 +63,14 @@
   </view> 
 
   <view class="form">
-  <block wx:if="{{image_path}}">
-    <image class="image" src="{{image_path}}" mode="widthFix"></image>
-  </block>
-  <block wx:else>
-    <text>无图片</text>
-  </block>
+    <block wx:if="{{image_path}}">
+      <image class="image" src="{{image_path}}" mode="widthFix"></image>
+    </block>
+    <block wx:else>
+      <text>无图片</text>
+    </block>
+    </view>
   </view>
-</view>
 
 <view class="message" style="color: {{message_color}}">{{message_text}}</view>
 
