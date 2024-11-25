@@ -12,8 +12,8 @@ from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.authtoken.models import Token
 from rest_framework.decorators import api_view, permission_classes
 
-from .serializers import CustomUserSerializer, PasswordTokenSerializer
-from .models import CustomUser, PasswordToken
+from .serializers import CustomUserSerializer, VerificationCodeSerializer
+from .models import CustomUser, VerificationCode
 
 class UserRegister(CreateAPIView):
     queryset = CustomUser.objects.all()
@@ -56,9 +56,9 @@ class UserDetail(RetrieveUpdateAPIView):
     def get_object(self):
         return self.request.user
 
-class UserResetPasswordToken(CreateAPIView):
-    queryset = PasswordToken.objects.all()
-    serializer_class = PasswordTokenSerializer
+class VerificationCode(CreateAPIView):
+    queryset = VerificationCode.objects.all()
+    serializer_class = VerificationCodeSerializer
     permission_classes = [AllowAny]
 
 class UserResetPassword(APIView):
@@ -73,13 +73,13 @@ class UserResetPassword(APIView):
             return JsonResponse({'status': 'error', 'msg': 'email does not exist'},
                                 status=http_status.HTTP_400_BAD_REQUEST)
             
-        token_obj = PasswordToken.objects.filter(
+        verificaction_code = VerificationCode.objects.filter(
             email=email, 
             token=token, 
             usage='reset'
         ).order_by('-create_time').first()
         
-        if token_obj is not None and token_obj.is_valid():
+        if verificaction_code is not None and verificaction_code.is_valid():
             user = CustomUser.objects.get(email=email)
             user.set_password(password)
             user.save()
@@ -88,7 +88,7 @@ class UserResetPassword(APIView):
             Token.objects.filter(user=user).delete()
             
             # 验证码token也删除
-            PasswordToken.objects.filter(email=email).delete()
+            verificaction_code.objects.filter(email=email).delete()
             
             return JsonResponse({'status': 'success', 'msg': 'password reset'},
                                 status=http_status.HTTP_200_OK)
