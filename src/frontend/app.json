@@ -6,6 +6,7 @@
     "pages/profile/profile",
     "pages/findpassword/findpassword",
     "pages/register/register",
+    "pages/detail/detail",
     "pages/success/success"
   ],
   "window": {
