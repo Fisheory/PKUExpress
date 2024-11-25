@@ -20,6 +20,11 @@ class UserRegister(CreateAPIView):
     serializer_class = CustomUserSerializer
     permission_classes = [AllowAny]
     
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context['request'] = self.request
+        return context
+    
 class UserLogin(APIView):
     permission_classes = [AllowAny]
     def post(self, request):
@@ -66,7 +71,7 @@ class UserResetPassword(APIView):
     def post(self, request):
         data = request.data
         email = data.get('email')
-        token = data.get('token')
+        token = data.get('verification_code')
         password = data.get('password')
         
         if not CustomUser.objects.filter(email=email).exists():
