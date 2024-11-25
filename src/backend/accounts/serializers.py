@@ -5,7 +5,7 @@ from rest_framework import serializers
 from django.utils import timezone
 
 from tasks.serializers import TaskSerializer
-from .models import CustomUser, PasswordToken
+from .models import CustomUser, VerificationCode
 from .utils import send_email
 
 class CustomUserSerializer(serializers.ModelSerializer):
@@ -34,6 +34,18 @@ class CustomUserSerializer(serializers.ModelSerializer):
         return value
         
     def create(self, validated_data):
+        #try:
+        #    token = self.context['request'].token
+        #except KeyError:
+        #    raise serializers.ValidationError('Token not found')
+        
+        #verification_code = VerificationCode.objects.filter(
+        #    email=validated_data['email'],
+        #    token=token
+        #).order_by('-create_time').first()
+        #if verification_code is None or not verification_code.is_valid():
+        #    raise serializers.ValidationError('Invalid token')
+        
         password = validated_data.pop('password', None)
         user = super().create(validated_data)
         user.set_password(password)
@@ -57,13 +69,13 @@ class CustomUserSerializer(serializers.ModelSerializer):
         tasks = obj.accepted_tasks.filter(status='finished')
         return TaskSerializer(tasks, many=True).data
         
-class PasswordTokenSerializer(serializers.Serializer):
+class VerificationCodeSerializer(serializers.Serializer):
     
     email = serializers.EmailField(required=True)
     usage = serializers.ChoiceField(choices=['register', 'reset'], required=True)
     
     class Meta:
-        model = PasswordToken
+        model = VerificationCode
         fields = ['email', 'token', 'usage']
     
     def validate(self, attrs):
@@ -86,17 +98,14 @@ class PasswordTokenSerializer(serializers.Serializer):
         
         # 1分钟内同一邮箱只能发送一次验证码
         one_minute_ago = timezone.now() - timedelta(minutes=1)
-        if PasswordToken.objects.filter(email=email, create_time__gt=one_minute_ago).exists():
+        if VerificationCode.objects.filter(email=email, create_time__gt=one_minute_ago).exists():
             raise serializers.ValidationError('Please wait for 1 minute before sending another token')
         
         token = f'{random.randint(100000, 999999)}'
         
-        password_token = PasswordToken.objects.create(
+        verification_code = VerificationCode.objects.create(
             email=email, token=token, usage=usage)
         
         send_email(email, token)
         
-        return password_token
-        
-        
-        
+        return verification_code
