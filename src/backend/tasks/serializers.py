@@ -41,6 +41,7 @@ class TaskSerializer(serializers.ModelSerializer):
         
         # temp: deadline 自动设置
         deadline = timezone.now() + timezone.timedelta(days=1)
+        attrs['deadline'] = deadline
         
         # 检查deadline, 必须大于当前时间
         # deadline = attrs.get('deadline')
