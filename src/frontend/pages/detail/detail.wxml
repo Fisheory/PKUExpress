@@ -75,7 +75,10 @@
 <view class="message" style="color: {{message_color}}">{{message_text}}</view>
 
 <view class="button-container">
-  <button class="submit-button" bindtap="submitTask" style="background-color: {{button_color}}">{{button_text}}</button>
+  <button wx:if="{{isToBeAccepted}}" class="submit-button" bindtap="submitTask" style="background-color: {{button_color}}">接取任务</button>
+  <button wx:if="{{isAccepted}}" class="submit-button" bindtap="finishTask" style="background-color: {{button_color}}">完成</button>
+  <button wx:if="{{isFinished}}" class="submit-button" style="background-color: #888888">已完成</button>
+  <button wx:if="{{isExpired}}" class="submit-button" style="background-color: #888888">已过期</button>
   <button class="cancel-button" bindtap="cancelTask">取消</button>
 </view>
 
