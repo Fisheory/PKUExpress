@@ -68,7 +68,7 @@ Page({
     // 发送登录请求
     const full_username = this.data.full_username;
     wx.request({
-      url: 'http://123.56.18.162:8000/accounts/login/', // 修改为正确的接口地址
+      url: 'http://123.56.18.162:8000/accounts/auth/login', // 修改为正确的接口地址
       method: 'POST',
       data: {
         "email": full_username,
@@ -119,7 +119,7 @@ Page({
   // 找回密码跳转
   goToFindPassword: function () {
     wx.navigateTo({
-      url: '/pages/findpassword/findpassword'
+      url: '/pages/reset/reset'
     });
   },
 
