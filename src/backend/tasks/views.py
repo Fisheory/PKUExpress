@@ -1,4 +1,3 @@
-from .models import Task
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework import status as http_status
 from rest_framework.response import Response
@@ -6,6 +5,9 @@ from rest_framework.authtoken.models import Token
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated, AllowAny
+from rest_framework.generics import ListAPIView
+
+from .models import Task
 from .serializers import TaskSerializer
 from .paginators import TaskPaginator
 
@@ -44,6 +46,12 @@ class TaskList(APIView):
     def get(self, request):
         paginator = TaskPaginator()
         tasks = Task.objects.all().order_by('-create_time')
+        
+        for task in tasks:
+            task.out_of_date()
+        
+        # 仅展示待接受的任务
+        tasks = tasks.filter(status__in=['to_be_accepted'])
 
         # 获取搜索参数
         search_query = request.GET.get('search')
@@ -152,6 +160,31 @@ class TaskDetail(APIView):
             return Response({'status': 'error', 'msg': str(e)}, status=http_status.HTTP_400_BAD_REQUEST)
 
 
+class UserAcceptedTaskList(ListAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = TaskSerializer
+    
+    def get_queryset(self):
+        user = self.request.user
+        return user.accepted_tasks.all().filter(status='accepted')
+    
+class UserPublishedTaskList(ListAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = TaskSerializer
+    
+    def get_queryset(self):
+        user = self.request.user
+        return user.published_tasks.all()
+
+class UserFinishedTaskList(ListAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = TaskSerializer
+    
+    def get_queryset(self):
+        user = self.request.user
+        return user.accepted_tasks.all().filter(status='finished')
+    
+    
 
 @csrf_exempt
 @api_view(['GET'])

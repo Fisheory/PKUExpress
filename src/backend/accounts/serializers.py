@@ -28,9 +28,9 @@ class CustomUserSerializer(serializers.ModelSerializer):
     # 检查email
     def validate_email(self, value):
         if CustomUser.objects.filter(email=value).exists():
-            raise serializers.ValidationError('Email already exists')
+            raise serializers.ValidationError({'msg': 'Email already exists'})
         if not value.endswith(('@pku.edu.cn', '@stu.pku.edu.cn', '@alumni.pku.edu.cn')):
-            raise serializers.ValidationError('Email must be a pku email')
+            raise serializers.ValidationError({'msg': 'Email must be a pku email'})
         return value
         
     def create(self, validated_data):
@@ -38,14 +38,14 @@ class CustomUserSerializer(serializers.ModelSerializer):
             request = self.context.get('request')
             token = request.data.get('verification_code')
         except KeyError:
-            raise serializers.ValidationError('Token not found')
+            raise serializers.ValidationError({'msg': 'Verification code not found'})
         
         verification_code = VerificationCode.objects.filter(
             email=validated_data['email'],
             token=token
         ).order_by('-create_time').first()
         if verification_code is None or not verification_code.is_valid():
-            raise serializers.ValidationError('Invalid token')
+            raise serializers.ValidationError({'msg': 'Invalid verification code'})
         
         password = validated_data.pop('password', None)
         user = super().create(validated_data)
@@ -82,13 +82,13 @@ class VerificationCodeSerializer(serializers.Serializer):
     def validate(self, attrs):
         email = attrs.get('email')
         if not email.endswith(('@pku.edu.cn', '@stu.pku.edu.cn', '@alumni.pku.edu.cn')):
-            raise serializers.ValidationError('Email must be a pku email')
+            raise serializers.ValidationError({'msg': 'Email must be a pku email'})
         
         # 注册时需要email不存在, 重置密码时需要email存在
         if attrs.get('usage') == 'register' and CustomUser.objects.filter(email=email).exists():
-            raise serializers.ValidationError('Email already exists')
+            raise serializers.ValidationError({'msg': 'Email already exists'})
         elif attrs.get('usage') == 'reset' and not CustomUser.objects.filter(email=email).exists():
-            raise serializers.ValidationError('Email does not exist')
+            raise serializers.ValidationError({'msg': 'Email does not exist'})
             
         return attrs
 
@@ -99,7 +99,7 @@ class VerificationCodeSerializer(serializers.Serializer):
         # 1分钟内同一邮箱只能发送一次验证码
         one_minute_ago = timezone.now() - timedelta(minutes=1)
         if VerificationCode.objects.filter(email=email, create_time__gt=one_minute_ago).exists():
-            raise serializers.ValidationError('Please wait for 1 minute before sending another token')
+            raise serializers.ValidationError({'msg':'Please wait for 1 minute before sending another token'})
         
         token = f'{random.randint(100000, 999999)}'
         
