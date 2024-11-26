@@ -105,7 +105,7 @@ Page({
       }
 
       wx.request({
-        url: 'http://123.56.18.162:8000/tasks/',
+        url: 'http://123.56.18.162:8000/tasks/tasklist',
         method: 'POST',
         header: {
           "Authorization": "Token " + wx.getStorageSync('token')
@@ -114,7 +114,8 @@ Page({
           "name": this.data.taskName,
           "description": this.data.details,
           "reward": this.data.payment,
-          "end_location": this.data.address
+          "end_location": this.data.address,
+          "deadline":"2025-12-30T12:00",
         },
         success: res => {
           // Simulate submission success
