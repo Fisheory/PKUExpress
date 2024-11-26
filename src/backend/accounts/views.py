@@ -61,7 +61,7 @@ class UserDetail(RetrieveUpdateAPIView):
     def get_object(self):
         return self.request.user
 
-class VerificationCode(CreateAPIView):
+class VerificationCodeView(CreateAPIView):
     queryset = VerificationCode.objects.all()
     serializer_class = VerificationCodeSerializer
     permission_classes = [AllowAny]
@@ -78,13 +78,13 @@ class UserResetPassword(APIView):
             return JsonResponse({'status': 'error', 'msg': 'email does not exist'},
                                 status=http_status.HTTP_400_BAD_REQUEST)
             
-        verificaction_code = VerificationCode.objects.filter(
+        verification_code = VerificationCode.objects.filter(
             email=email, 
             token=token, 
             usage='reset'
         ).order_by('-create_time').first()
         
-        if verificaction_code is not None and verificaction_code.is_valid():
+        if verification_code is not None and verification_code.is_valid():
             user = CustomUser.objects.get(email=email)
             user.set_password(password)
             user.save()
@@ -93,7 +93,7 @@ class UserResetPassword(APIView):
             Token.objects.filter(user=user).delete()
             
             # 验证码token也删除
-            verificaction_code.objects.filter(email=email).delete()
+            verification_code.delete()
             
             return JsonResponse({'status': 'success', 'msg': 'password reset'},
                                 status=http_status.HTTP_200_OK)

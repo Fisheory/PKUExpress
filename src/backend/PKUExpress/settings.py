@@ -142,6 +142,7 @@ AUTHENTICATION_BACKENDS = {
     "django.contrib.auth.backends.ModelBackend",
 }
 
+APPEND_SLASH = False
 
 # 测试时暂时使用这个qq邮箱
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
