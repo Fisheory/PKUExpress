@@ -141,6 +141,7 @@ AUTHENTICATION_BACKENDS = {
     'django.contrib.auth.backends.ModelBackend',
 }
 
+APPEND_SLASH = False
 
 # 测试时暂时使用这个qq邮箱
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -148,5 +149,5 @@ EMAIL_HOST = 'smtp.qq.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'pkuexpress@qq.com'
-EMAIL_HOST_PASSWORD = ''
+EMAIL_HOST_PASSWORD = 'iaqvxhjnsxcrdijb'
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
