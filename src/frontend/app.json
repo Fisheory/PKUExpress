@@ -4,10 +4,11 @@
     "pages/post/post",
     "pages/home/home",
     "pages/profile/profile",
-    "pages/findpassword/findpassword",
     "pages/register/register",
     "pages/detail/detail",
-    "pages/success/success"
+    "pages/reset/reset",
+    "pages/success/success",
+    "pages/acceptedTasks/acceptedTasks"
   ],
   "window": {
     "navigationBarTextStyle": "black",

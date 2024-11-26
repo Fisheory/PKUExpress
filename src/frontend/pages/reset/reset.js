@@ -70,10 +70,6 @@ Page({
   // 注册按钮点击事件
   onRegister: function () {
     // 检查输入框内容
-    if (!this.data.username) {
-      this.showMessage('请填写用户名', 'red');
-      return;
-    }
     if (!this.data.email) {
       this.showMessage('请填写邮箱', 'red');
       return;
@@ -108,7 +104,7 @@ Page({
     const username = this.data.username;
     const verification_code = this.data.verification_code
     wx.request({
-      url: 'http://123.56.18.162:8000/accounts/auth/register',
+      url: 'http://123.56.18.162:8000/accounts/auth/reset-password',
       method: 'POST',
       data: {
         "username": username,
@@ -117,8 +113,8 @@ Page({
         "verification_code": verification_code
       },
       success: res => {
-        if (res.statusCode === 201) {
-          this.showMessage('注册成功，即将返回登录页面...', 'green');
+        if (res.statusCode === 200) {
+          this.showMessage('重设成功，即将返回登录页面...', 'green');
           // 注册成功后延时1秒跳转
           setTimeout(() => {
             wx.navigateTo({
@@ -146,7 +142,7 @@ Page({
       method: 'POST',
       data: {
         "email": full_email,
-        "usage": "register"
+        "usage": "reset"
       },
       success: res => {
         if (res.statusCode === 201) {
