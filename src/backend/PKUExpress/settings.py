@@ -134,11 +134,12 @@ AUTH_USER_MODEL = "accounts.CustomUser"
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework.authentication.TokenAuthentication",
-    )
+    ),
+    "EXCEPTION_HANDLER": "utils.utils.msg_exception_handler",
 }
 
 AUTHENTICATION_BACKENDS = {
-    "accounts.authenticate_email.EmailBackend",
+    "utils.utils.EmailBackend",
     "django.contrib.auth.backends.ModelBackend",
 }
 
