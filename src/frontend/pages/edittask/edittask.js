@@ -1,6 +1,7 @@
 // pages/post/post.js
 Page({
   data: {
+    id: '',
     taskName: '',
     campus: '',
     address: '',
@@ -16,17 +17,32 @@ Page({
     imagebase64: ''
   },
 
-  onLoad: function(){
-    const currentDate = new Date();
-    const year = currentDate.getFullYear();
-    const month = String(currentDate.getMonth() + 1).padStart(2, '0');
-    const day = String(currentDate.getDate()).padStart(2, '0');
-    const formattedDate = `${year}年${month}月${day}日`;
-    const hours = String(currentDate.getHours()).padStart(2, '0');
-    const minutes = String(currentDate.getMinutes()).padStart(2, '0');
-    const formattedTime = `${hours}:${minutes}`;
+  onLoad: function(options){
+    const id = decodeURIComponent(options.id);
+    const taskName = decodeURIComponent(options.taskName);
+    const details = decodeURIComponent(options.details);
+    const payment = decodeURIComponent(options.payment);
+    const address = decodeURIComponent(options.address);
+    const ddl = decodeURIComponent(options.ddl);
+    const uploadedImages = decodeURIComponent(options.uploadedImages);
+    console.log(options.uploadedImages);
+    this.setData({
+      id: id,
+      taskName: taskName,
+      details: details,
+      payment: payment,
+      address: address,
+      uploadedImages: uploadedImages
+    });
+    const date = new Date(ddl);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
     const rDate = `${year}-${month}-${day}`;
-
+    const formattedTime = `${hours}:${minutes}`;
+    const formattedDate = `${year}年${month}月${day}日`;
     this.setData({
       selectedDate: formattedDate,
       selectedTime: formattedTime,
@@ -149,9 +165,10 @@ Page({
       }
     });
 
+    const id = this.data.id;
     wx.request({
-      url: 'http://123.56.18.162:8000/tasks/tasklist',
-      method: 'POST',
+      url: `http://123.56.18.162:8000/tasks/tasklist/${id}`,
+      method: 'EDIT',
       header: {
         "Authorization": "Token " + wx.getStorageSync('token')
       },

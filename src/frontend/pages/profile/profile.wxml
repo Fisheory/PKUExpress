@@ -18,15 +18,15 @@
   <view class="stats">
     <view class="stat-item">
       <text class="stat-value">{{gold}}</text>
-      <text class="stat-label">金币</text>
+      <text class="stat-label"> 金币</text>
     </view>
     <view class="stat-item" bindtap="onReviews">
       <text class="stat-value">{{tasksCompleted}}</text>
-      <text class="stat-label">已完成任务</text>
+      <text class="stat-label"> 已完成任务</text>
     </view>
     <view class="stat-item" bindtap="onPosts">
       <text class="stat-value">{{tasksPosted}}</text>
-      <text class="stat-label">已发布任务</text>
+      <text class="stat-label"> 已发布任务</text>
     </view>
   </view>
 

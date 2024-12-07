@@ -93,6 +93,10 @@ Page({
       this.showMessage('密码与确认密码不匹配', 'red');
       return;
     }
+    if(!this.data.verification_code){
+      this.showMessage('请填写验证码', 'red');
+      return;
+    }
 
     this.setData({
       full_email: this.data.email + this.data.message_button
@@ -127,7 +131,23 @@ Page({
           }, 1000);
         } 
         else {
-          this.showMessage(res.data.msg, 'red');
+          if(res.data.msg=="Email already exists")
+          {
+            this.showMessage("用户已存在", 'red');
+          }
+          else if(res.data.msg=="Email must be a pku email")
+          {
+            this.showMessage("必须输入北大邮箱", 'red');
+          }
+          if(res.data.msg=="Verification code not found")
+          {
+            this.showMessage("未输入验证码", 'red');
+          }
+          else if(res.data.msg=="Invalid verification code")
+          {
+            this.showMessage("验证码错误", 'red');
+          }
+          else this.showMessage(res.data.msg, 'red');
         }
       },
       fail: () => {
@@ -137,6 +157,10 @@ Page({
   },
   
   onSendVerificationCode: function () {
+    if (!this.data.email) {
+      this.showMessage('请填写邮箱', 'red');
+      return;
+    }
     this.setData({
       full_email: this.data.email + this.data.message_button
     });
@@ -155,7 +179,27 @@ Page({
             isVerificationSent: true
           })
         } else {
-          this.showMessage(res.data.msg, 'red');
+          if(res.data.msg=="Email already exists")
+          {
+            this.showMessage("用户已存在", 'red');
+          }
+          else if(res.data.msg=="Email must be a pku email")
+          {
+            this.showMessage("必须输入北大邮箱", 'red');
+          }
+          else if(res.data.msg=="Email does not exist")
+          {
+            this.showMessage("用户不存在", 'red');
+          }
+          else if(res.data.msg=="Please wait for 1 minute before sending another token")
+          {
+            this.showMessage("发送频率过快，请等待1分钟后再次发送", 'red');
+          }
+          else if(res.data.msg=="Failed to send email")
+          {
+            this.showMessage("发送邮件失败", 'red');
+          }
+          else this.showMessage(res.data.msg, 'red');
         }
       },
       fail: () => {

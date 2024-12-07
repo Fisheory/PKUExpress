@@ -99,7 +99,13 @@ Page({
           }, 1000);
         } else {
           // 显示错误消息
-          this.showMessage(res.data.msg, 'red');
+          if(res.data.msg=="empty email or password"){
+            this.showMessage("请输入用户名和密码", 'red');
+          }
+          else if(res.data.msg=="invalid password"){
+            this.showMessage("密码错误", 'red');
+          }
+          else this.showMessage(res.data.msg, 'red');
         }
       },
       fail: () => {
