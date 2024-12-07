@@ -1,14 +1,17 @@
 {
   "pages": [
     "pages/index/index",
+    "pages/profile/profile",
     "pages/post/post",
     "pages/home/home",
-    "pages/profile/profile",
     "pages/register/register",
     "pages/detail/detail",
     "pages/reset/reset",
     "pages/success/success",
-    "pages/acceptedTasks/acceptedTasks"
+    "pages/acceptedTasks/acceptedTasks",
+    "pages/edittask/edittask",
+    "pages/finishedTasks/finishedTasks",
+    "pages/postedTasks/postedTasks"
   ],
   "window": {
     "navigationBarTextStyle": "black",

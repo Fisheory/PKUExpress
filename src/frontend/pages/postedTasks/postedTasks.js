@@ -1,8 +1,7 @@
 Page({
   data: {
     containerHeight: 0,
-    list: [],
-    isListEmpty: true,
+    list: []
   },
 
   // 点击查看详情
@@ -21,7 +20,7 @@ Page({
     const windowHeightPx = wx.getWindowInfo().windowHeight;
     const bottomHeightPx = 140 * wx.getWindowInfo().windowWidth / 750;
     wx.request({
-      url: 'http://123.56.18.162:8000/tasks/tasklist',
+      url: 'http://123.56.18.162:8000/accounts/profile/publish-tasklist',
       method: 'GET',
       header: {
         'Authorization': "Token " + wx.getStorageSync('token')
@@ -31,12 +30,6 @@ Page({
           this.setData({
             list: res.data,
           });
-          if(this.data.list.length!=0)
-          {
-            this.setData({
-              isListEmpty: false,
-            });
-          }
         }
         else {
           wx.showModal({

@@ -8,7 +8,9 @@ Page({
       create_time: '无',
       update_time: '无',
       finish_time: '无',
-      worker: '无'
+      worker: '无',
+      imagebase64: '',
+      publisher: ''
     },
     button_text: '接取任务',
     button_color: '#FFC107',
@@ -21,17 +23,16 @@ Page({
     st_point: '无',
     message_text: '',
     message_color: 'green',
-    image_path: '/test.png',
+    image_path: '',
     isToBeAccepted: false,
     isAccepted: false,
     isFinished: false,
-    isExpired: false
+    isExpired: false,
+    isToEdit: false,
+    selfemail: ''
   },
 
   formatTime(time, deta) {
-    console.log("!");
-    // 正则匹配时间格式
-    console.log(time)
     const regex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?\+08:00$/;
     if (regex.test(time)) {
       try {
@@ -42,14 +43,11 @@ Page({
         const hours = String(date.getHours()).padStart(2, '0');
         const minutes = String(date.getMinutes()).padStart(2, '0');
         const seconds = String(date.getSeconds()).padStart(2, '0');
-        console.log("!1");
         return `${year}年${month}月${day}日 ${hours}:${minutes}:${seconds}`;
       } catch (error) {
-        console.log("!2");
         return 'failed';
       }
     } else {
-      console.log("!3");
       return deta;
     }
   },
@@ -64,6 +62,27 @@ Page({
       success: (res) => {
         if (res.statusCode === 200) {
           this.setData({ detail: res.data }); // 设置数据到页面
+          if(this.data.detail.imagebase64)
+          {
+            const base64 = this.data.detail.imagebase64.replace(/^data:image\/(png|jpg|jpeg);base64,/, '');
+            const fs = wx.getFileSystemManager();
+            const tempFilePath = `${wx.env.USER_DATA_PATH}/temp_image.png`;
+            const arrayBuffer = base64ToArrayBuffer(base64);
+            fs.writeFile({
+              filePath: tempFilePath,
+              data: arrayBuffer,
+              encoding: 'binary',
+              success: () => {
+                console.log("图片保存成功！");
+                this.setData({
+                  image_path: tempFilePath
+                });
+              },
+              fail: (err) => {
+                console.error("图片保存失败", err);
+              }
+            });
+          }
           // 判断状态
           if (this.data.detail.status !== 'to_be_accepted') {
 
@@ -108,6 +127,46 @@ Page({
             icon: 'none',
           });
         }
+
+        console.log("!!!!!!!!!!!!!!!!!!!!!");
+         wx.request({
+          url: 'http://123.56.18.162:8000/accounts/profile',
+          method: 'GET',
+          header: {
+            'Authorization': "Token " + wx.getStorageSync('token')
+          },
+          success: res => {
+            if (res.statusCode === 200) {
+              this.setData({
+                selfemail: res.data.email,
+              });
+              console.log(this.data.selfemail);
+              console.log(this.data.detail.publisher);
+              if(this.data.selfemail==this.data.detail.publisher)
+              {
+                this.setData({
+                  isToBeAccepted: false,
+                  isToEdit: true
+                });
+              }
+            } else {
+              wx.showModal({
+                title: '用户信息获取失败',
+                showCancel: false,
+                confirmText: '确认',
+                confirmColor: '#3CC51F',
+              });
+            }
+          },
+          fail: () => {
+            wx.showModal({
+              title: '连接服务器失败',
+              showCancel: false,
+              confirmText: '确认',
+              confirmColor: '#3CC51F',
+            });
+          }
+        });
       },
       fail: () => {
         wx.showToast({
@@ -121,6 +180,7 @@ Page({
   submitTask(){
     if(this.data.detail.status == 'to_be_accepted')
     {
+      
       const id = this.data.id;
       wx.request({
         url: `http://123.56.18.162:8000/tasks/tasklist/${id}`,
@@ -218,6 +278,35 @@ Page({
     wx.redirectTo({
       url: "/pages/home/home"
     })
+  },
+
+  editTask(){
+    const taskData = {
+      id: this.data.id,
+      taskName: this.data.detail.name,
+      details: this.data.detail.description,
+      payment: this.data.detail.reward,
+      address: this.data.detail.end_location,
+      ddl: this.data.detail.deadline,
+      uploadedImages: this.data.image_path
+    };
+    
+    const url = `/pages/edittask/edittask?id=${encodeURIComponent(taskData.id)}&taskName=${encodeURIComponent(taskData.taskName)}&details=${encodeURIComponent(taskData.details)}&payment=${encodeURIComponent(taskData.payment)}&address=${encodeURIComponent(taskData.address)}&ddl=${encodeURIComponent(taskData.ddl)}&uploadedImages=${encodeURIComponent(taskData.uploadedImages)}`;
+    
+    wx.navigateTo({
+      url: url
+    });
+  },
+
+  base64ToArrayBuffer: function(params){
+    const binaryString = wx.base64ToBinary(base64);
+    const length = binaryString.length;
+    const arrayBuffer = new ArrayBuffer(length);
+    const view = new Uint8Array(arrayBuffer);
+    for (let i = 0; i < length; i++) {
+      view[i] = binaryString.charCodeAt(i);
+    }
+    return arrayBuffer;
   },
 
   onUnload() {

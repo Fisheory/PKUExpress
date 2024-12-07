@@ -1,11 +1,11 @@
 // pages/profile/profile.js
 Page({
     data: {
-      username: '12345_test', // User ID 
-      userEmail: '12345_test@pku.edu.cn', // User email
-      gold: '100', // Fake money each user has
-      tasksCompleted: 0, // Example value
-      tasksPosted: 0, // Example value
+      username: '--', // User ID 
+      userEmail: '--', // User email
+      gold: '--', // Fake money each user has
+      tasksCompleted: '--', // Example value
+      tasksPosted: '--', // Example value
     },
   
     onLoad: function () {
@@ -28,7 +28,7 @@ Page({
             console.log(res.data)
           } else {
             wx.showModal({
-              title: '列表拉取失败',
+              title: '用户信息获取失败',
               showCancel: false,
               confirmText: '确认',
               confirmColor: '#3CC51F',
@@ -69,7 +69,7 @@ Page({
     },
     onPosts: function () {
       wx.navigateTo({
-        url: '/pages/posted/posted'
+        url: '/pages/postedTasks/postedTasks'
       });
     },
     

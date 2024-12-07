@@ -68,7 +68,7 @@ Page({
   },
 
   // 注册按钮点击事件
-  onRegister: function () {
+  onReset: function () {
     // 检查输入框内容
     if (!this.data.email) {
       this.showMessage('请填写邮箱', 'red');
@@ -89,6 +89,11 @@ Page({
       this.showMessage('密码与确认密码不匹配', 'red');
       return;
     }
+    if (!this.data.verification_code)
+    {
+      this.showMessage('请填写验证码', 'red');
+      return;
+    }
 
     this.setData({
       full_email: this.data.email + this.data.message_button
@@ -99,7 +104,7 @@ Page({
     console.log("encrypted");
     console.log(encryptedPassword)
 
-    // 发送注册请求
+    // 发送重设请求
     const full_email = this.data.full_email;
     const username = this.data.username;
     const verification_code = this.data.verification_code
@@ -123,7 +128,10 @@ Page({
           }, 1000);
         } 
         else {
-          this.showMessage(res.data.msg, 'red');
+          if(res.data.msg=="invalid token"){
+            this.showMessage("验证码错误", 'red');
+          }
+          else this.showMessage(res.data.msg, 'red');
         }
       },
       fail: () => {
@@ -133,6 +141,10 @@ Page({
   },
   
   onSendVerificationCode: function () {
+    if (!this.data.email) {
+      this.showMessage('请填写邮箱', 'red');
+      return;
+    }
     this.setData({
       full_email: this.data.email + this.data.message_button
     });
