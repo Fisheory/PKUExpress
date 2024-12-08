@@ -42,6 +42,8 @@ class Task(models.Model):
     )
     # to_be_accepted, accepted, finished, out_of_date
 
+    image = models.ImageField(upload_to="task_images", null=True, blank=True)
+
     def __str__(self):
         return self.name
 
