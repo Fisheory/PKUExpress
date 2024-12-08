@@ -5,7 +5,7 @@ from django.utils import timezone
 
 # Create your models here.
 class CustomUser(AbstractUser):
-    username = models.CharField(max_length=150, unique=False, blank=False, null=False)
+    username = models.CharField(max_length=150, unique=True, blank=False, null=False)
     email = models.EmailField(max_length=150, unique=True, blank=False, null=False)
     phone = models.CharField(max_length=11, blank=True)
     # 给予每个用户1000金币, 方便后续测试
