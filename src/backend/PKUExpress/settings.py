@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "accounts",
     "tasks",
+    "myMessages",
     "rest_framework",
     "rest_framework.authtoken",
     "sslserver",

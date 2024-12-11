@@ -25,4 +25,5 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("accounts/", include("accounts.urls")),
     path("tasks/", include("tasks.urls")),
+    path("messages/", include("myMessages.urls")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

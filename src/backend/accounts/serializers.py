@@ -6,7 +6,7 @@ from django.utils import timezone
 
 from tasks.serializers import TaskSerializer
 from .models import CustomUser, VerificationCode
-from utils.utils import send_email
+from utils.utils import send_email, Base64ImageField
 
 
 class CustomUserSerializer(serializers.ModelSerializer):
@@ -25,9 +25,12 @@ class CustomUserSerializer(serializers.ModelSerializer):
         serializers.SerializerMethodField()
     )  # 用于返回用户接受的任务中已经被完成的任务
 
+    image = Base64ImageField(required=False)
+
     class Meta:
         model = CustomUser
         fields = [
+            "id",
             "username",
             "password",
             "email",
@@ -37,6 +40,7 @@ class CustomUserSerializer(serializers.ModelSerializer):
             "accepted_tasks",
             "accepted_accepted_tasks",
             "accepted_finished_tasks",
+            "image",
         ]
 
     # 检查email
@@ -45,6 +49,13 @@ class CustomUserSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("Email already exists")
         if not value.endswith(("@pku.edu.cn", "@stu.pku.edu.cn", "@alumni.pku.edu.cn")):
             raise serializers.ValidationError("Email must be a pku email")
+        return value
+
+    def validate_phone(self, value):
+        if not value:
+            return value
+        if len(value) != 11:
+            raise serializers.ValidationError("Phone number must be 11 digits")
         return value
 
     def create(self, validated_data):
@@ -67,6 +78,26 @@ class CustomUserSerializer(serializers.ModelSerializer):
         user.set_password(password)
         user.save()
         return user
+
+    def update(self, instance, validated_data):
+        allowed_fields = [
+            "phone",
+            "image",
+            "username",
+        ]
+        for field in allowed_fields:
+            if field in validated_data:
+                if (
+                    field == "username"
+                    and CustomUser.objects.filter(
+                        username=validated_data[field]
+                    ).exists()
+                ):
+                    raise serializers.ValidationError("Username already exists")
+                setattr(instance, field, validated_data[field])
+
+        instance.save()
+        return instance
 
     def get_published_tasks(self, obj):
         tasks = obj.published_tasks.all()
