@@ -1,0 +1,22 @@
+<navi-bar id="navi-bar" title="消息"></navi-bar>
+
+<view class="container">
+  <scroll-view scroll-y="true" class="message-list" style="height: {{containerHeight}}px">
+    <view class="message-item" wx:for="{{messageList}}" wx:key="id" bindtap="onMessage">
+      <view class="left">
+        <image class="avatar" src="{{item.avatar}}" />
+      </view>
+      <view class="right">
+        <view class="top">
+          <text class="nickname">{{item.nickname}}</text>
+        </view>
+        <view class="bottom">
+          <text class="last-message">{{item.lastMessage}}</text>
+        </view>
+        <view class="unread-count" wx:if="{{item.unreadCount > 0}}">
+          <text>{{item.unreadCount}}</text>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+</view>

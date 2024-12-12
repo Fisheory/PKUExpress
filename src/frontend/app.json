@@ -11,7 +11,9 @@
     "pages/acceptedTasks/acceptedTasks",
     "pages/edittask/edittask",
     "pages/finishedTasks/finishedTasks",
-    "pages/postedTasks/postedTasks"
+    "pages/postedTasks/postedTasks",
+    "pages/messages/messages",
+    "pages/message/message"
   ],
   "window": {
     "navigationBarTextStyle": "black",

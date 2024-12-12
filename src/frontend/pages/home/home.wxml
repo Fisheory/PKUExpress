@@ -1,9 +1,9 @@
 <!--home.wxml-->
 <navi-bar id="navi-bar" title="PKUExpress"></navi-bar>
-<text wx:if="{{isListEmpty}}" style="color: #666666; text-align: center;">暂无任务</text>
 <view class="container" >
+  <text wx:if="{{isListEmpty}}" style="color: #666666; text-align: center;">暂无任务</text>
   <!-- 滚动列表 -->
-  <scroll-view class="scroll-container" style="height: {{containerHeight}}px" scroll-y="true" >
+  <scroll-view class="scroll-container"  scroll-y="true" >
     <block wx:for="{{list}}" wx:key="id">
       <view class="list-item">
         <!-- 标题 -->

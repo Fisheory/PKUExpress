@@ -1,0 +1,37 @@
+<navi-bar title="{{receiver}}" />
+<view class="container">
+  <!-- 聊天记录部分 -->
+  <scroll-view scroll-y="true" class="chat-container" scroll-into-view="message-{{messages.length}}">
+    <view wx:for="{{messages}}" wx:key="id" id="message-{{index}}">
+      <view class="message-item {{item.sender === 'self' ? 'self' : 'other'}}">
+        <image 
+          class="avatar" 
+          src="{{item.avatar}}" 
+          wx:if="{{item.sender !== 'self'}}" 
+        />
+        <view class="bubble">{{item.content}}</view>
+        <image 
+          class="avatar" 
+          src="{{item.avatar}}" 
+          wx:if="{{item.sender === 'self'}}" 
+        />
+      </view>
+    </view>
+  </scroll-view>
+
+  <!-- 输入框部分 -->
+  <view class="input-bar">
+    <view class="emoji-button" bindtap="chooseEmoji">😀</view>
+    <view class="image-button" bindtap="chooseImage">📷</view>
+  </view>
+  <input
+    type="text"
+    placeholder="请输入消息..."
+    value="{{inputValue}}"
+    bindinput="onInput"
+    bindconfirm="sendMessage"
+    confirm-type="send"
+    class="input"
+    style="background-color: #ffffff;"
+  />
+</view>
