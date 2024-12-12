@@ -281,5 +281,12 @@ Page({
     const oneMonthLater = new Date(currentDate);
     oneMonthLater.setMonth(currentDate.getMonth() + 1);
     return rawDateTime > currentDate && rawDateTime <= oneMonthLater;
+  },
+
+  // Navigate to the map page
+  navigateToMap: function () {
+    wx.navigateTo({
+      url: '/pages/map/map' 
+    });
   }
 });
