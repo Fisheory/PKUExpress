@@ -1,0 +1,42 @@
+/* pages/map/map.wxss */
+
+page {
+  height: 100%;
+}
+
+.view {
+  width: 100%;
+  height: 100%;
+}
+
+map {
+  width: 100%;
+  height: 100%;
+  background-color:white;
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  background-color: #fff;
+  z-index: 1000;
+}
+
+input {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-right: 10px;
+}
+
+button {
+  padding: 8px 12px;
+  background-color: #007aff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
