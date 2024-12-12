@@ -1,3 +1,7 @@
 *.sqlite3
 
 **__pycache__/
+
+*.key
+
+**media/

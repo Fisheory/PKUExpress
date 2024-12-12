@@ -1,0 +1,6 @@
+{
+  "usingComponents": {
+    "navi-bar": "/components/navi-bar/navi-bar",
+    "bott-bar": "/components/bott-bar/bott-bar"
+  }
+}

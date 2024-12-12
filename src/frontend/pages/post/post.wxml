@@ -21,6 +21,20 @@
       <text style="margin-top: -60px;">详情:</text>
       <textarea placeholder="Enter details" bindinput="onDetailsInput" style="height: 80px; width: 100%;"></textarea>
     </view>
+
+    <view class="form-item">
+      <text style="margin-top: 0px;">截止时间:</text>
+      <view class="fake" style="max-width: 44vw;">
+        <picker mode="date" bindchange="dateChange">
+        <text>{{selectedDate}}</text>
+        </picker>
+      </view>
+      <view class="fake" style="max-width: 16vw;">
+        <picker mode="time" bindchange="timeChange">
+        <text>{{selectedTime}}</text>
+        </picker>
+      </view>
+    </view>
   </view>
 
   <view class="message" style="color: {{message_color}}">{{message}}</view>
@@ -36,7 +50,7 @@
 
     <!-- 如果有图片，显示上传的图片 -->
     <block wx:else>
-      <image src="{{uploadedImages[0]}}" class="uploaded-image" bindtap="uploadImage" />
+      <image src="{{uploadedImages[0]}}" class="uploaded-image" mode="heightFix" bindtap="uploadImage" />
     </block>
   </view>
 

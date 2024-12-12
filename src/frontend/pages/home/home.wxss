@@ -1,6 +1,6 @@
 /* 整体容器样式 */
 .container {
-  height: calc(100vh - 140rpx);
+  height: calc(100vh - 180rpx);
   display: flex;
   flex-direction: column;
   background-color: #f5f5f5;

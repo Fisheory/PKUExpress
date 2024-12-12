@@ -1,7 +1,8 @@
 Page({
   data: {
     containerHeight: 0,
-    list: []
+    list: [],
+    isListEmpty: true,
   },
 
   // 点击查看详情
@@ -30,6 +31,12 @@ Page({
           this.setData({
             list: res.data,
           });
+          if(this.data.list.length!=0)
+          {
+            this.setData({
+              isListEmpty: false,
+            });
+          }
         }
         else {
           wx.showModal({
