@@ -11,6 +11,8 @@ class CustomUser(AbstractUser):
     # 给予每个用户1000金币, 方便后续测试
     gold = models.IntegerField(default=1000)
 
+    image = models.ImageField(upload_to="user_images", null=True, blank=True)
+
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = ["username"]
 

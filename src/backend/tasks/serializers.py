@@ -1,27 +1,10 @@
-import base64
-import uuid
-
-from django.core.files.base import ContentFile
 from rest_framework import serializers
+
 from .models import Task
 from accounts.models import CustomUser
 from django.utils import timezone
 
-
-class Base64ImageField(serializers.ImageField):
-    def to_internal_value(self, data):
-        if isinstance(data, str):
-            try:
-                # 从 base64 字符串中提取图片数据
-                format, base64_str = data.split(";base64,")
-                image_data = base64.b64decode(base64_str)
-                # 使用 UUID 生成一个唯一的文件名
-                file_name = f"{uuid.uuid4()}.png"
-                file = ContentFile(image_data, name=file_name)
-                return file
-            except Exception as e:
-                raise serializers.ValidationError("Invalid base64 image data.")
-        return super().to_internal_value(data)
+from utils.utils import Base64ImageField
 
 
 class TaskSerializer(serializers.ModelSerializer):

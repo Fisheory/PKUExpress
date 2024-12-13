@@ -31,6 +31,7 @@ ALLOWED_HOSTS = ["123.56.18.162", "localhost"]
 # Application definition
 
 INSTALLED_APPS = [
+    "daphne",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -39,9 +40,11 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "accounts",
     "tasks",
+    "myMessages",
     "rest_framework",
     "rest_framework.authtoken",
     "sslserver",
+    "channels",
 ]
 
 MIDDLEWARE = [
@@ -158,3 +161,7 @@ import os
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+
+ASGI_APPLICATION = "PKUExpress.asgi.application"
+
+CHANNEL_LAYERS = {"default": {"BACKEND": "channels.layers.InMemoryChannelLayer"}}
