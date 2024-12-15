@@ -7,8 +7,6 @@ from django.utils import timezone
 class Task(models.Model):
     name = models.CharField(max_length=50)
     description = models.TextField()
-    start_location = models.CharField(max_length=50)
-    end_location = models.CharField(max_length=50)
     reward = models.IntegerField()
     start_location = models.CharField(max_length=100, blank=True, null=True)
     end_location = models.CharField(max_length=100)
