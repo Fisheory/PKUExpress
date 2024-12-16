@@ -1,0 +1,25 @@
+<navi-bar id="navi-bar" title="消息" url="/pages/profile/profile"></navi-bar>
+
+<view class="container">
+  <scroll-view scroll-y="true" class="message-list" style="height: {{containerHeight}}px">
+    <view class="message-item" wx:for="{{messageList}}" wx:key="id" bindtap="onMessage" data-username="{{item.sender}}">
+      <view class="left">
+        <image class="avatar" src="/assets/antOutline-user 1.svg" />
+      </view>
+      <view class="right">
+        <view class="top">
+          <text class="nickname">{{item.sender}}</text>
+        </view>
+        <view class="bottom">
+          <text class="last-message">{{item.text}}</text>
+        </view>
+        <view class="timestamp">
+          <text>{{item.timestamp}}</text>
+        </view>
+        <view class="unread-count" wx:if="{{item.unreadCount > 0}}">
+          <text>{{item.unreadCount}}</text>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+</view>
