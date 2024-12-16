@@ -6,10 +6,37 @@
     <!-- Profile Picture -->
     <image class="profile-pic" src="/assets/profile_icon.png" />
 
-    <!-- User Info -->
-    <view class="user-info">
-      <text class="user-id">{{username}}</text>
-      <text class="user-email">{{userEmail}}</text>
+    <view class="form-item">
+      <view style="display: flex; align-items: center; justify-content: space-between;">
+        <text>途径点:</text>
+        <button bindtap="navigateToMap" style="margin-left: auto; height: 32px; line-height: 20px;">选择</button>
+      </view>
+      <textarea placeholder="Enter addresses" bindinput="onAddressInput" style="height: 80px; width: 100%;"></textarea>
+    </view>
+
+
+    <view class="form-item">
+      <text>金额:</text>
+      <input placeholder="Enter payment" bindinput="onPaymentInput"/>
+    </view>
+
+    <view class="form-item">
+      <text style="margin-top: -60px;">详情:</text>
+      <textarea placeholder="Enter details" bindinput="onDetailsInput" style="height: 80px; width: 100%;"></textarea>
+    </view>
+
+    <view class="form-item">
+      <text style="margin-top: 0px;">截止时间:</text>
+      <view class="fake" style="max-width: 44vw;">
+        <picker mode="date" bindchange="dateChange">
+        <text>{{selectedDate}}</text>
+        </picker>
+      </view>
+      <view class="fake" style="max-width: 16vw;">
+        <picker mode="time" bindchange="timeChange">
+        <text>{{selectedTime}}</text>
+        </picker>
+      </view>
     </view>
   </view>
 
@@ -37,6 +64,7 @@
     <text>欢迎来到PKUExpress, 感谢您的支持！ヾ(◍°∇°◍)ﾉ</text>
   </view>
   </view>
+
 </view>
 
   <!-- Menu Section -->

@@ -1,0 +1,66 @@
+/* pages/map/map.wxss */
+
+.container {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    align-items: center;
+  }
+  
+  .input-section {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+  
+  .location-input {
+    width: 90%;
+    border: 1px solid #ccc;
+    margin: 0 auto;
+    border-radius: 5px;
+    padding: 10px;
+    font-size: 16px;
+    box-sizing: content-box; 
+  }
+  
+  .button-section {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .search-btn {
+    background-color: rgba(255, 142, 79, 1);
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    text-align: center;
+  }
+  
+  .location-info {
+    width: 90%; 
+    background-color: #f9f9f9;
+    border: 1px solid #ddd; 
+    border-radius: 8px; 
+    padding: 15px;
+    margin: 20px auto; 
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+  }
+  
+  .info-title {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
+    text-align: center;
+  }
+  
+  .confirm-btn {
+    color: #FFFFFF; 
+    background-color: rgba(255, 142, 79, 1);
+    font-size: 20px;
+    border-radius: 8px;
+    text-align: center;
+  }
+  
+
