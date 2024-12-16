@@ -28,11 +28,14 @@ class MessageSerializer(serializers.ModelSerializer):
         ]
 
     def validate(self, attrs):
-
+        
         print(attrs)
 
-        user = self.context["request"].user
-        attrs["sender"] = user
+        if "request" in self.context:
+            user = self.context["request"].user
+            attrs["sender"] = user
+        elif "sender" in self.context:
+            attrs["sender"] = self.context["sender"]
 
         if "receiver" not in attrs:
             raise serializers.ValidationError("receiver is required")
