@@ -122,6 +122,8 @@ Page({
         showCancel: false
       });
       console.log('Confirmed location:', this.data.selectedLocation);
+      wx.setStorageSync('position', this.data.selectedLocation);
+      wx.navigateBack()
     } else {
       wx.showToast({ title: 'Please search and select a location first.', icon: 'none' });
     }

@@ -17,6 +17,8 @@ Page({
   },
 
   onLoad: function(){
+    wx.removeStorageSync('position');
+    console.log(wx.getStorageSync('position'))
     const currentDate = new Date();
     const year = currentDate.getFullYear();
     const month = String(currentDate.getMonth() + 1).padStart(2, '0');
@@ -31,7 +33,8 @@ Page({
       selectedDate: formattedDate,
       selectedTime: formattedTime,
       rawDate: rDate,
-      rawTime: formattedTime
+      rawTime: formattedTime,
+      address: ""
     });
   },
 
@@ -101,6 +104,7 @@ Page({
         return;
     }
     if (!this.data.address) {
+      console.log(this.data.address)
       wx.showModal({
           title: '提示',
           content: '请填写途径点',
@@ -288,5 +292,22 @@ Page({
     wx.navigateTo({
       url: '/pages/map/map' 
     });
+  },
+  
+  onShow: function () {
+    const position = wx.getStorageSync('position');
+    console.log(position);
+    if (position) {
+      this.setData({
+        address: this.data.address + position['name'] + ','
+      });
+    }
+  },
+
+  onUnload() {
+    console.log(this.data.address);
+    wx.removeStorageSync('position');
+    this.setData({address: ""});
+    console.log(this.data.address);
   }
 });

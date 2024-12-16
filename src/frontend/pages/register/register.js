@@ -131,19 +131,20 @@ Page({
           }, 1000);
         } 
         else {
-          if(res.data.msg=="Email already exists")
+          console.log(res.data.msg);
+          if(res.data.msg === "{'email': [ErrorDetail(string='Email already exists', code='invalid')]}")
           {
             this.showMessage("用户已存在", 'red');
           }
-          else if(res.data.msg=="Email must be a pku email")
+          else if(res.data.msg === "Email must be a pku email")
           {
             this.showMessage("必须输入北大邮箱", 'red');
           }
-          if(res.data.msg=="Verification code not found")
+          if(res.data.msg === "Verification code not found")
           {
             this.showMessage("未输入验证码", 'red');
           }
-          else if(res.data.msg=="Invalid verification code")
+          else if(res.data.msg === "[ErrorDetail(string='Invalid verification code', code='invalid')]")
           {
             this.showMessage("验证码错误", 'red');
           }

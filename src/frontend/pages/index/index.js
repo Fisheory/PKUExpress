@@ -95,7 +95,7 @@ Page({
           setTimeout(() => {
             const app = getApp();
             app.createSocketConnection();
-            wx.navigateTo({
+            wx.redirectTo({
               url: '/pages/home/home'
             });
           }, 1000);
@@ -105,7 +105,7 @@ Page({
             this.showMessage("请输入用户名和密码", 'red');
           }
           else if(res.data.msg=="invalid password"){
-            this.showMessage("密码错误", 'red');
+            this.showMessage("邮箱或密码错误", 'red');
           }
           else this.showMessage(res.data.msg, 'red');
         }

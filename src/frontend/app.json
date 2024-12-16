@@ -13,7 +13,8 @@
     "pages/finishedTasks/finishedTasks",
     "pages/postedTasks/postedTasks",
     "pages/messages/messages",
-    "pages/message/message"
+    "pages/message/message",
+    "pages/map/map"
   ],
   "window": {
     "navigationBarTextStyle": "black",
