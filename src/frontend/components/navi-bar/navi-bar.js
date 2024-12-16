@@ -12,7 +12,11 @@ Component({
     showBack: {
       type: Boolean,
       value: true
-    }
+    },
+    url: {
+      type: String,
+      value: ''
+    },
   },
 
   /**
@@ -51,10 +55,19 @@ Component({
    */
   methods: {
     onBack() {
-        // 返回上一页
-        wx.navigateBack({
-            delta: 1
+      const targetPagePath = this.properties.url;
+      console.log(targetPagePath)
+      if (targetPagePath) {
+        // 如果指定了目标页面路径，则跳转
+        wx.navigateTo({
+          url: targetPagePath,
         });
+      } else {
+        // 否则返回上一页
+        wx.navigateBack({
+          delta: 1
+        });
+      }
     },
     getNaviInfo() {
       return {

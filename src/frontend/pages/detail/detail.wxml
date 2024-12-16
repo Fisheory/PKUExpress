@@ -43,6 +43,7 @@
     <view class="form-item">
       <view class="form-left">发布者：</view>
       <view class="form-right">{{detail.publisher}}</view>
+      <button class="chat-button" bindtap="startChat" data-receiver="{{detail.publisher}}" style="width: 214rpx; display: block; box-sizing: border-box; left: 0rpx; top: 0rpx">开启聊天</button>
     </view>
     <view class="form-item">
       <view class="form-left">接受人：</view>

@@ -1,85 +1,8 @@
 Page({
   data: {
     containerHeight: 0,
-    messageList: [
-      {
-        id: 1,
-        avatar: '/path/to/avatar1.png',
-        nickname: '张三',
-        lastMessage: '你好，最近怎么样？',
-        unreadCount: 2
-      },
-      {
-        id: 2,
-        avatar: '/path/to/avatar2.png',
-        nickname: '李四',
-        lastMessage: '收到文件了吗？',
-        unreadCount: 0
-      },
-      {
-        id: 1,
-        avatar: '/path/to/avatar1.png',
-        nickname: '张三',
-        lastMessage: '你好，最近怎么样？',
-        unreadCount: 2
-      },
-      {
-        id: 1,
-        avatar: '/path/to/avatar1.png',
-        nickname: '张三',
-        lastMessage: '你好，最近怎么样？',
-        unreadCount: 2
-      },
-      {
-        id: 1,
-        avatar: '/path/to/avatar1.png',
-        nickname: '张三',
-        lastMessage: '你好，最近怎么样？',
-        unreadCount: 2
-      },
-      {
-        id: 1,
-        avatar: '/path/to/avatar1.png',
-        nickname: '张三',
-        lastMessage: '你好，最近怎么样？',
-        unreadCount: 2
-      },
-      {
-        id: 1,
-        avatar: '/path/to/avatar1.png',
-        nickname: '张三',
-        lastMessage: '你好，最近怎么样？',
-        unreadCount: 2
-      },
-      {
-        id: 1,
-        avatar: '/path/to/avatar1.png',
-        nickname: '张三',
-        lastMessage: '你好，最近怎么样？',
-        unreadCount: 2
-      },
-      {
-        id: 1,
-        avatar: '/path/to/avatar1.png',
-        nickname: '张三',
-        lastMessage: '你好，最近怎么样？',
-        unreadCount: 2
-      },
-      {
-        id: 1,
-        avatar: '/path/to/avatar1.png',
-        nickname: '张三',
-        lastMessage: '你好，最近怎么样？',
-        unreadCount: 2
-      },
-      {
-        id: 3,
-        avatar: '/path/to/avatar3.png',
-        nickname: '王五',
-        lastMessage: '晚餐时间定了',
-        unreadCount: 5
-      }
-    ]
+    messageList: [],
+    isListEmpty: true
   },
 
   onLoad() {
@@ -89,10 +12,52 @@ Page({
     this.setData({
       containerHeight: windowHeightPx - paddingTop - naviHeight - 20,
     });
+    wx.request({
+      url: 'http://123.56.18.162:8000/messages/msglist?last_message',
+      method: 'GET',
+      header: {
+        'Authorization': "Token " + wx.getStorageSync('token')
+      },
+      success: res => {
+        if (res.statusCode === 200) {
+          res.data.map(item => {
+            if (item.timestamp) {
+              const timestamps = item.timestamp.replace('T', ' ').split(':')
+              item.timestamp = timestamps[0] + ':' + timestamps[1];
+            }
+          });
+          console.log(res.data)
+          this.setData({
+            messageList: res.data,
+          });
+          if (this.data.messageList.length != 0) {
+            this.setData({
+              isListEmpty: false,
+            });
+          }
+        }
+        else {
+          wx.showModal({
+            title: '列表拉取失败',
+            showCancel: false,
+            confirmText: '确认',
+            confirmColor: '#3CC51F',
+          });
+        }
+      },
+      fail: () => {
+        wx.showModal({
+          title: '连接服务器失败',
+          showCancel: false,
+          confirmText: '确认',
+          confirmColor: '#3CC51F',
+        });
+      }
+    });
   },
 
   onMessage(e) {
-    const receiver = e.currentTarget.dataset.nickname;
+    const receiver = e.currentTarget.dataset.username;
     console.log("打开聊天室，receiver: ", receiver);
     wx.navigateTo({
       url: `/pages/message/message?receiver=${receiver}`,

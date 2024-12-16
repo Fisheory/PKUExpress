@@ -31,8 +31,7 @@ Page({
           this.setData({
             list: res.data,
           });
-          if(this.data.list.length!=0)
-          {
+          if (this.data.list.length != 0) {
             this.setData({
               isListEmpty: false,
             });

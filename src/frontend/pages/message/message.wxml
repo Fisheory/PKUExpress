@@ -1,18 +1,22 @@
-<navi-bar title="{{receiver}}" />
+<navi-bar title="{{receiver}}" url="/pages/messages/messages"/>
 <view class="container">
   <!-- 聊天记录部分 -->
-  <scroll-view scroll-y="true" class="chat-container" scroll-into-view="message-{{messages.length}}">
-    <view wx:for="{{messages}}" wx:key="id" id="message-{{index}}">
+  <scroll-view 
+    scroll-y="true" 
+    class="chat-container" 
+    scroll-into-view="{{lastMessageId}}"
+  >
+    <view wx:for="{{messages}}" wx:key="id" id="message-{{item.id}}">
       <view class="message-item {{item.sender === 'self' ? 'self' : 'other'}}">
         <image 
           class="avatar" 
-          src="{{item.avatar}}" 
+          src="/assets/antOutline-user 1.svg" 
           wx:if="{{item.sender !== 'self'}}" 
         />
-        <view class="bubble">{{item.content}}</view>
+        <view class="bubble">{{item.text}}</view>
         <image 
           class="avatar" 
-          src="{{item.avatar}}" 
+          src="/assets/profile_icon.png" 
           wx:if="{{item.sender === 'self'}}" 
         />
       </view>
@@ -34,4 +38,5 @@
     class="input"
     style="background-color: #ffffff;"
   />
+  <button class="send-button" bindtap="sendMessage">发送</button>
 </view>

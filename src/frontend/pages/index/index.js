@@ -93,6 +93,8 @@ Page({
           this.showMessage('登录成功', 'green');
           // 登录成功后延时1秒跳转
           setTimeout(() => {
+            const app = getApp();
+            app.createSocketConnection();
             wx.navigateTo({
               url: '/pages/home/home'
             });

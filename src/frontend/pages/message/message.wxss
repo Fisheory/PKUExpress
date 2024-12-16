@@ -80,3 +80,15 @@
   border-radius: 50%;
   margin-left: 20px;
 }
+
+.send-button {
+  height: 40px;
+  padding: 0 15px;
+  font-size: 14px;
+  color: #fff;
+  background-color: rgba(255, 142, 79, 1);
+  border: none;
+  border-radius: 20px;
+  margin-left: 10px;
+  cursor: pointer;
+}

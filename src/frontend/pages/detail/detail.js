@@ -298,6 +298,13 @@ Page({
     });
   },
 
+  startChat: function(e) {
+    const receiver = e.currentTarget.dataset.receiver;  // 获取接收者的用户名
+    wx.navigateTo({
+      url: `/page/message/message?receiver=${receiver}`,  // 跳转到聊天页面
+    });
+  },
+
   base64ToArrayBuffer: function(params){
     const binaryString = wx.base64ToBinary(base64);
     const length = binaryString.length;

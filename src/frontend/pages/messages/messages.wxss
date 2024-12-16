@@ -45,6 +45,20 @@
   align-items: center;
 }
 
+.timestamp {
+  color: #777;
+  position: absolute;
+  justify-content: center;
+  display: flex;
+  top: 0;
+  right: 0;
+  width: 120px;
+  height: 20px;
+  align-items: center;
+  font-size: 12px;
+  margin-top: -10px;
+}
+
 .unread-count {
   position: absolute;
   top: 0;
@@ -58,5 +72,6 @@
   justify-content: center;
   align-items: center;
   font-size: 12px;
-  margin-top: 5px;
+  margin-top: 15px;
+  margin-right: 10px;
 }
