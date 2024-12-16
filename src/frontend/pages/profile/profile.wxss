@@ -2,14 +2,10 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-<<<<<<< HEAD
-    padding: 20px;
-=======
     justify-content: flex-start;
     padding: 20px;
     padding-top: 80px;
     height: calc(100vh - 140rpx);
->>>>>>> ac4d57e3eaba250c9fdd3cb468a030d322ac2ae9
     background-color: #ffffff;
   }
   
@@ -17,10 +13,7 @@
     display: flex;
     align-items: center;
     width: 100%;
-<<<<<<< HEAD
-=======
     margin-top: 30px;
->>>>>>> ac4d57e3eaba250c9fdd3cb468a030d322ac2ae9
     margin-bottom: 30px; /* Add spacing below the header */
   }
   
@@ -59,11 +52,7 @@
     background-color: #f9f9f9; 
     text-align: left; 
     margin: 10px auto; 
-<<<<<<< HEAD
-    width: 90%; 
-=======
     width: 95%; 
->>>>>>> ac4d57e3eaba250c9fdd3cb468a030d322ac2ae9
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); 
   }
   

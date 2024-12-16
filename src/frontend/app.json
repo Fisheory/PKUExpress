@@ -1,14 +1,6 @@
 {
   "pages": [
     "pages/index/index",
-<<<<<<< HEAD
-    "pages/post/post",
-    "pages/home/home",
-    "pages/profile/profile",
-    "pages/findpassword/findpassword",
-    "pages/register/register",
-    "pages/success/success"
-=======
     "pages/profile/profile",
     "pages/post/post",
     "pages/home/home",
@@ -19,8 +11,9 @@
     "pages/acceptedTasks/acceptedTasks",
     "pages/edittask/edittask",
     "pages/finishedTasks/finishedTasks",
-    "pages/postedTasks/postedTasks"
->>>>>>> ac4d57e3eaba250c9fdd3cb468a030d322ac2ae9
+    "pages/postedTasks/postedTasks",
+    "pages/messages/messages",
+    "pages/message/message"
   ],
   "window": {
     "navigationBarTextStyle": "black",

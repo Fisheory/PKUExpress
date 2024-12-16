@@ -31,8 +31,6 @@
   </view>
   <text>\n</text>
 
-<<<<<<< HEAD
-=======
   <!-- 验证码输入区域 -->
   <view class="input_container">
     <text class="input_label">验证码：</text>
@@ -51,7 +49,6 @@
     <text wx:if="{{isVerificationSent}}" style="color: green;">验证码已发送</text>
   </view>
 
->>>>>>> ac4d57e3eaba250c9fdd3cb468a030d322ac2ae9
   <!-- 登录和返回按钮 -->
   <button class="r40px_button" bindtap="onRegister">注册</button>
   <button class="r40px_button" bindtap="onReturn">返回登录</button>

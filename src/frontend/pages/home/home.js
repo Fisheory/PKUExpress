@@ -1,12 +1,8 @@
 Page({
   data: {
     containerHeight: 0,
-<<<<<<< HEAD
-    list: []
-=======
     list: [],
     isListEmpty: true,
->>>>>>> ac4d57e3eaba250c9fdd3cb468a030d322ac2ae9
   },
 
   // 点击查看详情
@@ -25,11 +21,7 @@ Page({
     const windowHeightPx = wx.getWindowInfo().windowHeight;
     const bottomHeightPx = 140 * wx.getWindowInfo().windowWidth / 750;
     wx.request({
-<<<<<<< HEAD
-      url: 'http://123.56.18.162:8000/tasks/',
-=======
       url: 'http://123.56.18.162:8000/tasks/tasklist',
->>>>>>> ac4d57e3eaba250c9fdd3cb468a030d322ac2ae9
       method: 'GET',
       header: {
         'Authorization': "Token " + wx.getStorageSync('token')
@@ -39,15 +31,11 @@ Page({
           this.setData({
             list: res.data,
           });
-<<<<<<< HEAD
-=======
-          if(this.data.list.length!=0)
-          {
+          if (this.data.list.length != 0) {
             this.setData({
               isListEmpty: false,
             });
           }
->>>>>>> ac4d57e3eaba250c9fdd3cb468a030d322ac2ae9
         }
         else {
           wx.showModal({

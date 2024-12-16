@@ -4,14 +4,17 @@ Page({
     messages: [], // 聊天消息列表
     inputValue: "", // 输入框内容
     lastMessageId: "",
-    socket: null
+    socket: null,
+    self: ""
   },
 
   // 页面加载时模拟初始化
   onLoad: function (options) {
     const receiver = options.receiver;
+    const self = wx.getStorageSync('profile')['username'];
     this.setData({
-      receiver: receiver
+      receiver: receiver,
+      self: self
     });
 
     wx.request({
@@ -85,7 +88,6 @@ Page({
     }
 
     this.setData({
-      // messages: [...this.data.messages, msg],
       inputValue: "", // 清空输入框
     });
   },
@@ -121,6 +123,7 @@ Page({
     // 监听 WebSocket 消息
     socket.onMessage((msg) => {
       console.log('收到消息:', msg);
+      this.setData({messages: [...this.data.messages, msg],});
       // 处理消息
     });
 
@@ -144,5 +147,12 @@ Page({
   // 选择图片
   chooseImage: function () {
     wx.showToast({ title: "图片选择功能未实现", icon: "none" });
+  },
+
+  onUnload: function () {
+    if (this.data.socket) {
+      console.log('关闭 WebSocket 连接');
+      this.data.socket.close();  // 关闭 WebSocket 连接
+    }
   },
 });

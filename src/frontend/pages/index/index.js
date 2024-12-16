@@ -68,11 +68,7 @@ Page({
     // 发送登录请求
     const full_username = this.data.full_username;
     wx.request({
-<<<<<<< HEAD
-      url: 'http://123.56.18.162:8000/accounts/login/', // 修改为正确的接口地址
-=======
       url: 'http://123.56.18.162:8000/accounts/auth/login', // 修改为正确的接口地址
->>>>>>> ac4d57e3eaba250c9fdd3cb468a030d322ac2ae9
       method: 'POST',
       data: {
         "email": full_username,
@@ -97,15 +93,14 @@ Page({
           this.showMessage('登录成功', 'green');
           // 登录成功后延时1秒跳转
           setTimeout(() => {
+            const app = getApp();
+            app.createSocketConnection();
             wx.navigateTo({
               url: '/pages/home/home'
             });
           }, 1000);
         } else {
           // 显示错误消息
-<<<<<<< HEAD
-          this.showMessage(res.data.msg, 'red');
-=======
           if(res.data.msg=="empty email or password"){
             this.showMessage("请输入用户名和密码", 'red');
           }
@@ -113,7 +108,6 @@ Page({
             this.showMessage("密码错误", 'red');
           }
           else this.showMessage(res.data.msg, 'red');
->>>>>>> ac4d57e3eaba250c9fdd3cb468a030d322ac2ae9
         }
       },
       fail: () => {
@@ -133,11 +127,7 @@ Page({
   // 找回密码跳转
   goToFindPassword: function () {
     wx.navigateTo({
-<<<<<<< HEAD
-      url: '/pages/findpassword/findpassword'
-=======
       url: '/pages/reset/reset'
->>>>>>> ac4d57e3eaba250c9fdd3cb468a030d322ac2ae9
     });
   },
 

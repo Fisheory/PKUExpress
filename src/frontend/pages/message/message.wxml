@@ -7,17 +7,17 @@
     scroll-into-view="{{lastMessageId}}"
   >
     <view wx:for="{{messages}}" wx:key="id" id="message-{{item.id}}">
-      <view class="message-item {{item.sender === 'self' ? 'self' : 'other'}}">
+      <view class="message-item {{item.sender === self ? 'self' : 'other'}}">
         <image 
           class="avatar" 
           src="/assets/antOutline-user 1.svg" 
-          wx:if="{{item.sender !== 'self'}}" 
+          wx:if="{{item.sender !== self}}" 
         />
         <view class="bubble">{{item.text}}</view>
         <image 
           class="avatar" 
           src="/assets/profile_icon.png" 
-          wx:if="{{item.sender === 'self'}}" 
+          wx:if="{{item.sender === self}}" 
         />
       </view>
     </view>

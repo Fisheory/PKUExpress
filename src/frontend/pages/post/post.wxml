@@ -1,68 +1,67 @@
-<!--pages/post/post.wxml-->
+<!--pages/profile/profile.wxml-->
 <navi-bar title="PKUExpress"></navi-bar>
+
 <view class="container">
-  <view class="form">
-    <view class="form-item">
-      <text>任务名称:</text>
-      <input placeholder="Enter task name" bindinput="onTaskNameInput"/>
-    </view>
+  <view class="header">
+    <!-- Profile Picture -->
+    <image class="profile-pic" src="/assets/profile_icon.png" />
 
-    <view class="form-item">
-      <text style="margin-top: -60px;">途径点:</text>
-      <textarea placeholder="Enter addresses" bindinput="onAddressInput" style="height: 80px; width: 100%;"></textarea>
+    <!-- User Info -->
+    <view class="user-info">
+      <text class="user-id">{{username}}</text>
+      <text class="user-email">{{userEmail}}</text>
     </view>
-
-    <view class="form-item">
-      <text>金额:</text>
-      <input placeholder="Enter payment" bindinput="onPaymentInput"/>
-    </view>
-
-    <view class="form-item">
-      <text style="margin-top: -60px;">详情:</text>
-      <textarea placeholder="Enter details" bindinput="onDetailsInput" style="height: 80px; width: 100%;"></textarea>
-    </view>
-<<<<<<< HEAD
-=======
-
-    <view class="form-item">
-      <text style="margin-top: 0px;">截止时间:</text>
-      <view class="fake" style="max-width: 44vw;">
-        <picker mode="date" bindchange="dateChange">
-        <text>{{selectedDate}}</text>
-        </picker>
-      </view>
-      <view class="fake" style="max-width: 16vw;">
-        <picker mode="time" bindchange="timeChange">
-        <text>{{selectedTime}}</text>
-        </picker>
-      </view>
-    </view>
->>>>>>> ac4d57e3eaba250c9fdd3cb468a030d322ac2ae9
   </view>
 
-  <view class="message" style="color: {{message_color}}">{{message}}</view>
 
-  <view class="upload-image">
-    <!-- 如果没有图片，显示上传图片按钮 -->
-    <block wx:if="{{uploadedImages.length === 0}}">
-      <button bindtap="uploadImage" class="upload-button">
-        <image src="/assets/upload_icon.png" mode="aspectFit" class="upload-icon" />
-        <text>上传图片</text>
-      </button>
-    </block>
-
-    <!-- 如果有图片，显示上传的图片 -->
-    <block wx:else>
-<<<<<<< HEAD
-      <image src="{{uploadedImages[0]}}" class="uploaded-image" bindtap="uploadImage" />
-=======
-      <image src="{{uploadedImages[0]}}" class="uploaded-image" mode="heightFix" bindtap="uploadImage" />
->>>>>>> ac4d57e3eaba250c9fdd3cb468a030d322ac2ae9
-    </block>
+  <!-- Stats Section with place holders -->
+  <view class="stats">
+    <view class="stat-item">
+      <text class="stat-value">{{gold}}</text>
+      <text class="stat-label"> 金币</text>
+    </view>
+    <view class="stat-item" bindtap="onReviews">
+      <text class="stat-value">{{tasksCompleted}}</text>
+      <text class="stat-label"> 已完成任务</text>
+    </view>
+    <view class="stat-item" bindtap="onPosts">
+      <text class="stat-value">{{tasksPosted}}</text>
+      <text class="stat-label"> 已发布任务</text>
+    </view>
   </view>
 
-  <view class="button-container">
-    <button class="submit-button" bindtap="submitTask">提交</button>
-    <button class="cancel-button" bindtap="cancelTask">取消</button>
+  <view class="greeting">
+  <view class="message-box">
+    <text>您好, {{username}}!</text>
+  <view>
+    <text>欢迎来到PKUExpress, 感谢您的支持！ヾ(◍°∇°◍)ﾉ</text>
+  </view>
   </view>
 </view>
+
+  <!-- Menu Section -->
+  <view class="menu">
+    <view class="menu-item" style="margin-bottom: 20px;" bindtap="onAccepted">
+      <text class="menu-icon">📖</text>
+      <text class="menu-label">当前任务</text>
+    </view>
+    <view class="menu-item" bindtap="onMessages">
+      <text class="menu-icon">💬</text>
+      <text class="menu-label">信息</text>
+    </view>
+    <view class="menu-item" bindtap="onSettings">
+      <text class="menu-icon">⚙️</text>
+      <text class="menu-label">设置</text>
+    </view>
+    <view class="menu-item" bindtap="showAboutUs">
+      <text class="menu-icon">ℹ️</text>
+      <text class="menu-label">关于我们</text>
+    </view>
+    <view class="menu-item" bindtap="onLogout">
+      <text class="menu-icon">🔙</text>
+      <text class="menu-label" style="color: red;">登出</text>
+    </view>
+  </view>
+</view>
+
+<bott-bar></bott-bar>

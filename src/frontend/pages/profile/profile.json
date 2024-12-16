@@ -1,10 +1,6 @@
 {
-<<<<<<< HEAD
-  "usingComponents": {}
-=======
   "usingComponents": {
     "navi-bar": "/components/navi-bar/navi-bar",
     "bott-bar": "/components/bott-bar/bott-bar"
   }
->>>>>>> ac4d57e3eaba250c9fdd3cb468a030d322ac2ae9
 }

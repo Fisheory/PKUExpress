@@ -12,6 +12,8 @@ Page({
     this.setData({
       containerHeight: windowHeightPx - paddingTop - naviHeight - 20,
     });
+    const self = wx.getStorageSync('profile')['username'];
+    console.log(self);
     wx.request({
       url: 'http://123.56.18.162:8000/messages/msglist?last_message',
       method: 'GET',
@@ -25,11 +27,18 @@ Page({
               const timestamps = item.timestamp.replace('T', ' ').split(':')
               item.timestamp = timestamps[0] + ':' + timestamps[1];
             }
+
+            // 添加 show 属性
+            if (item.sender !== self) {
+              item.show = item.sender;  // 如果 sender 不是 self，则 show 为 sender
+            } else {
+              item.show = item.receiver;  // 否则 show 为 receiver
+            }
           });
-          console.log(res.data)
           this.setData({
             messageList: res.data,
           });
+          console.log(res.data)
           if (this.data.messageList.length != 0) {
             this.setData({
               isListEmpty: false,

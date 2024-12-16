@@ -2,13 +2,13 @@
 
 <view class="container">
   <scroll-view scroll-y="true" class="message-list" style="height: {{containerHeight}}px">
-    <view class="message-item" wx:for="{{messageList}}" wx:key="id" bindtap="onMessage" data-username="{{item.sender}}">
+    <view class="message-item" wx:for="{{messageList}}" wx:key="id" bindtap="onMessage" data-username="{{item.show}}">
       <view class="left">
         <image class="avatar" src="/assets/antOutline-user 1.svg" />
       </view>
       <view class="right">
         <view class="top">
-          <text class="nickname">{{item.sender}}</text>
+          <text class="nickname">{{item.show}}</text>
         </view>
         <view class="bottom">
           <text class="last-message">{{item.text}}</text>

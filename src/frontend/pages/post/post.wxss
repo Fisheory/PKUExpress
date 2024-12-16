@@ -15,11 +15,7 @@
 
 .form {
   width: 90%;
-<<<<<<< HEAD
   height: 300px;
-=======
-  height: 320px;
->>>>>>> ac4d57e3eaba250c9fdd3cb468a030d322ac2ae9
   background-color: #fff;
   border-radius: 10px;
   padding: 15px;
@@ -51,21 +47,11 @@
 }
 
 .upload-image {
-<<<<<<< HEAD
   width: 100%;
   display: flex;
   justify-content: center;
   margin-bottom: 15px;
   margin-top: 30px;
-=======
-  width: 97%;
-  border-radius: 10px; 
-  display: flex;
-  justify-content: center;
-  margin-bottom: 15px;
-  margin-top: 10px;
-  height: 15vh;
->>>>>>> ac4d57e3eaba250c9fdd3cb468a030d322ac2ae9
   background-color: #fff;
 }
 
@@ -73,10 +59,6 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-<<<<<<< HEAD
-=======
-  margin-top: 20px;
->>>>>>> ac4d57e3eaba250c9fdd3cb468a030d322ac2ae9
   background-color: transparent;
   border: none; 
   padding: 0; 
@@ -89,7 +71,6 @@
 }
 
 .upload-image .uploaded-image {
-<<<<<<< HEAD
   width: 160px; /* 调整为适当大小 */
   height: 160px; 
   border-radius: 5px; 
@@ -97,12 +78,6 @@
   border: 1px solid #ddd; /* 可选，增加边框以强调图片区域 */
   transform: scale(0.9); /* 轻微缩放图片 */
   transition: transform 0.3s ease; /* 增加过渡效果，提升体验 */
-=======
-  max-height: 90%;
-  margin-top: 1vh;
-  max-width: 95%;
-  border-radius: 5px; 
->>>>>>> ac4d57e3eaba250c9fdd3cb468a030d322ac2ae9
 }
 
 .upload-image .uploaded-image:hover {
@@ -155,16 +130,4 @@
   max-height: 150px; /* 设置最大高度 */
   overflow: auto;    /* 超出部分显示滚动条 */
   box-sizing: border-box; /* 确保边框和内边距计算在宽高内 */
-<<<<<<< HEAD
-=======
-}
-
-.fake {
-  flex: 1;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  padding: 8px;
-  text-align: center;
-  margin-left: 5px;
->>>>>>> ac4d57e3eaba250c9fdd3cb468a030d322ac2ae9
 }

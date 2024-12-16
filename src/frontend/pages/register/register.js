@@ -6,19 +6,12 @@ Page({
     email: '',
     password: '',
     password_confirm: '',
-<<<<<<< HEAD
-    message: '',
-    message_color: '#000',
-    message_button: '@pku.edu.cn',
-    full_email: ''
-=======
     verification_code: '',
     message: '',
     message_color: '#000',
     message_button: '@pku.edu.cn',
     full_email: '',
     isVerificationSent: false
->>>>>>> ac4d57e3eaba250c9fdd3cb468a030d322ac2ae9
   },
 
   // 获取用户名输入
@@ -67,8 +60,6 @@ Page({
     });
   },
 
-<<<<<<< HEAD
-=======
   // 获取验证码输入
   onVerificationCodeInput: function (e) {
     this.setData({
@@ -76,7 +67,6 @@ Page({
     })
   },
 
->>>>>>> ac4d57e3eaba250c9fdd3cb468a030d322ac2ae9
   // 注册按钮点击事件
   onRegister: function () {
     // 检查输入框内容
@@ -103,13 +93,10 @@ Page({
       this.showMessage('密码与确认密码不匹配', 'red');
       return;
     }
-<<<<<<< HEAD
-=======
     if(!this.data.verification_code){
       this.showMessage('请填写验证码', 'red');
       return;
     }
->>>>>>> ac4d57e3eaba250c9fdd3cb468a030d322ac2ae9
 
     this.setData({
       full_email: this.data.email + this.data.message_button
@@ -123,30 +110,18 @@ Page({
     // 发送注册请求
     const full_email = this.data.full_email;
     const username = this.data.username;
-<<<<<<< HEAD
-    wx.request({
-      url: 'http://123.56.18.162:8000/accounts/register/',
-=======
     const verification_code = this.data.verification_code
     wx.request({
       url: 'http://123.56.18.162:8000/accounts/auth/register',
->>>>>>> ac4d57e3eaba250c9fdd3cb468a030d322ac2ae9
       method: 'POST',
       data: {
         "username": username,
         "email": full_email,
-<<<<<<< HEAD
-        "password": encryptedPassword
-      },
-      success: res => {
-        if (res.statusCode === 200) {
-=======
         "password": encryptedPassword,
         "verification_code": verification_code
       },
       success: res => {
         if (res.statusCode === 201) {
->>>>>>> ac4d57e3eaba250c9fdd3cb468a030d322ac2ae9
           this.showMessage('注册成功，即将返回登录页面...', 'green');
           // 注册成功后延时1秒跳转
           setTimeout(() => {
@@ -156,9 +131,6 @@ Page({
           }, 1000);
         } 
         else {
-<<<<<<< HEAD
-          this.showMessage(res.data.msg, 'red');
-=======
           if(res.data.msg=="Email already exists")
           {
             this.showMessage("用户已存在", 'red');
@@ -228,7 +200,6 @@ Page({
             this.showMessage("发送邮件失败", 'red');
           }
           else this.showMessage(res.data.msg, 'red');
->>>>>>> ac4d57e3eaba250c9fdd3cb468a030d322ac2ae9
         }
       },
       fail: () => {
