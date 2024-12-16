@@ -1,0 +1,87 @@
+<navi-bar title="PKUExpress"></navi-bar>
+
+<view class="container">
+  <view class="form">
+    <view class="form-item">
+      <view class="form-left">任务名称：</view>
+      <view class="form-right">{{detail.name}}</view>
+    </view>
+    <view class="form-item">
+      <view class="form-left">任务状态：</view>
+      <view class="form-right">{{task_status}}</view>
+    </view>
+  </view>
+
+  <view class="form">
+    <view class="form-item">
+      <view class="form-left">任务描述：</view>
+      <view class="form-right">{{detail.description}}</view>
+      </view>
+    <view class="form-item">
+      <view class="form-left">起始点：</view>
+      <view class="form-right">{{st_point}}</view>
+    </view>
+    <view class="form-item">
+      <view class="form-left">途经点：</view>
+      <view class="form-right">{{detail.end_location}}</view>
+    </view>
+    <view class="form-item">
+      <view class="form-left">截止时间：</view>
+      <view class="form-right">{{ddl}}</view>
+    </view>
+    <view class="form-item">
+      <view class="form-left">报酬：</view>
+      <view class="form-right">{{detail.reward}}</view>
+    </view>
+  </view>
+
+  <view class="form">
+    <view class="form-item">
+      <view class="form-left">任务ID：</view>
+      <view class="form-right">{{detail.id}}</view>
+    </view>
+    <view class="form-item">
+      <view class="form-left">发布者：</view>
+      <view class="form-right">{{detail.publisher}}</view>
+    </view>
+    <view class="form-item">
+      <view class="form-left">接受人：</view>
+      <view class="form-right">{{accepter}}</view>
+    </view>
+    <view class="form-item">
+      <view class="form-left">发布时间：</view>
+      <view class="form-right">{{pub_time}}</view>
+    </view>
+    <view class="form-item">
+      <view class="form-left">上次修改：</view>
+      <view class="form-right">{{edit_time}}</view>
+    </view>
+    <view class="form-item">
+      <view class="form-left">完成时间：</view>
+      <view class="form-right">{{com_time}}</view>
+   </view>
+  </view> 
+
+  <view class="form">
+    <block wx:if="{{image_path}}">
+      <image class="image" src="{{image_path}}" mode="widthFix"></image>
+    </block>
+    <block wx:else>
+      <text>无图片</text>
+    </block>
+    </view>
+  </view>
+
+<view class="message" style="color: {{message_color}}">{{message_text}}</view>
+
+<view class="button-container">
+  <button wx:if="{{isToBeAccepted}}" class="submit-button" bindtap="submitTask" style="background-color: {{button_color}}">接取任务</button>
+  <button wx:if="{{isAccepted}}" class="submit-button" bindtap="finishTask" style="background-color: {{button_color}}">完成</button>
+  <button wx:if="{{isFinished}}" class="submit-button" style="background-color: #888888">已完成</button>
+  <button wx:if="{{isExpired}}" class="submit-button" style="background-color: #888888">已过期</button>
+  <button wx:if="{{isToEdit}}" class="submit-button" bindtap="editTask" style="background-color: {{button_color}}">修改任务</button>
+  <button class="cancel-button" bindtap="cancelTask">取消</button>
+</view>
+
+
+

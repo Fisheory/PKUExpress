@@ -1,4 +1,5 @@
 <!--pages/profile/profile.wxml-->
+<<<<<<< HEAD
 <view class="container">
   <view class="header">
     <!-- Profile Picture -->
@@ -7,6 +8,18 @@
     <!-- User Info -->
     <view class="user-info">
       <text class="user-id">{{userId}}</text>
+=======
+<navi-bar title="PKUExpress"></navi-bar>
+
+<view class="container">
+  <view class="header">
+    <!-- Profile Picture -->
+    <image class="profile-pic" src="/assets/profile_icon.png" />
+
+    <!-- User Info -->
+    <view class="user-info">
+      <text class="user-id">{{username}}</text>
+>>>>>>> ac4d57e3eaba250c9fdd3cb468a030d322ac2ae9
       <text class="user-email">{{userEmail}}</text>
     </view>
   </view>
@@ -16,6 +29,7 @@
   <view class="stats">
     <view class="stat-item">
       <text class="stat-value">{{gold}}</text>
+<<<<<<< HEAD
       <text class="stat-label">金币</text>
     </view>
     <view class="stat-item">
@@ -25,12 +39,27 @@
     <view class="stat-item">
       <text class="stat-value">4.0</text>
       <text class="stat-label">⭐ 评价</text>
+=======
+      <text class="stat-label"> 金币</text>
+    </view>
+    <view class="stat-item" bindtap="onReviews">
+      <text class="stat-value">{{tasksCompleted}}</text>
+      <text class="stat-label"> 已完成任务</text>
+    </view>
+    <view class="stat-item" bindtap="onPosts">
+      <text class="stat-value">{{tasksPosted}}</text>
+      <text class="stat-label"> 已发布任务</text>
+>>>>>>> ac4d57e3eaba250c9fdd3cb468a030d322ac2ae9
     </view>
   </view>
 
   <view class="greeting">
   <view class="message-box">
+<<<<<<< HEAD
     <text>您好, {{userId}}!</text>
+=======
+    <text>您好, {{username}}!</text>
+>>>>>>> ac4d57e3eaba250c9fdd3cb468a030d322ac2ae9
   <view>
     <text>欢迎来到PKUExpress, 感谢您的支持！ヾ(◍°∇°◍)ﾉ</text>
   </view>
@@ -39,6 +68,7 @@
 
   <!-- Menu Section -->
   <view class="menu">
+<<<<<<< HEAD
        <!--<view class="menu-item">
       <text class="menu-icon">💬</text>
       <text class="menu-label">信息</text>
@@ -52,12 +82,37 @@
       <text class="menu-label">我的订单</text>
     </view>
     <view class="menu-item">
+=======
+    <view class="menu-item" style="margin-bottom: 20px;" bindtap="onAccepted">
+      <text class="menu-icon">📖</text>
+      <text class="menu-label">当前任务</text>
+    </view>
+    <view class="menu-item" bindtap="onMessages">
+      <text class="menu-icon">💬</text>
+      <text class="menu-label">信息</text>
+    </view>
+    <view class="menu-item" bindtap="onSettings">
+>>>>>>> ac4d57e3eaba250c9fdd3cb468a030d322ac2ae9
       <text class="menu-icon">⚙️</text>
       <text class="menu-label">设置</text>
     </view>
     <view class="menu-item" bindtap="showAboutUs">
+<<<<<<< HEAD
     <text class="menu-icon">ℹ️</text>
     <text class="menu-label">关于我们</text>
   </view>
   </view>
 </view>
+=======
+      <text class="menu-icon">ℹ️</text>
+      <text class="menu-label">关于我们</text>
+    </view>
+    <view class="menu-item" bindtap="onLogout">
+      <text class="menu-icon">🔙</text>
+      <text class="menu-label" style="color: red;">登出</text>
+    </view>
+  </view>
+</view>
+
+<bott-bar></bott-bar>
+>>>>>>> ac4d57e3eaba250c9fdd3cb468a030d322ac2ae9

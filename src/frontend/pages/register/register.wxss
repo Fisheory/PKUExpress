@@ -37,7 +37,10 @@
   height: 40px;
   padding: 0 10px;
   border: none;
+<<<<<<< HEAD
   outline: none;
+=======
+>>>>>>> ac4d57e3eaba250c9fdd3cb468a030d322ac2ae9
   background-color: transparent;
 }
 

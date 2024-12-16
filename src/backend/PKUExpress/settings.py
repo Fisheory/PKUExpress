@@ -20,7 +20,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
+<<<<<<< HEAD
 SECRET_KEY = 'django-insecure-6^z91-wp=9psiqv!j+@@k@e@duc%hnri8(cqwum9b&kg3oyezw'
+=======
+SECRET_KEY = "django-insecure-6^z91-wp=9psiqv!j+@@k@e@duc%hnri8(cqwum9b&kg3oyezw"
+>>>>>>> ac4d57e3eaba250c9fdd3cb468a030d322ac2ae9
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -31,6 +35,7 @@ ALLOWED_HOSTS = ["123.56.18.162", "localhost"]
 # Application definition
 
 INSTALLED_APPS = [
+<<<<<<< HEAD
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -66,21 +71,72 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+=======
+    "daphne",
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
+    "accounts",
+    "tasks",
+    "myMessages",
+    "rest_framework",
+    "rest_framework.authtoken",
+    "sslserver",
+    "channels",
+]
+
+MIDDLEWARE = [
+    "django.middleware.security.SecurityMiddleware",
+    "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.common.CommonMiddleware",
+    "django.middleware.csrf.CsrfViewMiddleware",
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "django.contrib.messages.middleware.MessageMiddleware",
+    "django.middleware.clickjacking.XFrameOptionsMiddleware",
+]
+
+ROOT_URLCONF = "PKUExpress.urls"
+
+TEMPLATES = [
+    {
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "DIRS": [],
+        "APP_DIRS": True,
+        "OPTIONS": {
+            "context_processors": [
+                "django.template.context_processors.debug",
+                "django.template.context_processors.request",
+                "django.contrib.auth.context_processors.auth",
+                "django.contrib.messages.context_processors.messages",
+>>>>>>> ac4d57e3eaba250c9fdd3cb468a030d322ac2ae9
             ],
         },
     },
 ]
 
+<<<<<<< HEAD
 WSGI_APPLICATION = 'PKUExpress.wsgi.application'
+=======
+WSGI_APPLICATION = "PKUExpress.wsgi.application"
+>>>>>>> ac4d57e3eaba250c9fdd3cb468a030d322ac2ae9
 
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
+<<<<<<< HEAD
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
+=======
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",
+>>>>>>> ac4d57e3eaba250c9fdd3cb468a030d322ac2ae9
     }
 }
 
@@ -90,6 +146,7 @@ DATABASES = {
 
 AUTH_PASSWORD_VALIDATORS = [
     {
+<<<<<<< HEAD
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
     },
     {
@@ -100,6 +157,18 @@ AUTH_PASSWORD_VALIDATORS = [
     },
     {
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+=======
+        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
+    },
+    {
+        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
+    },
+    {
+        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
+    },
+    {
+        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
+>>>>>>> ac4d57e3eaba250c9fdd3cb468a030d322ac2ae9
     },
 ]
 
@@ -107,9 +176,15 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
+<<<<<<< HEAD
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'Asia/Shanghai'
+=======
+LANGUAGE_CODE = "en-us"
+
+TIME_ZONE = "Asia/Shanghai"
+>>>>>>> ac4d57e3eaba250c9fdd3cb468a030d322ac2ae9
 
 USE_I18N = True
 
@@ -119,11 +194,16 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
+<<<<<<< HEAD
 STATIC_URL = 'static/'
+=======
+STATIC_URL = "static/"
+>>>>>>> ac4d57e3eaba250c9fdd3cb468a030d322ac2ae9
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
+<<<<<<< HEAD
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Custom user model
@@ -150,3 +230,42 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = '2102008267@qq.com'
 EMAIL_HOST_PASSWORD = 'uvqmmllbhrccciig'
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+=======
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# Custom user model
+AUTH_USER_MODEL = "accounts.CustomUser"
+
+# Authentication settings
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework.authentication.TokenAuthentication",
+    ),
+    "EXCEPTION_HANDLER": "utils.utils.msg_exception_handler",
+}
+
+AUTHENTICATION_BACKENDS = {
+    "utils.utils.EmailBackend",
+    "django.contrib.auth.backends.ModelBackend",
+}
+
+APPEND_SLASH = False
+
+# 测试时暂时使用这个qq邮箱
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = "smtp.qq.com"
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = "pkuexpress@qq.com"
+EMAIL_HOST_PASSWORD = ""
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+import os
+
+MEDIA_URL = "/media/"
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+
+ASGI_APPLICATION = "PKUExpress.asgi.application"
+
+CHANNEL_LAYERS = {"default": {"BACKEND": "channels.layers.InMemoryChannelLayer"}}
+>>>>>>> ac4d57e3eaba250c9fdd3cb468a030d322ac2ae9

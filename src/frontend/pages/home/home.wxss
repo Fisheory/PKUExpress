@@ -1,6 +1,10 @@
 /* 整体容器样式 */
 .container {
+<<<<<<< HEAD
   height: calc(100vh - 140rpx);
+=======
+  height: calc(100vh - 180rpx);
+>>>>>>> ac4d57e3eaba250c9fdd3cb468a030d322ac2ae9
   display: flex;
   flex-direction: column;
   background-color: #f5f5f5;

@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 <navi-bar title="欢迎回来！"></navi-bar>
+=======
+<navi-bar title="欢迎回来！" showBack="{{false}}"></navi-bar>
+>>>>>>> ac4d57e3eaba250c9fdd3cb468a030d322ac2ae9
 <view class="container">
   <!-- 欢迎 & 头像 -->
   <image class="avatar" src="{{avatarUrl}}" mode="aspectFit"></image>
