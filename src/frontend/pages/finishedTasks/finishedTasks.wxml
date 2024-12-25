@@ -1,5 +1,5 @@
 <!--home.wxml-->
-<navi-bar id="navi-bar" title="PKUExpress"></navi-bar>
+<navi-bar id="navi-bar" title="PKUExpress" url="/pages/profile/profile"></navi-bar>
 <view class="container" >
   <!-- 滚动列表 -->
   <scroll-view class="scroll-container" style="height: {{containerHeight}}px" scroll-y="true" >

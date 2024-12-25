@@ -1,4 +1,4 @@
-<navi-bar title="新用户注册"></navi-bar>
+<navi-bar title="新用户注册" showBack="{{false}}"></navi-bar>
 <view class="container">
   <!-- 空行用于显示消息 -->
   <view class="message" style="color: {{message_color}}">{{message}}</view>

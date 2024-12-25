@@ -1,5 +1,5 @@
 <!--pages/reset/reset.wxml-->
-<navi-bar title="重设密码"></navi-bar>
+<navi-bar title="重设密码" showBack="{{false}}"></navi-bar>
 <view class="container">
   <!-- 空行用于显示消息 -->
   <view class="message" style="color: {{message_color}}">{{message}}</view>

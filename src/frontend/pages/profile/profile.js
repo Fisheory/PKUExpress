@@ -49,27 +49,27 @@ Page({
   // Other navigation methods 
   onMessages: function () {
     console.log("on click message")
-    wx.navigateTo({
+    wx.redirectTo({
       url: '/pages/messages/messages'
     });
   },
   onReviews: function () {
-    wx.navigateTo({
+    wx.redirectTo({
       url: '/pages/finishedTasks/finishedTasks'
     });
   },
   onAccepted: function () {
-    wx.navigateTo({
+    wx.redirectTo({
       url: '/pages/acceptedTasks/acceptedTasks'
     });
   },
   onSettings: function () {
-    wx.navigateTo({
+    wx.redirectTo({
       url: '/pages/settings/settings'
     });
   },
   onPosts: function () {
-    wx.navigateTo({
+    wx.redirectTo({
       url: '/pages/postedTasks/postedTasks'
     });
   },

@@ -150,6 +150,7 @@ Page({
         this.setData({
           imagebase64: res.data
         });
+        console.log(this.data.imagebase64);
       }
     });
 
@@ -165,7 +166,7 @@ Page({
         "reward": this.data.payment,
         "end_location": this.data.address,
         "deadline": `${this.data.rawDate}T${this.data.rawTime}:00`,
-        // "image": this.data.imagebase64
+        "image": this.data.imagebase64
       },
       success: res => {
         console.log(`${this.data.rawDate}T${this.data.rawTime}:00`);
@@ -179,7 +180,7 @@ Page({
             confirmColor: '#3CC51F',
             success: (res) => {
               if (res.confirm) {
-                wx.navigateTo({
+                wx.redirectTo({
                   url: '/pages/success/success'
                 });
               }
@@ -247,7 +248,9 @@ Page({
 
   // Cancel button click event
   cancelTask: function () {
-    wx.navigateBack();
+    wx.redirectTo({
+      url: '/pages/home/home',
+    })
   },
 
   // Show message function
@@ -290,7 +293,7 @@ Page({
 
   // Navigate to the map page
   navigateToMap: function () {
-    wx.navigateTo({
+    wx.redirectTo({
       url: '/pages/map/map' 
     });
   },

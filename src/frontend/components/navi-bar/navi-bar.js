@@ -20,6 +20,10 @@ Component({
     searchQuery: {
       type: String,
       value: ''
+    },
+    url: {
+      type: String,
+      value: ''
     }
   },
 
@@ -61,9 +65,18 @@ Component({
   methods: {
     onBack() {
         // 返回上一页
-        wx.navigateBack({
+        if(this.data.url)
+        {
+          wx.redirectTo({
+            url: this.data.url
+          });
+        }
+        else
+        {
+          wx.navigateBack({
             delta: 1
-        });
+          });
+        }
     },
     getNaviInfo() {
       return {

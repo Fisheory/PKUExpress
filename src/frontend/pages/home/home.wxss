@@ -12,7 +12,8 @@
 .scroll-container {
   flex: 1;
   margin-top: 100px;
-  /* overflow-y: auto; */
+  margin-bottom: -100px;
+  overflow-y: auto;
 }
 
 /* 列表项样式 */

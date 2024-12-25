@@ -95,7 +95,7 @@ Page({
 
   // 返回主页
   onReturn: function () {
-    wx.navigateTo({
+    wx.redirectTo({
       url: '/pages/index/index'
     });
   },

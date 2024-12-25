@@ -68,8 +68,15 @@ Page({
   onMessage(e) {
     const receiver = e.currentTarget.dataset.username;
     console.log("打开聊天室，receiver: ", receiver);
-    wx.navigateTo({
+    wx.setStorageSync('lasturl', '/pages/messages/messages');
+    wx.redirectTo({
       url: `/pages/message/message?receiver=${receiver}`,
     })
+  },
+
+  onBack(e) {
+    const url = e.dataset.url;
+    console.log(url);
+    this.selectComponent('#navi-bar').onBack(url);
   }
 });

@@ -1,5 +1,5 @@
 <!--pages/post/post.wxml-->
-<navi-bar title="PKUExpress"></navi-bar>
+<navi-bar title="PKUExpress" showBack="{{false}}"></navi-bar>
 <view class="container">
   <view class="form">
     <view class="form-item">
@@ -10,9 +10,9 @@
     <view class="form-item">
       <view style="display: flex; align-items: center; justify-content: space-between;">
         <text>途径点:</text>
-        <button bindtap="navigateToMap" style="margin-left: auto; height: 32px; line-height: 20px;">选择</button>
+        <textarea placeholder="Enter addresses" value="{{address}}" bindinput="onAddressInput" style="height: 80px; width: 160px;"></textarea>
+        <button bindtap="navigateToMap" style="position: absolute; width: 100px; right: 30px; height: 32px; line-height: 20px;">选择</button>
       </view>
-      <textarea placeholder="Enter addresses" value="{{address}}" bindinput="onAddressInput" style="height: 80px; width: 100%;"></textarea>
     </view>
 
 

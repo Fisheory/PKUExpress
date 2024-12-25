@@ -9,7 +9,8 @@ Page({
     const id = e.currentTarget.dataset.id;
     console.log("查看详情，ID:", id);
     // 跳转到详情页面
-    wx.navigateTo({
+    wx.setStorageSync('lasturl1', '/pages/finishedTasks/finishedTasks');
+    wx.redirectTo({
       url: `/pages/detail/detail?id=${id}`
     });
   },

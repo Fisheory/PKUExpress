@@ -1,7 +1,6 @@
 Page({
   data: {
     id: "",
-    notAccepted: true,
     detail: {
       status: '无',
       deadline: '无',
@@ -25,11 +24,14 @@ Page({
     message_color: 'green',
     image_path: '',
     isToBeAccepted: false,
+    isAckFinished: false,
     isAccepted: false,
     isFinished: false,
     isExpired: false,
     isToEdit: false,
-    selfemail: ''
+    isPoster: false,
+    selfemail: '',
+    lasturl1: ''
   },
 
   formatTime(time, deta) {
@@ -56,31 +58,20 @@ Page({
     // 从本地获取item
     const id = options.id;
     this.setData({id})
+    this.setData({
+      lasturl1: wx.getStorageSync('lasturl1')
+    });
     wx.request({
       url: `http://123.56.18.162:8000/tasks/tasklist/${id}`, // 替换为后端实际接口
       method: 'GET',
       success: (res) => {
         if (res.statusCode === 200) {
+          console.log(res.data.image);
           this.setData({ detail: res.data }); // 设置数据到页面
-          if(this.data.detail.imagebase64)
+          if(this.data.detail.image)
           {
-            const base64 = this.data.detail.imagebase64.replace(/^data:image\/(png|jpg|jpeg);base64,/, '');
-            const fs = wx.getFileSystemManager();
-            const tempFilePath = `${wx.env.USER_DATA_PATH}/temp_image.png`;
-            const arrayBuffer = base64ToArrayBuffer(base64);
-            fs.writeFile({
-              filePath: tempFilePath,
-              data: arrayBuffer,
-              encoding: 'binary',
-              success: () => {
-                console.log("图片保存成功！");
-                this.setData({
-                  image_path: tempFilePath
-                });
-              },
-              fail: (err) => {
-                console.error("图片保存失败", err);
-              }
+            this.setData({
+              image_path:  'http://123.56.18.162:8000' + this.data.detail.image
             });
           }
           // 判断状态
@@ -102,7 +93,7 @@ Page({
           } else {
             this.setData({ task_status: '未被接取' });
           }
-
+          
           // 转换时间格式
           this.setData({
             ddl: this.formatTime(this.data.detail.deadline, 'unmatch'),
@@ -118,8 +109,9 @@ Page({
           this.setData({
             isToBeAccepted: status === 'to_be_accepted',
             isAccepted: status === 'accepted',
+            isAckFinished: status === 'ack_finished',
             isFinished: status === 'finished',
-            isExpired: !['to_be_accepted', 'accepted', 'finished'].includes(status),
+            isExpired: !['to_be_accepted', 'accepted', 'finished', 'ack_finished'].includes(status),
           });
         } else {
           wx.showToast({
@@ -142,11 +134,11 @@ Page({
               });
               console.log(this.data.selfemail);
               console.log(this.data.detail.publisher);
-              if(this.data.selfemail==this.data.detail.publisher)
+              const username = wx.getStorageSync('profile')['username'];
+              if(username === this.data.detail.publisher)
               {
                 this.setData({
-                  isToBeAccepted: false,
-                  isToEdit: true
+                  isPoster: true
                 });
               }
             } else {
@@ -193,34 +185,41 @@ Page({
         },
         success: res => {
           if (res.statusCode === 200) {
-            this.setData({message_color : 'green'});
-            this.setData({message_text : '接取成功！即将回到主页...'});
+            wx.showToast({
+              title: '接取成功！',
+              icon: 'none',
+            });
             // 延时1秒跳转
             setTimeout(() => {
-              wx.navigateTo({
+              wx.redirectTo({
                 url: '/pages/home/home'
               });
             }, 1000);
           } else if (res.statusCode === 400) {
             // 任务已被接取
-            this.setData({message_color : 'red'});
-            this.setData({message_text : '任务已被接取！即将回到主页...'});
-            console.log(res.data.msg)
+            wx.showToast({
+              title: '任务已被接取！',
+              icon: 'none',
+            });
             setTimeout(() => {
-              wx.navigateTo({
+              wx.redirectTo({
                 url: '/pages/home/home'
               });
             }, 1000);
           }
           else {
-            this.setData({message_color : 'red'});
-            this.setData({message_text : '未知错误'});
+            wx.showToast({
+              title: '未知错误',
+              icon: 'none',
+            });
           }
         },
         fail: () => {
           // 显示连接失败消息
-          this.setData({message_color : 'red'});
-          this.setData({message_text : '连接服务器失败'});
+          wx.showToast({
+            title: '连接服务器失败',
+            icon: 'none',
+          });
         }
       });
     }
@@ -241,34 +240,41 @@ Page({
         },
         success: res => {
           if (res.statusCode === 200) {
-            this.setData({message_color : 'green'});
-            this.setData({message_text : '任务完成！即将回到主页...'});
+            wx.showToast({
+              title: '任务完成！等待对方确认...',
+              icon: 'none',
+            });
             // 延时1秒跳转
             setTimeout(() => {
-              wx.navigateTo({
+              wx.redirectTo({
                 url: '/pages/home/home'
               });
             }, 1000);
           } else if (res.statusCode === 400) {
             // 任务已被接取
-            this.setData({message_color : 'red'});
-            this.setData({message_text : res.data.msg});
-            console.log(res.data.msg)
+            wx.showToast({
+              title: res.data.msg,
+              icon: 'none',
+            });
             setTimeout(() => {
-              wx.navigateTo({
+              wx.redirectTo({
                 url: '/pages/home/home'
               });
             }, 1000);
           }
           else {
-            this.setData({message_color : 'red'});
-            this.setData({message_text : '未知错误'});
+            wx.showToast({
+              title: '未知错误',
+              icon: 'none',
+            });
           }
         },
         fail: () => {
           // 显示连接失败消息
-          this.setData({message_color : 'red'});
-          this.setData({message_text : '连接服务器失败'});
+          wx.showToast({
+            title: '连接服务器失败',
+            icon: 'none',
+          });
         }
       });
     }
@@ -298,6 +304,44 @@ Page({
     });
   },
 
+  confirmTask(){
+    const id = this.data.id;
+    wx.request({
+      url: `http://123.56.18.162:8000/tasks/tasklist/${id}`,
+      method: 'PATCH',
+      data: {
+        'status': 'ack_finished'
+      },
+      header: {
+        'Authorization': "Token " + wx.getStorageSync('token')
+      },
+      success: res => {
+        if (res.statusCode === 200) {
+          this.setData({message_color : 'green'});
+          this.setData({message_text : '确认完成！即将回到主页...'});
+          // 延时1秒跳转
+          setTimeout(() => {
+            wx.redirectTo({
+              url: '/pages/home/home'
+            });
+          }, 1000);
+        }
+        else{
+          wx.showToast({
+            title: '未知错误',
+            icon: 'none',
+          });
+        }
+      },
+      fail: () => {
+        wx.showToast({
+          title: '连接服务器失败',
+          icon: 'none',
+        });
+      }
+    })
+  },
+
   base64ToArrayBuffer: function(params){
     const binaryString = wx.base64ToBinary(base64);
     const length = binaryString.length;
@@ -311,5 +355,13 @@ Page({
 
   onUnload() {
     wx.removeStorageSync("detailItem");
+  },
+
+  chat(){
+    wx.setStorageSync('lasturl2', '/pages/detail/detail'); 
+    wx.setStorageSync('id', this.data.id);
+    wx.redirectTo({
+      url: `/pages/message/message?receiver=${this.data.detail.publisher}&id=${this.data.id}`
+    });
   }
 });

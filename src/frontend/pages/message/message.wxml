@@ -1,4 +1,4 @@
-<navi-bar title="{{receiver}}" url="/pages/messages/messages"/>
+<navi-bar title="{{receiver}}" url="{{lasturl2}}"/>
 <view class="container">
   <!-- 聊天记录部分 -->
   <scroll-view 
@@ -24,10 +24,6 @@
   </scroll-view>
 
   <!-- 输入框部分 -->
-  <view class="input-bar">
-    <view class="emoji-button" bindtap="chooseEmoji">😀</view>
-    <view class="image-button" bindtap="chooseImage">📷</view>
-  </view>
   <input
     type="text"
     placeholder="请输入消息..."

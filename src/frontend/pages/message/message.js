@@ -5,6 +5,7 @@ Page({
     inputValue: "", // 输入框内容
     lastMessageId: "",
     socket: null,
+    lasturl2: "",
     self: ""
   },
 
@@ -16,7 +17,17 @@ Page({
       receiver: receiver,
       self: self
     });
-
+    const id = options.id;
+    if (id){
+      this.setData({
+        lasturl2: wx.getStorageSync('lasturl2') + '?id=' + id
+      });
+    }
+    else{
+      this.setData({
+        lasturl2: wx.getStorageSync('lasturl2')
+      });
+    }
     wx.request({
       url: 'http://123.56.18.162:8000/messages/msglist?receiver=' + receiver,
       method: 'GET',
@@ -26,10 +37,18 @@ Page({
 
       success: res => {
         if (res.statusCode === 200) {
-          this.setData({
-            messages: res.data,
-            lastMessageId: `message-${res.data[res.data.length - 1].id}`,
-          });
+          if (res.data.length > 0){
+            this.setData({
+              messages: res.data,
+              lastMessageId: `message-${res.data[res.data.length - 1].id}`,
+            });
+          }
+          else{
+            this.setData({
+              messages: [],
+              lastMessageId: "message-0",
+            });
+          }
           console.log(res.data);
           console.log(this.data.lastMessageId)
         }
@@ -123,10 +142,18 @@ Page({
     // 监听 WebSocket 消息
     socket.onMessage((msg) => {
       console.log('收到消息:', msg);
-      this.setData({
-        messages: [...this.data.messages, JSON.parse(msg.data)["message"]],
-        lastMessageId: `message-${this.data.messages[this.data.messages.length - 1].id}`,
-      });
+      if (this.data.messages.length > 0){
+        this.setData({
+          messages: [...this.data.messages, JSON.parse(msg.data)["message"]],
+          lastMessageId: `message-${this.data.messages[this.data.messages.length - 1].id}`,
+        });
+      }
+      else{
+        this.setData({
+          messages: [JSON.parse(msg.data)["message"]],
+          lastMessageId: "message-0",
+        });
+      }
       console.log(this.data.messages);
       // 处理消息
     });

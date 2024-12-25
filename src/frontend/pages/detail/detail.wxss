@@ -72,6 +72,15 @@
   background-color: rgba(255, 142, 79, 1);
 }
 
+.button-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin: 0 auto;
+  height: 30vh;
+  background-color: rgba(255, 142, 79, 1);
+}
+
 .submit-button{
   padding: 10px;
   margin-top: 10px;

@@ -1,4 +1,4 @@
-<navi-bar title="PKUExpress"></navi-bar>
+<navi-bar title="PKUExpress" url="{{lasturl1}}"></navi-bar>
 
 <view class="container">
   <view class="form" style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
@@ -60,6 +60,13 @@
    </view>
   </view> 
 
+  <view class="button" wx:if="{{isPoster}}">
+    <button class="submit-button" style="background-color: #888888">聊天</button>
+  </view>
+  <view class="button" wx:else>
+    <button class="submit-button" bindtap="chat" style="background-color: {{button_color}}">聊天</button>
+  </view>
+
   <view class="form">
     <block wx:if="{{image_path}}">
       <image class="image" src="{{image_path}}" mode="widthFix"></image>
@@ -70,13 +77,19 @@
     </view>
   </view>
 
-<view class="message" style="color: {{message_color}}">{{message_text}}</view>
-
-<view class="button-container">
-  <button wx:if="{{isToBeAccepted}}" class="submit-button" bindtap="submitTask" style="background-color: {{button_color}}">接取任务</button>
-  <button wx:if="{{isAccepted}}" class="submit-button" bindtap="finishTask" style="background-color: {{button_color}}">完成</button>
-  <button wx:if="{{isFinished}}" class="submit-button" style="background-color: #888888">已完成</button>
+<view class="button-container" wx:if="{{isPoster}}">
+  <button wx:if="{{isToBeAccepted}}" class="submit-button" style="background-color: #888888">等待接取任务</button>
+  <button wx:if="{{isAccepted}}" class="submit-button"  style="background-color: #888888">等待完成</button>
+  <button wx:if="{{isFinished}}" class="submit-button" bindtap="confirmTask" style="background-color: {{button_color}}">确认完成</button>
+  <button wx:if="{{isAckFinished}}" class="submit-button" style="background-color: #888888">已完成</button>
   <button wx:if="{{isExpired}}" class="submit-button" style="background-color: #888888">已过期</button>
-  <button wx:if="{{isToEdit}}" class="submit-button" bindtap="editTask" style="background-color: {{button_color}}">修改任务</button>
-  <button class="cancel-button" bindtap="cancelTask">取消</button>
+  <button class="cancel-button" bindtap="cancelTask" style="background-color: {{button_color}}">取消</button>
+</view>
+<view class="button-container" wx:else>
+  <button wx:if="{{isToBeAccepted}}" class="submit-button" bindtap="submitTask" style="background-color: {{button_color}}">接取任务</button> 
+  <button wx:if="{{isAccepted}}" class="submit-button" bindtap="finishTask" style="background-color: {{button_color}}">完成</button>
+  <button wx:if="{{isFinished}}" class="submit-button" style="background-color: #888888">等待确认完成</button>
+  <button wx:if="{{isAckFinished}}" class="submit-button" style="background-color: #888888">已完成</button>
+  <button wx:if="{{isExpired}}" class="submit-button" style="background-color: #888888">已过期</button>
+  <button class="submit-button" bindtap="cancelTask" style="background-color: {{button_color}}">取消</button>
 </view>

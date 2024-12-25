@@ -1,5 +1,5 @@
 <!--pages/success/success.wxml-->
-<navi-bar title="PKUExpress"></navi-bar>
+<navi-bar title="PKUExpress" showBack="{{false}}"></navi-bar>
 <view class="container">
   <text class="success-message">提交成功</text>
   <button class="return-button" bindtap="onReturn">返回主页</button>

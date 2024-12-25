@@ -191,7 +191,7 @@ Page({
             confirmColor: '#3CC51F',
             success: (res) => {
               if (res.confirm) {
-                wx.navigateTo({
+                wx.redirectTo({
                   url: '/pages/success/success'
                 });
               }

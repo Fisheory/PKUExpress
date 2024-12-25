@@ -65,7 +65,7 @@ Page({
   },
 
   onReturn: function() {
-    wx.navigateTo({
+    wx.redirectTo({
       url: '/pages/home/home',
     })
   }

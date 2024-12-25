@@ -119,14 +119,14 @@ Page({
   
   // 注册跳转
   goToRegister: function () {
-    wx.navigateTo({
+    wx.redirectTo({
       url: '/pages/register/register'
     });
   },
 
   // 找回密码跳转
   goToFindPassword: function () {
-    wx.navigateTo({
+    wx.redirectTo({
       url: '/pages/reset/reset'
     });
   },

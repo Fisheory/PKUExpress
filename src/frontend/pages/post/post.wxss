@@ -91,14 +91,14 @@
 
 .button-container {
   display: flex;
-  flex-direction: column;
-  width: 80%;
+  flex-direction: row;
+  width: 100%;
   margin: 0 auto;
 }
 
 .submit-button, .cancel-button {
   padding: 10px;
-  margin-top: 10px; /* Add spacing between the buttons */
+  /* margin-top: 10px; Add spacing between the buttons */
   background-color: #FFC107;
   color: #fff;
   border: none;

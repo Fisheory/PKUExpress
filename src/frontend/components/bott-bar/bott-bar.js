@@ -13,13 +13,13 @@ Component({
       console.log(pageName);
       console.log("/?/")
       if (page != pageName){
-        wx.navigateTo({
+        wx.redirectTo({
           url: `/pages/${page}/${page}`
         });
       }
     },
     navigateToAdd() {
-      wx.navigateTo({
+      wx.redirectTo({
         url: '/pages/post/post'
       });
     }

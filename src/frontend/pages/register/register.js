@@ -125,7 +125,7 @@ Page({
           this.showMessage('注册成功，即将返回登录页面...', 'green');
           // 注册成功后延时1秒跳转
           setTimeout(() => {
-            wx.navigateTo({
+            wx.redirectTo({
               url: '/pages/index/index'
             });
           }, 1000);
@@ -211,7 +211,7 @@ Page({
 
   // 返回登录
   onReturn: function () {
-    wx.navigateTo({
+    wx.redirectTo({
       url: '/pages/index/index'
     });
   },
