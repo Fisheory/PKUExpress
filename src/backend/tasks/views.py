@@ -231,7 +231,9 @@ class UserFinishedTaskList(ListAPIView):
 
     def get_queryset(self):
         user = self.request.user
-        return user.accepted_tasks.all().filter(status="finished")
+        data = user.accepted_tasks.all().filter(status="finished")
+        data |= user.accepted_tasks.all().filter(status="ack_finished")
+        return data
 
 
 @csrf_exempt
