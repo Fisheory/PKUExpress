@@ -114,6 +114,7 @@ class CustomUserSerializer(serializers.ModelSerializer):
 
     def get_accepted_finished_tasks(self, obj):
         tasks = obj.accepted_tasks.filter(status="finished")
+        tasks |= obj.accepted_tasks.filter(status="ack_finished")
         return TaskSerializer(tasks, many=True).data
 
 

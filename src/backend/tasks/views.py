@@ -128,7 +128,7 @@ class TaskDetail(APIView):
                 status=http_status.HTTP_400_BAD_REQUEST,
             )
 
-        if status not in ("accepted", "finished"):
+        if status not in ("accepted", "finished", "ack_finished"):
             return Response(
                 {"msg": "Invalid status value"},
                 status=http_status.HTTP_400_BAD_REQUEST,
@@ -159,6 +159,21 @@ class TaskDetail(APIView):
 
                 task.finish()
                 return Response({"msg": "Task finished successfully"})
+            elif status == "ack_finished":
+                if task.status != "finished":
+                    return Response(
+                        {"msg": "Task not finished yet"},
+                        status=http_status.HTTP_400_BAD_REQUEST,
+                    )
+                if task not in user.published_tasks.all():
+                    return Response(
+                        {"msg": "Task not published by this user"},
+                        status=http_status.HTTP_403_FORBIDDEN,
+                    )
+
+                task.ack_finish()
+                return Response({"msg": "Task acknowledged successfully"})
+
         except Exception as e:
             return Response(
                 {"msg": str(e)},

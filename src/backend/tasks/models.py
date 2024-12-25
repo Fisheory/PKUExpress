@@ -32,6 +32,7 @@ class Task(models.Model):
         ("to_be_accepted", "to_be_accepted"),
         ("accepted", "accepted"),
         ("finished", "finished"),
+        ("ack_finished", "ack_finished"),
         ("out_of_date", "out_of_date"),
     ]
 
@@ -70,12 +71,18 @@ class Task(models.Model):
     def finish(self):
         if self.status == "accepted":
             self.status = "finished"
-            # money?
+            self.save()
+            self.worker.save()
+            self.publisher.save()
+        else:
+            raise Exception("Task status error")
+
+    def ack_finish(self):
+        if self.status == "finished":
+            self.status = "ack_finished"
+            self.finish_time = timezone.now()
             self.worker.gold += self.reward
             self.publisher.gold -= self.reward
-
-            self.finish_time = timezone.now()
-
             self.save()
             self.worker.save()
             self.publisher.save()
