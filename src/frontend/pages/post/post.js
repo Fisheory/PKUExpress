@@ -165,9 +165,10 @@ Page({
         "reward": this.data.payment,
         "end_location": this.data.address,
         "deadline": `${this.data.rawDate}T${this.data.rawTime}:00`,
-        "image": this.data.imagebase64
+        // "image": this.data.imagebase64
       },
       success: res => {
+        console.log(`${this.data.rawDate}T${this.data.rawTime}:00`);
         // Simulate submission success
         if (res.statusCode === 201) {
           wx.showModal({

@@ -5,7 +5,7 @@ Page({
     isListEmpty: true
   },
 
-  onLoad() {
+  onShow() {
     const navibar = this.selectComponent('#navi-bar'); // 选择导航栏组件
     const { paddingTop, naviHeight } = navibar.getNaviInfo();
     const windowHeightPx = wx.getWindowInfo().windowHeight;

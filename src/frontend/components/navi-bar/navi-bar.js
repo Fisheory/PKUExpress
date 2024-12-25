@@ -12,6 +12,14 @@ Component({
     showBack: {
       type: Boolean,
       value: true
+    },
+    showSearch: {
+      type: Boolean,
+      value: false
+    },
+    searchQuery: {
+      type: String,
+      value: ''
     }
   },
 
@@ -29,6 +37,7 @@ Component({
       // 设置导航栏的高度
       let statusBarHeight = wx.getWindowInfo().statusBarHeight
       let capsule = wx.getMenuButtonBoundingClientRect()
+      console.log("showSearch ", this.data.showSearch)
       this.setData({
         paddingTop: statusBarHeight,
         gap: capsule.top - statusBarHeight
@@ -62,5 +71,17 @@ Component({
         naviHeight: this.data.naviHeight,
       };
     },
+    onSearchInput(event) {
+      const query = event.detail.value;
+      this.setData({
+        searchQuery: query
+      });
+      // this.triggerEvent('search', query); // 向父组件传递搜索内容
+    },
+    onSearch() {
+      console.log(this.data.searchQuery);
+      this.triggerEvent('search', this.data.searchQuery); // 向父组件传递搜索内容
+    }
+
   }
 })

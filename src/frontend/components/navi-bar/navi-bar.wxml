@@ -5,4 +5,10 @@
         <text class="back-icon">←</text>
     </view>
     <view class="nav-title">{{title}}</view>
+    <view class="search-bar" wx:if="{{showSearch}}">
+      <input type="text" placeholder="搜索任务" bindinput="onSearchInput" class="search-input" value="{{searchQuery}}"/>
+      <view class="search-icon" bindtap="onSearch" wx:if="{{showSearch}}">
+        <text>搜索</text>
+      </view>
+    </view>
 </view>

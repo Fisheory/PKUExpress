@@ -99,7 +99,7 @@ Page({
       },
       success: res => {
         if (res.statusCode === 200) {
-          wx.navigateTo({
+          wx.redirectTo({
             'url': '/pages/index/index'
           });
         } else {

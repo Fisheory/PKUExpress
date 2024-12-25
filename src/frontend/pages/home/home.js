@@ -15,13 +15,24 @@ Page({
     });
   },
 
-  onLoad() {
+  onLoad(options) {
     const navibar = this.selectComponent('#navi-bar'); // 选择导航栏组件
     const { paddingTop, naviHeight } = navibar.getNaviInfo();
     const windowHeightPx = wx.getWindowInfo().windowHeight;
     const bottomHeightPx = 140 * wx.getWindowInfo().windowWidth / 750;
+    let searchUrl = `http://123.56.18.162:8000/tasks/tasklist`
+    if (options.search) {
+      searchUrl += `?search=${options.search}`
+      const navibar = this.selectComponent('#navi-bar');
+      if (options.search) {
+        navibar.setData({
+          searchQuery: options.search
+        });
+      }
+    }
+    console.log(searchUrl)
     wx.request({
-      url: 'http://123.56.18.162:8000/tasks/tasklist',
+      url: searchUrl,
       method: 'GET',
       header: {
         'Authorization': "Token " + wx.getStorageSync('token')
@@ -59,4 +70,10 @@ Page({
       containerHeight: windowHeightPx - paddingTop - naviHeight - bottomHeightPx - 10,
     });
   },
+  search(e) {
+    console.log(e.detail);
+    wx.redirectTo({
+      url: `/pages/home/home?search=${e.detail}`,
+    })
+  }
 });

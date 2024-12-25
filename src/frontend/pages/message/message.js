@@ -123,7 +123,11 @@ Page({
     // 监听 WebSocket 消息
     socket.onMessage((msg) => {
       console.log('收到消息:', msg);
-      this.setData({messages: [...this.data.messages, msg],});
+      this.setData({
+        messages: [...this.data.messages, JSON.parse(msg.data)["message"]],
+        lastMessageId: `message-${this.data.messages[this.data.messages.length - 1].id}`,
+      });
+      console.log(this.data.messages);
       // 处理消息
     });
 
