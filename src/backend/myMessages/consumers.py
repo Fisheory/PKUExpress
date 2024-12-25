@@ -2,6 +2,7 @@ import json
 
 from channels.generic.websocket import WebsocketConsumer
 from rest_framework.authtoken.models import Token
+from asgiref.sync import async_to_sync
 
 from accounts.models import CustomUser
 from myMessages.models import Message
@@ -21,20 +22,28 @@ class UserMessageConsumer(WebsocketConsumer):
         if token is None:
             self.close()
 
+        user_token = None
+
         try:
             user_token = Token.objects.get(key=token)
         except Token.DoesNotExist:
+            self.close()
+
+        if user_token is None:
             self.close()
 
         self.user = user_token.user
 
         self.room_name = f"user_{self.user.username}"
 
-        self.channel_layer.group_add(self.room_name, self.channel_name)
+        async_to_sync(self.channel_layer.group_add)(self.room_name, self.channel_name)
         self.accept()
 
     def disconnect(self, close_code):
-        self.channel_layer.group_discard(self.room_name, self.channel_name)
+        async_to_sync(self.channel_layer.group_discard)(
+            self.room_name, self.channel_name
+        )
+        print(f"disconnected: {self.channel_name}")
 
     def receive(self, text_data):
         pass
@@ -57,9 +66,14 @@ class ChatMessageConsumer(WebsocketConsumer):
         if token is None:
             self.close()
 
+        user_token = None
+
         try:
             user_token = Token.objects.get(key=token)
         except Token.DoesNotExist:
+            self.close()
+
+        if user_token is None:
             self.close()
 
         self.sender = user_token.user
@@ -74,15 +88,18 @@ class ChatMessageConsumer(WebsocketConsumer):
 
         self.room_name = f"chat_{min(self.sender.id, receiver.id)}_{max(self.sender.id, receiver.id)}"
 
-        print(self.room_name)
+        print(f"self.room_name: {self.room_name}")
 
-        self.channel_layer.group_add(self.room_name, self.channel_name)
-        print(self.channel_name)
+        async_to_sync(self.channel_layer.group_add)(self.room_name, self.channel_name)
+        print(f"self.channel_name: {self.channel_name}")
 
         self.accept()
 
     def disconnect(self, close_code):
-        self.channel_layer.group_discard(self.room_name, self.channel_name)
+        async_to_sync(self.channel_layer.group_discard)(
+            self.room_name, self.channel_name
+        )
+        print(f"chat disconnected: {self.channel_name}")
 
     def receive(self, text_data):
         data = json.loads(text_data)
@@ -93,17 +110,20 @@ class ChatMessageConsumer(WebsocketConsumer):
                 message_data = serializer.data
                 # message_data["receiver"] = data["receiver"]
                 print(message_data)
-                print(self.room_name)
-                self.channel_layer.group_send(
-                    self.room_name,
-                    {
-                        "type": "chat_message",
-                        "message": message_data,
-                    },
-                )
+                print(f"self.room_name: {self.room_name}")
+                try:
+                    async_to_sync(self.channel_layer.group_send)(
+                        self.room_name,
+                        {
+                            "type": "chat_message",
+                            "message": message_data,
+                        },
+                    )
+                except Exception as e:
+                    print(f"error sending message: {e}")
                 receiver_name = data["receiver"]
-                print(receiver_name)
-                self.channel_layer.group_send(
+                print(f"receiver_name: {receiver_name}")
+                async_to_sync(self.channel_layer.group_send)(
                     f"user_{receiver_name}",
                     {
                         "type": "chat_message",
