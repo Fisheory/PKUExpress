@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import CustomUser, PasswordToken
+from .models import CustomUser, VerificationCode
 from django.contrib.auth.admin import UserAdmin
 from tasks.admin import PublishedTaskInline, AcceptedTaskInline
 
@@ -15,10 +15,10 @@ class CustomUserAdmin(UserAdmin):
     inlines = [PublishedTaskInline, AcceptedTaskInline]
 
 
-class PasswordTokenAdmin(admin.ModelAdmin):
-    model = PasswordToken
+class VerificationCodeAdmin(admin.ModelAdmin):
+    model = VerificationCode
     list_display = ("email", "token", "create_time", "usage")
 
 
 admin.site.register(CustomUser, CustomUserAdmin)
-admin.site.register(PasswordToken, PasswordTokenAdmin)
+admin.site.register(VerificationCode, VerificationCodeAdmin)
