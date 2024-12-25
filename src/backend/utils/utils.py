@@ -49,7 +49,8 @@ class Base64ImageField(serializers.ImageField):
         if isinstance(data, str):
             try:
                 # 从 base64 字符串中提取图片数据
-                format, base64_str = data.split(";base64,")
+                # format, base64_str = data.split(";base64,")
+                base64_str = data
                 image_data = base64.b64decode(base64_str)
                 # 使用 UUID 生成一个唯一的文件名
                 file_name = f"{uuid.uuid4()}.png"
