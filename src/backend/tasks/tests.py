@@ -1,57 +1,16 @@
-<<<<<<< HEAD
-from django.test import TestCase
-=======
 from django.test import TestCase, Client
->>>>>>> ac4d57e3eaba250c9fdd3cb468a030d322ac2ae9
 
 # 可能会用到
 from accounts.models import CustomUser
 from tasks.models import Task
-<<<<<<< HEAD
-from django.utils import timezone
-=======
 from tasks.serializers import TaskSerializer
 from django.utils import timezone
 import time
->>>>>>> ac4d57e3eaba250c9fdd3cb468a030d322ac2ae9
 
 import json
 
 WORKER_MOST_ACCEPTED = 3
 
-<<<<<<< HEAD
-user1_data = {
-    'username': 'user1',
-    'password': 'abc87654321a',
-    'email': 'example1@example.com',
-    'phone': '1234567891',
-}
-user2_data = {
-    'username': 'user2',
-    'password': 'abc87654321b',
-    'email': 'example2@example.com',
-    'phone': '1234567892',
-}
-user3_data = {
-    'username': 'user3',
-    'password': 'abc87654321c',
-    'email': 'example3@example.com',
-    'phone': '1234567893',
-}
-
-register_url = '/accounts/register/'
-login_url = '/accounts/login/'
-task_create_url = '/tasks/task-create/'
-task_detail_url = '/tasks/task-detail/'
-task_list_url = '/tasks/task-list/'
-task_accept_url = '/tasks/task-accept/'
-
-# Create your tests here.
-
-# Todo...
-    
-    
-=======
 verification_code_url = "/accounts/auth/verification-code"
 register_url = "/accounts/auth/register"
 login_url = "/accounts/auth/login"
@@ -249,4 +208,3 @@ class TaskTestCase(TestCase):
         # 检查任务是否被删除
         task = Task.objects.get(id=self.task1.id)
         self.assertEqual(task.status, "to_be_accepted")
->>>>>>> ac4d57e3eaba250c9fdd3cb468a030d322ac2ae9

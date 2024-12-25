@@ -1,16 +1,3 @@
-<<<<<<< HEAD
-from django.urls import path
-from . import views
-
-urlpatterns = [
-    path('auth/register', views.UserRegister.as_view()),
-    path('auth/reset-password-token/', views.UserResetPasswordToken.as_view()),
-    path('auth/reset-password/', views.UserResetPassword.as_view()),
-    path('auth/login/', views.UserLogin.as_view()),
-    path('auth/logout/', views.UserLogout.as_view()),
-    path('profile/', views.UserDetail.as_view()),
-]
-=======
 from django.urls import path, include
 from . import views
 
@@ -26,4 +13,3 @@ urlpatterns = [
     # GET accounts/profile/*-tasklist: 获取用户发布/接受/完成的任务列表
     path("profile/", include("tasks.urls")),
 ]
->>>>>>> ac4d57e3eaba250c9fdd3cb468a030d322ac2ae9
