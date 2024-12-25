@@ -10,7 +10,24 @@ from myMessages.serializers import MessageSerializer
 
 class UserMessageConsumer(WebsocketConsumer):
     def connect(self):
-        self.user = self.scope["user"]
+
+        token = ""
+
+        for key, value in self.scope["headers"]:
+            if key.decode() == "authorization":
+                token = value.decode().split(" ")[1]
+                break
+
+        if token is None:
+            self.close()
+
+        try:
+            user_token = Token.objects.get(key=token)
+        except Token.DoesNotExist:
+            self.close()
+
+        self.user = user_token.user
+
         self.room_name = f"user_{self.user.username}"
 
         self.channel_layer.group_add(self.room_name, self.channel_name)
@@ -29,21 +46,22 @@ class UserMessageConsumer(WebsocketConsumer):
 
 class ChatMessageConsumer(WebsocketConsumer):
     def connect(self):
-        
+
         token = ""
-        
+
         for key, value in self.scope["headers"]:
             if key.decode() == "authorization":
                 token = value.decode().split(" ")[1]
                 break
-        
+
         if token is None:
             self.close()
-            
-        user_token = Token.objects.get(key=token)
-        if user_token is None:
+
+        try:
+            user_token = Token.objects.get(key=token)
+        except Token.DoesNotExist:
             self.close()
-            
+
         self.sender = user_token.user
 
         receiver_username = self.scope["url_route"]["kwargs"]["receiver"]
@@ -54,11 +72,13 @@ class ChatMessageConsumer(WebsocketConsumer):
         if receiver is None:
             self.close()
 
-        self.room_name = (
-            f"chat_{min(self.sender.id, receiver.id)}_{max(self.sender.id, receiver.id)}"
-        )
+        self.room_name = f"chat_{min(self.sender.id, receiver.id)}_{max(self.sender.id, receiver.id)}"
+
+        print(self.room_name)
 
         self.channel_layer.group_add(self.room_name, self.channel_name)
+        print(self.channel_name)
+
         self.accept()
 
     def disconnect(self, close_code):
@@ -70,12 +90,14 @@ class ChatMessageConsumer(WebsocketConsumer):
         try:
             if serializer.is_valid(raise_exception=True):
                 serializer.save()
-                message_data = serializer.data     
+                message_data = serializer.data
                 # message_data["receiver"] = data["receiver"]
                 print(message_data)
+                print(self.room_name)
                 self.channel_layer.group_send(
                     self.room_name,
                     {
+                        "type": "chat_message",
                         "message": message_data,
                     },
                 )
@@ -84,6 +106,7 @@ class ChatMessageConsumer(WebsocketConsumer):
                 self.channel_layer.group_send(
                     f"user_{receiver_name}",
                     {
+                        "type": "chat_message",
                         "message": message_data,
                     },
                 )
