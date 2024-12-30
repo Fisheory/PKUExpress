@@ -117,7 +117,7 @@ Page({
       console.log("Socket 已经建立");
       return;
     }
-
+    console.log(wx.getStorageSync('token'));
     const socket = wx.connectSocket({
       url: `ws://123.56.18.162:8000/ws/chat/${this.data.receiver}`,  // 服务器 WebSocket URL
       header: {
@@ -132,42 +132,41 @@ Page({
     socket.onOpen(() => {
       console.log('WebSocket 连接已打开');
       // 你可以在这里发送一些登录信息或者初始化操作
-    });
+      // 监听 WebSocket 错误
+      socket.onError((err) => {
+        console.error('WebSocket 连接失败:', err);
+      });
 
-    // 监听 WebSocket 错误
-    socket.onError((err) => {
-      console.error('WebSocket 连接失败:', err);
-    });
+      // 监听 WebSocket 消息
+      socket.onMessage((msg) => {
+        console.log('收到消息:', msg);
+        if (this.data.messages.length > 0){
+          this.setData({
+            messages: [...this.data.messages, JSON.parse(msg.data)["message"]],
+            lastMessageId: `message-${this.data.messages[this.data.messages.length - 1].id}`,
+          });
+        }
+        else{
+          this.setData({
+            messages: [JSON.parse(msg.data)["message"]],
+            lastMessageId: "message-0",
+          });
+        }
+        console.log(this.data.messages);
+        // 处理消息
+      });
 
-    // 监听 WebSocket 消息
-    socket.onMessage((msg) => {
-      console.log('收到消息:', msg);
-      if (this.data.messages.length > 0){
-        this.setData({
-          messages: [...this.data.messages, JSON.parse(msg.data)["message"]],
-          lastMessageId: `message-${this.data.messages[this.data.messages.length - 1].id}`,
-        });
-      }
-      else{
-        this.setData({
-          messages: [JSON.parse(msg.data)["message"]],
-          lastMessageId: "message-0",
-        });
-      }
-      console.log(this.data.messages);
-      // 处理消息
-    });
+      // 监听 WebSocket 关闭
+      socket.onClose(() => {
+        console.log('WebSocket 连接关闭');
+        this.socket = null;  // 关闭连接后清空
+      });
 
-    // 监听 WebSocket 关闭
-    socket.onClose(() => {
-      console.log('WebSocket 连接关闭');
-      this.globalData.socket = null;  // 关闭连接后清空
+      // 将 socket 对象保存在全局数据中
+      this.setData({
+        socket: socket
+      })
     });
-
-    // 将 socket 对象保存在全局数据中
-    this.setData({
-      socket: socket
-    })
   },
 
   // 选择表情

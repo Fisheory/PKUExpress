@@ -293,7 +293,7 @@ Page({
 
   // Navigate to the map page
   navigateToMap: function () {
-    wx.redirectTo({
+    wx.navigateTo({
       url: '/pages/map/map' 
     });
   },
